@@ -2,8 +2,10 @@
 import numpy as np
 import time as time
 import matplotlib.pyplot as plot
+from annotate import annotate
 
-file = open('H.pcap')
+file = open('data/plot.pcap')
+annot = open('data/plot.labels')
 
 times = []
 
@@ -38,14 +40,8 @@ plot.ylabel('Packets in 1 second interval')
 plot.title('tcpdump -i wlp3s0 -e')
 
 
-plot.annotate('Davidson', xy=(60, 500), xytext=(100, 900), arrowprops=dict(facecolor='red', shrink=0.05))
-plot.annotate('ARC', xy=(240, 200), xytext=(300, 1500), arrowprops=dict(facecolor='red', shrink=0.05))
-plot.annotate('HILL', xy=(360, 200), xytext=(450, 1500), arrowprops=dict(facecolor='red', shrink=0.05))
-plot.annotate('Stadium Lot', xy=(540, 200), xytext=(600, 1500), arrowprops=dict(facecolor='red', shrink=0.05))
-plot.annotate('bridge', xy=(600, 200), xytext=(600, 200))
-plot.annotate('Student Center', xy=(900, 1200), xytext=(950, 1500), arrowprops=dict(facecolor='red', shrink=0.05))
-plot.annotate('Scott', xy=(1140, 200), xytext=(1200, 1000), arrowprops=dict(facecolor='red', shrink=0.05))
-plot.annotate('SAC', xy=(1380, 200), xytext=(1400, 900), arrowprops=dict(facecolor='red', shrink=0.05))
+annotate(plot, hist, annot)
+annot.close()
 
-plot.savefig('packets.png')
+plot.savefig('img/packets.png')
 plot.show()
