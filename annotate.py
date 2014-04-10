@@ -1,6 +1,7 @@
 #Adds (time, label) pairs from file to plot
-def annotate(plot, hist, file):
-	labely = max(hist)
+def annotate(plot, hist, file, labely=0):
+	if not labely:
+		labely = max(hist)
 	for line in file:
 		(x, label) = line.split(' ', 1)
 		x = int(x)
