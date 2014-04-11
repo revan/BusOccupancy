@@ -1,0 +1,58 @@
+\documentclass[letterpaper,english]{scrartcl}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+\title{Undergraduate Independent Research Report}
+\subtitle{Predicting Bus Occupancy}
+\author{Daniel Bordak, Erin Corrado, Revan Sopher, and Ashley Weaver}
+
+\maketitle
+
+\section*{Abstract}
+\begin{abstract}
+In this study we address the problem of programatically predicting bus occupancy.
+We approach this in two ways: by using publically available GPS positions to calculate stop time, and by using promiscuous Wi-Fi to count devices.
+While the stop time approach proved unfruitful due to a lack of correlation between stop time and occupancy, ...
+\end{abstract}
+
+\section*{Motivation}
+
+Due to the periodic nature of class schedules, students at Rutgers tend to move between campuses at similar times during the day.
+This leads to predictable migratory patterns. However, the bus schedule does a poor job of taking this into account: on Livingston campus, for example, the College Ave/Livingston buses circulate consecutively yet are nearly empty, while the Busch/Livingston buses are less frequent and often packed to capacity.
+The aim of this project is to develop a system for better predicting demand for buses, such that an empirical argument for the optimization of the bus schedule might be made.
+
+\section*{Approach}
+
+In order to facilitate simultaneous contributions from all four team members, we approached the problem in two manners: by collecting data ourselves, and by using transit times.
+Two students worked on each approach, planning to combine results into a single prediction method.
+
+\subsection*{Promiscuous WiFi}
+
+In this approach, we use the inherent correlation between amount of smart phones on the bus and amount of people on the bus.
+We used a laptop running Linux, equipped with a standard wireless card and a GPS sensor.
+The computer runs the wireless card in monitor mode, allowing it to process all packets it receives regardless of destination. It logs the headers of these packets to file, with current time.
+The computer also logs GPS coordinates.
+
+\subsection*{Stop Length Inference}
+
+In this approach, we planned to use the logical correlation between the amount of time a bus spends at a stop and the amount of people riding: the idea is that as a bus nears capacity, stops will be longer due to the larger volume of riders entering and exiting.
+Every Rutgers bus periodically updates an internet source with its position, velocity, and destination.
+We first tried to measure the strength of this correlation; if we could prove a strong positive correlation, then we would use the publicly available bus travel data to measure length of stops, and therefore occupancy.
+Although this method inherently depends on a weaker correlation than the number of smartphones, by running the analysis on a log of travel data we could predict occupancy across a significantly larger domain and for no cost.
+
+\section*{Results}
+
+\subsection*{Promiscuous WiFi}
+\subsection*{Stop Length Inference}
+
+\section*{Future Work}
+The largest problem with the interception of packets is outside noise.
+To address this, we would like to install an access point on the bus, with the same SSID as the campus Wi-Fi such that smart phones would automatically connect.
+We could then listen only to communications with this access point, eliminating outside traffic.
+\\
+Optimally, the routers would be officially installed, and serve mobile data. This is naturally expensive and thus unlikely. Any unofficial access points installed would be an explicit violation of the terms of use of the Rutgers networks, and thus unfeasible as well.
+\\
+\\
+We could also replace the laptop in our setup with a smaller unit to be installed in the busses, to collect for longer periods of time. Running several of these units would allow us to collect enough data to make occupancy predictions.
+
+\end{document}
