@@ -1,5 +1,8 @@
 \documentclass[letterpaper,english]{scrartcl}
 \usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{float}
+\graphicspath{ {img/} }
 
 \begin{document}
 \title{Undergraduate Independent Research Report}
@@ -43,7 +46,42 @@ Although this method inherently depends on a weaker correlation than the number 
 \section*{Results}
 
 \subsection*{Promiscuous WiFi}
+
 \subsection*{Stop Length Inference}
+In order to establish a correlation between stop length and bus occupancy, we followed a bus on its circuit, recording data on its stops.
+\begin{figure}[H]
+\includegraphics[width=12cm]{stop3}
+\centering
+\end{figure}
+As we quickly found, stop length does not appear to have any correlation to occupancy.
+This makes sense, because the amount of sedentary riders does not cause slowdowns, rather the interesting metric is the amount of people entering or exiting the bus.
+
+\begin{figure}[H]
+\includegraphics[width=12cm]{stop1}
+\centering
+\end{figure}
+
+Plotting the net occupancy change over stop length was also inconclusive, as the longer stops could be either positive or negative changes.
+From stop timings alone, we would not be able to predict the direction of change.
+
+\begin{figure}[H]
+\includegraphics[width=12cm]{stop2}
+\centering
+\end{figure}
+
+Net change, however, shows a stronger correlation, confirming our hypothesis that high rider throughput causes delays.
+Net change is not a useful metric on its own, but if it could be proven that certain bus stops entertained mostly one of boardings or descents, we could predict the sign of the change and thus the occupancy changes over time.
+
+%TODO:
+%\begin{figure}[H]
+%GRAPH GOES HERE
+%\centering
+%\end{figure}
+%
+%Analyze
+
+
+
 
 \section*{Future Work}
 The largest problem with the interception of packets is outside noise.
