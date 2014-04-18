@@ -21,24 +21,24 @@ for i, line in enumerate(file):
         if i == 0:
             first = timeObject
             firstSec = first.tm_sec+first.tm_min*60+first.tm_hour*3600
-            firstMin = first.tm_min*60+first.tm_hour*3600
+            # firstMin = first.tm_min*60+first.tm_hour*3600
 
-        second = timeObject.tm_sec+timeObject.tm_min*60+timeObject.tm_hour*3600
-        minute = timeObject.tm_min*60+timeObject.tm_hour*3600
-
-        #if second == prevSecond:
-            #still in same bin
-            #get MACs from line, add new
+        second = timeObject.tm_sec+timeObject.tm_min*60+timeObject.tm_hour*3600 - firstSec
+        print "found a packet at t=" + str(second)
+        #minute = timeObject.tm_min*60+timeObject.tm_hour*3600
 
         for mac in re.findall("([0-9a-f]{2}:){5}([0-9a-f]{2})", line):
+            if "BSSID" in mac:
+                print "It's a router, I think"
+                continue
             if mac not in macAddresses:
-                tempList = []
-                tempList.append(second)
-                macAddresses[mac] = tempList
+                print "It's a new one"
+                #tempList = []
+                #tempList.append(second)
+                macAddresses[mac] = [second, second]
             else:
-                macAddresses[mac].append(second)
-        else:
-            prevSecond = second
+                #macAddresses[mac].append(second)
+                macAddresses[mac][1] = second
 
     except IndexError:
         print i
@@ -46,14 +46,17 @@ for i, line in enumerate(file):
 else:
     last = timeObject
     lastSec = second
-    lastMin = minute
+    # lastMin = minute
 file.close()
 
 for value in macAddresses.itervalues():
     xcoord.append(value[0])
-    if len(value) == 1:
-        ycoord.append(value[0])
-    else:  
-        ycoord.append(value[-1])
+    ycoord.append(value[1])
+    #if len(value) == 1:
+    #    ycoord.append(value[0])
+    #else:
+    #    ycoord.append(value[-1])
+plot.xlim(0,lastSec)
+plot.ylim(0,lastSec)
 plot.scatter(xcoord, ycoord)
 plot.show()

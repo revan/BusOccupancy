@@ -8,49 +8,60 @@ from annotate import annotate
 file = open('data/plot.pcap')
 annot = open('data/plot.labels')
 
+findMac = re.compile("([0-9a-f]{2}:){5}([0-9a-f]{2})")
+findTime = re.compile(" (\d+)us")
+
+END_TIME = 0
+# Binsize in microseconds -- 1 is 1us, 1000 is 1ms, 100,000 is 0.1s, etc.
+BINSIZE = 1000000
+
 hist = []
 bin = []
-prevSecond = 0
+
+firstLine = file.readline()
+firstmSec = int(findTime.search(firstLine).group(1))/BINSIZE
+file.seek(0)
+prevmSecond = -1
+
 for i, line in enumerate(file):
 	try:
-		timeObject = time.strptime(line.split()[0].split('.')[0], '%H:%M:%S')
-		if i == 0:
-			first = timeObject
-			firstSec = first.tm_sec+first.tm_min*60+first.tm_hour*3600
-			firstMin = first.tm_min*60+first.tm_hour*3600
+		tim = int(findTime.search(line).group(1))/BINSIZE
+		msec = tim - firstmSec
 
-		second = timeObject.tm_sec+timeObject.tm_min*60+timeObject.tm_hour*3600
-		minute = timeObject.tm_min*60+timeObject.tm_hour*3600
+		if END_TIME > 0 and msec >= END_TIME:
+			break
 
-		if second == prevSecond:
-			#still in same bin
-			#get MACs from line, add new
-
-			for mac in re.findall("([0-9a-f]{2}:){5}([0-9a-f]{2})", line):
+		if msec == prevmSecond:
+			# still in same bin
+			# get MACs from line, add new
+			for mac in findMac.findall(line):
 				if not mac in bin:
 					bin.append(mac)
 		else:
-			#add count, make new bin
-			prevSecond = second
+			# add count, make new bin
+			while (msec - prevmSecond) > 1:
+				prevmSecond+=1
+				hist.append(0)
+			prevmSecond = msec
 			hist.append(len(bin))
 			bin = []
 
 	except IndexError:
 		print i
 
-else:
-	last = timeObject
-	lastSec = second
-	lastMin = minute
-	
+
+lastmSec = msec
+
 file.close()
 
-bin_edges = range(1+lastSec-firstSec)
+div = 1000000/BINSIZE
 
-plot.bar(bin_edges[:-1], hist, width = 1)
-plot.xlim(min(bin_edges), max(bin_edges))
+xaxis = [j/div for j in range(len(hist))]
+
+plot.bar(xaxis, hist, width = 1)
+plot.xlim(0, len(hist)/div)
 plot.xlabel('Seconds since start')
-plot.ylabel('Unique MACs in 1 second interval')
+plot.ylabel('Unique MACs in 0.1 second interval')
 plot.title('tcpdump -i wlp3s0 -e')
 
 annotate(plot, hist, annot)
