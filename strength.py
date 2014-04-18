@@ -13,18 +13,17 @@ times = []
 DB_CUTOFF = -40
 
 for i, line in enumerate(file):
-	
 	try:
 		timeObject = time.strptime(line.split()[0].split('.')[0], '%H:%M:%S')
 		if i == 0:
 			first = timeObject
 			firstSec = first.tm_sec+first.tm_min*60+first.tm_hour*3600
+			prevSec = firstSec
 			firstMin = first.tm_min*60+first.tm_hour*3600
 
 		dB = int(re.search("-\d+(?=dB)", line).group(0))
 		if(dB > DB_CUTOFF):
 			times.append(timeObject)
-
 	except IndexError:
 		pass
 	except AttributeError:
@@ -34,7 +33,6 @@ else:
 	last = timeObject
 	lastSec = last.tm_sec+last.tm_min*60+last.tm_hour*3600
 	lastMin = last.tm_min*60+last.tm_hour*3600
-	
 file.close()
 
 secondsSince = [i.tm_sec+i.tm_min*60+i.tm_hour*3600 - firstSec for i in times]
