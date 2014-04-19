@@ -7,7 +7,10 @@ import re
 from annotate import annotate
 from sys import argv
 
-findMac = re.compile("([0-9a-f]{2}:){5}([0-9a-f]{2})")
+# Sets how many times we want to see a MAC before it's added to the graph
+COINCIDENCE = 3
+
+findMac = re.compile("([\da-f]{2}(?:[-:][\da-f]{2}){5})")
 findTime = re.compile(" (\d+)us")
 
 # Binsize in microseconds -- 1 is 1us, 1000 is 1ms, 100,000 is 0.1s, etc.
@@ -30,14 +33,16 @@ for i, line in enumerate(file):
         msec = tim - firstmSec
 
         for mac in findMac.findall(line):
+            print mac
             if "BSSID" in mac:
                 #print "It's a router, I think"
                 continue
             if mac not in macAddresses:
                 #print "It's a new one"
-                macAddresses[mac] = [msec, msec]
+                macAddresses[mac] = [msec, msec, 1]
             else:
                 macAddresses[mac][1] = msec
+                macAddresses[mac][2] += 1
 
     except IndexError:
         print i
@@ -46,14 +51,40 @@ else:
     lastSec = msec
 file.close()
 
-goodcount = 0
+c25 = 0
+c50 = 0
+c75 = 0
+c100 = 0
+c125 = 0
+c150 = 0
+
 for value in macAddresses.itervalues():
+    if value[2] < COINCIDENCE:
+        continue
     xcoord.append(value[0])
     ycoord.append(value[1])
-    if (value[1] - value[0]) < 250:
-        goodcount+=1
+    diff = value[1] - value[0]
+    if diff < 25:
+        c25+=1
+    if diff < 50:
+        c50+=1
+    if diff < 75:
+        c75+=1
+    if diff < 100:
+        c100+=1
+    if diff < 125:
+        c125+=1
+    if diff < 150:
+        c150+=1
 
-print "Number of MACs within acceptable range: " + str(goodcount)
+print "Number of MACs within:"
+print " * 25:  "+ str(c25)
+print " * 50:  "+ str(c50)
+print " * 75:  "+ str(c75)
+print " * 100: "+ str(c100)
+print " * 125: "+ str(c125)
+print " * 150: "+ str(c150)
+
 plot.xlim(0,lastSec)
 plot.ylim(0,lastSec)
 plot.scatter(xcoord, ycoord)
