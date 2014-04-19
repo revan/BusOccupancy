@@ -7,6 +7,8 @@ import re
 from annotate import annotate
 from sys import argv
 
+PREFIX="prob"
+
 # Sets how many times we want to see a MAC before it's added to the graph
 COINCIDENCE = 3
 
@@ -92,9 +94,19 @@ plot.xlim(0,lastSec)
 plot.ylim(0,lastSec)
 plot.scatter(xcoord, ycoord)
 
-plot.title('Class, April 7th')
+plot.title('April 7th, Probability')
 plot.xlabel('Time first seen (0.1s)')
 plot.ylabel('Time last seen (0.1s)')
 
-plot.savefig('img/grid.png')
+def makePlot(x,y):
+    plot.gcf().set_size_inches(x,y)
+    plot.tight_layout()
+    plot.savefig('img/' + PREFIX + '-grid-' +
+                 str(x) + 'x' + str(y) + '.png', dpi=200)
+
+#makePlot(5,5)
+#makePlot(6,6)
+#makePlot(5.5,5)
+makePlot(6.5,6) # This was the best
+
 plot.show()
