@@ -92,5 +92,9 @@ plot.xlim(0,lastSec)
 plot.ylim(0,lastSec)
 plot.scatter(xcoord, ycoord)
 
+plot.title('Class, April 7th')
+plot.xlabel('Time first seen (0.1s)')
+plot.ylabel('Time last seen (0.1s)')
+
 plot.savefig('img/grid.png')
 plot.show()
