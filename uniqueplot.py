@@ -73,5 +73,19 @@ plot.title('April 7th, A Route')
 annotate(plot, hist, annot, BINSIZE_L)
 annot.close()
 
-plot.savefig('img/unique.png')
+def makePlot(x,y):
+    plot.gcf().set_size_inches(x,y)
+    #plot.tight_layout()
+    plot.savefig('img/bus-unique-' +
+                 str(x) + 'x' + str(y) + '.png', dpi=200)
+
+#makePlot(12,6) #Cuts off a label.
+makePlot(13,6)
+makePlot(14,6)
+makePlot(15,6)
+makePlot(13,7)
+makePlot(14,7)
+makePlot(15,7)
+makePlot(16,7)
+
 plot.show()
