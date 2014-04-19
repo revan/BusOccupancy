@@ -10,7 +10,7 @@ from sys import argv
 # Sets how many times we want to see a MAC before it's added to the graph
 COINCIDENCE = 3
 
-findMac = re.compile("([\da-f]{2}(?:[-:][\da-f]{2}){5})")
+findMAC = re.compile("([\da-f]{2}(?:[-:][\da-f]{2}){5})")
 findTime = re.compile(" (\d+)us")
 
 # Binsize in microseconds -- 1 is 1us, 1000 is 1ms, 100,000 is 0.1s, etc.
@@ -32,8 +32,11 @@ for i, line in enumerate(file):
         tim = int(findTime.search(line).group(1))/BINSIZE
         msec = tim - firstmSec
 
-        for mac in findMac.findall(line):
-            print mac
+        for mac in findMAC.findall(line):
+            #print mac
+            if mac == "00:00:00:00:00:00":
+                #print "why does this keep happening"
+                continue
             if "BSSID" in mac:
                 #print "It's a router, I think"
                 continue

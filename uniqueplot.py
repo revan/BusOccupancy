@@ -11,7 +11,7 @@ annot = open('data/plot.labels')
 findMac = re.compile("([0-9a-f]{2}:){5}([0-9a-f]{2})")
 findTime = re.compile(" (\d+)us")
 
-END_TIME = 0
+END_TIME = 22560
 # Binsize in microseconds -- 1 is 1us, 1000 is 1ms, 100,000 is 0.1s, etc.
 BINSIZE = 100000
 
@@ -48,6 +48,8 @@ for i, line in enumerate(file):
 
 	except IndexError:
 		print i
+	except AttributeError:
+		print line
 
 
 lastmSec = msec
