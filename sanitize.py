@@ -15,10 +15,6 @@ for line in infile:
         continue
     for word in delete_words:
         line = line.replace(word, "")
-    #print re.search(" (\d+)us", line).group(1)
-    print int(findTime.search(line).group(1))/1000
     outfile.write(line)
 infile.close()
 outfile.close()
-
-print range(10)/10
