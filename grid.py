@@ -46,9 +46,14 @@ else:
     lastSec = msec
 file.close()
 
+goodcount = 0
 for value in macAddresses.itervalues():
     xcoord.append(value[0])
     ycoord.append(value[1])
+    if (value[1] - value[0]) < 250:
+        goodcount+=1
+
+print "Number of MACs within acceptable range: " + str(goodcount)
 plot.xlim(0,lastSec)
 plot.ylim(0,lastSec)
 plot.scatter(xcoord, ycoord)
