@@ -11,9 +11,13 @@ annot = open('data/plot.labels')
 findMac = re.compile("([0-9a-f]{2}:){5}([0-9a-f]{2})")
 findTime = re.compile(" (\d+)us")
 
-END_TIME = 22560
-# Binsize in microseconds -- 1 is 1us, 1000 is 1ms, 100,000 is 0.1s, etc.
-BINSIZE = 100000
+# Forced end time in whatever unit we're using -- see BINSIZE.
+END_TIME = 1128
+# Multiply together to get binsize. S is number of microseconds, L is for
+# divisions greater than 1s -- BINSIZE_S should not be larger than 10^6.
+BINSIZE_S = 1000000
+BINSIZE_L = 2
+BINSIZE = BINSIZE_S*BINSIZE_L
 
 hist = []
 bin = []
@@ -56,17 +60,17 @@ lastmSec = msec
 
 file.close()
 
-div = 1000000/BINSIZE
+div = 1000000/BINSIZE_S
 
-xaxis = [j/div for j in range(len(hist))]
+xaxis = [(BINSIZE_L*j)/div for j in range(len(hist))]
 
-plot.bar(xaxis, hist, width = 1)
-plot.xlim(0, len(hist)/div)
-plot.xlabel('Seconds since start')
-plot.ylabel('Unique MACs in 0.1 second interval')
-plot.title('tcpdump -i wlp3s0 -e')
+plot.bar(xaxis, hist, width = 1, edgecolor='#000033')
+plot.xlim(0, BINSIZE_L*len(hist)/div)
+plot.xlabel('Seconds since 1:51PM')
+plot.ylabel('Unique MACs in 2 second interval')
+plot.title('April 7th, A Route')
 
-annotate(plot, hist, annot)
+annotate(plot, hist, annot, BINSIZE_L)
 annot.close()
 
 plot.savefig('img/unique.png')
