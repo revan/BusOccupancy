@@ -7,10 +7,16 @@ import re
 from annotate import annotate
 from sys import argv
 
+
+END_TIME = 0
 PREFIX="prob"
 
-# Sets how many times we want to see a MAC before it's added to the graph
+# Sets how many times we want to see a MAC before it's added to the graph.
+# Only active when PREFIX is set to "prob".
 COINCIDENCE = 3
+
+if PREFIX=="bus":
+    annot = open('data/plot.labels')
 
 findMAC = re.compile("([\da-f]{2}(?:[-:][\da-f]{2}){5})")
 findTime = re.compile(" (\d+)us")
@@ -33,6 +39,8 @@ for i, line in enumerate(file):
     try:
         tim = int(findTime.search(line).group(1))/BINSIZE
         msec = tim - firstmSec
+        if END_TIME > 0 and msec > END_TIME:
+            break
 
         for mac in findMAC.findall(line):
             #print mac
@@ -48,12 +56,10 @@ for i, line in enumerate(file):
             else:
                 macAddresses[mac][1] = msec
                 macAddresses[mac][2] += 1
-
     except IndexError:
         print i
 
-else:
-    lastSec = msec
+lastSec = msec
 file.close()
 
 c25 = 0
@@ -64,7 +70,7 @@ c125 = 0
 c150 = 0
 
 for value in macAddresses.itervalues():
-    if value[2] < COINCIDENCE:
+    if value[2] < COINCIDENCE and PREFIX=="prob":
         continue
     xcoord.append(value[0])
     ycoord.append(value[1])
@@ -82,31 +88,41 @@ for value in macAddresses.itervalues():
     if diff < 150:
         c150+=1
 
-print "Number of MACs within:"
-print " * 25:  "+ str(c25)
-print " * 50:  "+ str(c50)
-print " * 75:  "+ str(c75)
-print " * 100: "+ str(c100)
-print " * 125: "+ str(c125)
-print " * 150: "+ str(c150)
+if PREFIX=="prob":
+    print "Number of MACs within:"
+    print " * 25:  "+ str(c25)
+    print " * 50:  "+ str(c50)
+    print " * 75:  "+ str(c75)
+    print " * 100: "+ str(c100)
+    print " * 125: "+ str(c125)
+    print " * 150: "+ str(c150)
 
 plot.xlim(0,lastSec)
 plot.ylim(0,lastSec)
 plot.scatter(xcoord, ycoord)
 
-plot.title('April 7th, Probability')
+if PREFIX=="prob":
+    plot.title('April 7th, Probability')
+if PREFIX=="bus":
+    plot.title('April 7th, A Route')
 plot.xlabel('Time first seen (0.1s)')
 plot.ylabel('Time last seen (0.1s)')
 
+if PREFIX=="bus":
+    annotate(plot, annot, 10, xoff=10, yoff=-10, ymax = lastSec)
+    annot.close()
+
 def makePlot(x,y):
     plot.gcf().set_size_inches(x,y)
-    plot.tight_layout()
+    #plot.tight_layout()
     plot.savefig('img/' + PREFIX + '-grid-' +
                  str(x) + 'x' + str(y) + '.png', dpi=200)
 
 #makePlot(5,5)
 #makePlot(6,6)
 #makePlot(5.5,5)
-makePlot(6.5,6) # This was the best
+makePlot(6.5,6)
+makePlot(7.5,7)
+makePlot(8,7.5)
 
 plot.show()
