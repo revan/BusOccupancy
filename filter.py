@@ -21,8 +21,7 @@ def filterRouters(packet, packets, routers):
     if "T" in packet:
         if packet["T"] in routers:
             del packet["T"]
-    #if not any(k in packet for k in ("D","S","R","T")):
-    if not packet.keys() >= {'D','S','R','T'}:
+    if not any(k in packet for k in ("D","S","R","T")):
         packets.remove(packet)
 
 def filterStrength(packet, packets, str, removeEmpty=False):
