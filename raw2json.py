@@ -62,6 +62,9 @@ for line in args.infile:
         ldic[food[0][0]] = food[1]
     output["packets"].append(ldic)
 
+for add in macs.values():
+    if add["r"]==1:
+        output["routers"].append(add["num"])
 
 args.infile.close()
 args.outfile.close()
