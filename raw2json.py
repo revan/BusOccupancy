@@ -47,7 +47,10 @@ for line in args.infile:
     if "BSSID" in line and "Broadcast" in line:
         # Even though we're keeping routers, Broadcast lines are still useless.
         continue
-    ldic = { "time": int(findTime.search(line).group(1)) - first_time }
+    try:
+        ldic = { "time": int(findTime.search(line).group(1)) - first_time }
+    except AttributeError:
+        continue
     for food in findDessert.findall(line):
         if food[1] not in macs:
             macs[food[1]] = {
