@@ -33,13 +33,7 @@ findStrength = re.compile(r"(-)(\d+)(dB)")
 first_time = int(findTime.search(first_line).group(1))
 
 for line in args.infile:
-    try:
-        ldic = {
-            "time": int(findTime.search(line).group(1)) - first_time,
-            "str": -1 * int(findStrength.search(line).group(2))
-        }
-    except AttributeError:
-        ldic["str"] = None
+    ldic = { "time": int(findTime.search(line).group(1)) - first_time }
     for bssid in findBSSID.findall(line):
         # Flag all routers
         if bssid[1] in macs:
@@ -64,6 +58,13 @@ for line in args.infile:
             output["num_macs"]+=1
         else:
             ldic[food[0][0]] = macs[food[1]]["num"]
+    try:
+        strength = -1 * int(findStrength.search(line).group(2))
+        ldic["str"] = strength
+    except AttributeError:
+        print("Line does not have strength field!")
+        #print(line)
+        #print(ldic)
     output["packets"].append(ldic)
 
 for add in macs.values():
