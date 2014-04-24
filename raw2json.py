@@ -35,7 +35,7 @@ first_time = int(findTime.search(first_line).group(1))
 for line in args.infile:
     try:
         ldic = {
-            "time": first_time - int(findTime.search(line).group(1)),
+            "time": int(findTime.search(line).group(1)) - first_time,
             "str": -1 * int(findStrength.search(line).group(2))
         }
     except AttributeError:
