@@ -48,7 +48,10 @@ for line in args.infile:
         # Even though we're keeping routers, Broadcast lines are still useless.
         continue
     try:
-        ldic = { "time": int(findTime.search(line).group(1)) - first_time }
+        ldic = {
+            "time": int(findTime.search(line).group(1)) - first_time,
+            "adds": {}
+        }
     except AttributeError:
         continue
     for food in findDessert.findall(line):
@@ -57,10 +60,10 @@ for line in args.infile:
                 "num":output["num_macs"],
                 "r":False
             }
-            ldic[food[0][0]] = output["num_macs"]
+            ldic["adds"][food[0][0]] = output["num_macs"]
             output["num_macs"]+=1
         else:
-            ldic[food[0][0]] = macs[food[1]]["num"]
+            ldic["adds"][food[0][0]] = macs[food[1]]["num"]
     try:
         strength = -1 * int(findStrength.search(line).group(2))
         ldic["str"] = strength
