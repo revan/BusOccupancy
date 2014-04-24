@@ -12,51 +12,56 @@ parser.add_argument('outfile', nargs='?', type=argparse.FileType('w'),
                     default=sys.stdout, help="Output file (defaults to stdout)")
 args = parser.parse_args()
 
-macs = []
+first_line = args.infile.readline()
+args.infile.seek(0)
+
+macs = {}
 output = {
-    "initial_time": None,
+    "initial_time": first_line[:15], # Fancy initial time (HH:MM:SS.xxxxxx)
     "routers": [],
     "num_macs": 0,
     "packets": []
 }
 
-#findMac = re.compile(r"([\da-f]{2}(?:[-:][\da-f]{2}){5})")
 findBSSID = re.compile(r"(BSSID:)([\da-f]{2}(?:[-:][\da-f]{2}){5})")
 findDessert = re.compile(r"([DSRT]A:)([\da-f]{2}(?:[-:][\da-f]{2}){5})")
 findTime = re.compile(r"(\d+)(us)")
+findStrength = re.compile(r"(-)(\d+)(dB)")
+
+first_time = findTime.search(first_line).group(1) # Initial time in microseconds
 
 for line in args.infile:
-    time = findTime.search(line)
-    print(time.group(1))
+    try:
+        ldic = {
+            "time": first_time - int(findTime.search(line).group(1)),
+            "str": -1 * int(findStrength.search(line).group(2))
+        }
+    except AttributeError:
+        ldic["str"] = None
     for bssid in findBSSID.findall(line):
         # Flag all routers
-        for mac in macs:
-            if bssid[1]==mac["add"]:
-                mac["r"]=1
-                break
+        if bssid[1] in macs:
+            macs[bssid[1]]["r"]=1
+            continue
         else:
-            macs.append({
-                "add":bssid[1],
-                "r":1,
-                "num":output["num_macs"]
-            })
+            macs[bssid[1]] = {
+                "num":output["num_macs"],
+                "r":1
+            }
             output["num_macs"]+=1
     if "BSSID" in line and "Broadcast" in line:
         # Even though we're keeping routers, Broadcast lines are still useless.
         continue
     for food in findDessert.findall(line):
-        for mac in macs:
-            if food[1]==mac["add"]:
-                break
-        else:
-            macs.append({
-                "add":food[1],
-                "r":0,
-                "num":output["num_macs"]
-            })
+        if food[1] not in macs:
+            macs[food[1]] = {
+                "num":output["num_macs"],
+                "r":0
+            }
             output["num_macs"]+=1
-        ldic = {food[0][0]: food[1]}
+        ldic[food[0][0]] = food[1]
+    output["packets"].append(ldic)
 
-print(macs)
+
 args.infile.close()
 args.outfile.close()
