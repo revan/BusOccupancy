@@ -2,6 +2,7 @@
 import re
 import argparse
 import sys
+import json
 
 parser = argparse.ArgumentParser(prog='raw2json', description=
                                  'Produce a JSON from raw tcpdump output.')
@@ -28,7 +29,8 @@ findDessert = re.compile(r"([DSRT]A:)([\da-f]{2}(?:[-:][\da-f]{2}){5})")
 findTime = re.compile(r"(\d+)(us)")
 findStrength = re.compile(r"(-)(\d+)(dB)")
 
-first_time = findTime.search(first_line).group(1) # Initial time in microseconds
+# Initial time in microseconds
+first_time = int(findTime.search(first_line).group(1))
 
 for line in args.infile:
     try:
@@ -41,12 +43,12 @@ for line in args.infile:
     for bssid in findBSSID.findall(line):
         # Flag all routers
         if bssid[1] in macs:
-            macs[bssid[1]]["r"]=1
+            macs[bssid[1]]["r"]=True
             continue
         else:
             macs[bssid[1]] = {
                 "num":output["num_macs"],
-                "r":1
+                "r":True
             }
             output["num_macs"]+=1
     if "BSSID" in line and "Broadcast" in line:
@@ -56,15 +58,19 @@ for line in args.infile:
         if food[1] not in macs:
             macs[food[1]] = {
                 "num":output["num_macs"],
-                "r":0
+                "r":False
             }
+            ldic[food[0][0]] = output["num_macs"]
             output["num_macs"]+=1
-        ldic[food[0][0]] = food[1]
+        else:
+            ldic[food[0][0]] = macs[food[1]]["num"]
     output["packets"].append(ldic)
 
 for add in macs.values():
-    if add["r"]==1:
+    if add["r"]:
         output["routers"].append(add["num"])
+
+args.outfile.write(json.dumps(output))
 
 args.infile.close()
 args.outfile.close()
