@@ -9,7 +9,7 @@ from sys import argv
 
 
 END_TIME = 0
-PREFIX="prob"
+PREFIX="bus"
 
 # Sets how many times we want to see a MAC before it's added to the graph.
 # Only active when PREFIX is set to "prob".
@@ -102,7 +102,7 @@ plot.ylim(0,lastSec)
 plot.scatter(xcoord, ycoord)
 
 if PREFIX=="prob":
-    plot.title('April 7th, Probability')
+    plot.title('April 7th, Classroom')
 if PREFIX=="bus":
     plot.title('April 7th, A Route')
 plot.xlabel('Time first seen (0.1s)')
