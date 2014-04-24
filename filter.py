@@ -6,7 +6,7 @@ def filter(jason, routers=False, strength=False, strlim=0,
         if strength:
             filterStrength(packet, jason["packets"], strlim, removeEmptyStr)
     if routers:
-        def jason["routers"]
+        del jason["routers"]
 
 def filterRouters(packet, packets, routers):
     if "D" in packet:
