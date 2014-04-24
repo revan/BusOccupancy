@@ -9,20 +9,11 @@ def filter(jason, routers=False, strength=False, strlim=0,
         del jason["routers"]
 
 def filterRouters(packet, packets, routers):
-    if "D" in packet:
-        if packet["D"] in routers:
-            del packet["D"]
-    if "S" in packet:
-        if packet["S"] in routers:
-            del packet["S"]
-    if "R" in packet:
-        if packet["R"] in routers:
-            del packet["R"]
-    if "T" in packet:
-        if packet["T"] in routers:
-            del packet["T"]
-    if not any(k in packet for k in ("D","S","R","T")):
-        packets.remove(packet)
+    for type, add in packet["adds"].item():
+        if add in routers:
+            del packet[type]
+    if len(packet["adds"]) == 0:
+        del packets.remove(packet)
 
 def filterStrength(packet, packets, str, removeEmpty=False):
     if "str" in packet:
