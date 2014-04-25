@@ -1,7 +1,9 @@
+from blist import blist,sortedset
+
 def filter(jason, routers=False, strength=False, strlim=0,
            removeEmptyStr=False):
-    routers = set(jason["routers"])
-    removeArr = []
+    routers = sortedset(jason["routers"])
+    removeArr = blist()
     for packet in jason["packets"]:
         removePkt = False
         if routers:
@@ -19,9 +21,9 @@ def filter(jason, routers=False, strength=False, strlim=0,
 # Removes router addresses from each packet
 # Returns True if a packet has no addresses attached to it
 def filterRouters(packet, routers):
-    remove=[]
-    for type, add in packet["adds"].items():
-        if add in routers:
+    remove=blist()
+    for type, address in packet["adds"].items():
+        if address in routers:
             remove.append(type)
     for type in remove:
         del packet["adds"][type]
