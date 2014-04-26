@@ -32,7 +32,8 @@ Two students worked on each approach, and planned to combine results into a sing
 
 	\subsection*{Stop Length Inference}
 
-	In this approach, we planned to establish a correlation between the amount of time a bus spends at a stop and the amount of people currently riding. The idea was that as a bus nears capacity, stops will be longer due to the larger number of riders entering and exiting.
+	In this approach, we planned to establish a correlation between the amount of time a bus spends at a stop and the amount of people currently riding.
+	The idea was that as a bus nears capacity, stops will be longer due to the larger number of riders entering and exiting.
 	Every Rutgers bus periodically updates an internet source with its position, velocity, and destination.
 	We first tried to measure the strength of this correlation; if we could prove a strong positive correlation, we could use the publicly available bus travel data to measure length of stops, and therefore predict occupancy.
 	Although this method inherently depends on a weaker correlation than the number of smartphones, by running the analysis on a log of travel data, we could predict occupancy across a significantly larger domain and for no cost.
@@ -41,7 +42,8 @@ Two students worked on each approach, and planned to combine results into a sing
 
 	In this approach, we used the inherent correlation between the amount of smart phones on the bus and the amount of people on the bus.
 	We used a laptop running Linux and equipped with a standard wireless card and a GPS sensor.
-	The computer ran the wireless card in monitor mode, allowing the computer to process all packets it received regardless of destination. The laptop logged the headers of these packets to a file, with current time and GPS coordinates.
+	The computer ran the wireless card in monitor mode, allowing the computer to process all packets it received regardless of destination.
+	The laptop logged the headers of these packets to a file, with current time and GPS coordinates.
 
 \section*{Results}
 
@@ -67,7 +69,7 @@ Two students worked on each approach, and planned to combine results into a sing
 	\centering
 	\end{figure}
 
-	Net change, however, shows a stronger correlation, confirming our hypothesis that high numbers of riders causes delays.
+	Net change, however, shows a stronger correlation, confirming our hypothesis that high rider throughput causes delays.
 	Net change is not a useful metric on its own, but if it could be proven that certain bus stops entertained mostly one of boardings or descents, we could predict the sign of the change and thus the occupancy changes over time.
 	\\
 	To test this, we waited at a single bus stop and counted the number of passengers entering and leaving each arrival of a certain bus route, and the length of the stops.
@@ -80,7 +82,7 @@ Two students worked on each approach, and planned to combine results into a sing
 
 	Data for this experiment was slower to collect, as the busses were spaced out. A brief look at this data shows that this bus stop is predominantly a descent spot; thus, longer stops at this stop would imply a net decrease in number of riders.
 	\\
-	Despite this experiment, the data collected is insufficient to draw these conclusions. There can be significant variation depending on time and day of the week.
+	However, the data collected is insufficient to draw these conclusions; there can be significant variation depending on time and day of the week.
 	This data collection would need to be repeated at every bus stop, which increases the time requirement to well beyond the scope of this study.
 	\\
 	Thus, while the preliminary foray suggests that this approach is tentatively successful, we move on to our next approach.
@@ -101,7 +103,7 @@ Two students worked on each approach, and planned to combine results into a sing
 
 	Plotting the number of packets in a histogram with one second bins, we see that there are visible differences between stops.
 	There are a few extreme spikes in network traffic, which can be ignored.
-	This data alone does not establish correlation between traffic and occupancy. Since the range of the wireless card extends beyond the bus, there will be considerable noise.
+	However, this data alone does not establish correlation between traffic and occupancy; since the range of the wireless card extends beyond the bus, there will be considerable noise.
 	\\
 	tcpdump also records the strength of signals, so we can choose to ignore packets below a certain decibel strength:
 
