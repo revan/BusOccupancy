@@ -17,7 +17,7 @@ def makePlot(x,y,prefix):
     plot.savefig('img/' + prefix + '-grid-' +
                  str(x) + 'x' + str(y) + '.png', dpi=200)
 
-def graphGrid(jason, coincidence=0, units=1, labels=None):
+def graphGrid(jason, coincidence=0, units=1000000, labels=None):
     PREFIX="prob"
 
     if PREFIX=="bus":
@@ -49,6 +49,7 @@ def graphGrid(jason, coincidence=0, units=1, labels=None):
         print("Number of MACs within:")
         for i,lim in enumerate(closeLims):
             print(" * "+str(lim)+": "+str(closeNums[i]))
+    print("Total MACs: "+str(len(xcoord)))
 
     plot.xlim(0,last)
     plot.ylim(0,last)
@@ -58,9 +59,9 @@ def graphGrid(jason, coincidence=0, units=1, labels=None):
         plot.title(PREFIX + " -- under coincidence " + str(coincidence))
     else:
         plot.title(PREFIX)
-    plot.xlabel('Time first seen (microseconds since ' +
+    plot.xlabel('Time first seen (seconds since ' +
                 jason["initial_time"] + ')')
-    plot.ylabel('Time last seen (microseconds since ' +
+    plot.ylabel('Time last seen (seconds since ' +
                 jason["initial_time"] + ')')
 
     if PREFIX=="bus":

@@ -21,4 +21,4 @@ filter(jason, rmRouters=True, strength=-90, removeEmptyStr=True)
 
 args.infile.close()
 
-graphGrid(jason, coincidence=3, units=1000000)
+graphGrid(jason, coincidence=3)
