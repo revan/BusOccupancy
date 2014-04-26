@@ -3,12 +3,12 @@ import pandas as pd
 import matplotlib.pyplot as plot
 from annotate import annotate
 
-def addPacket(packet, addresses, units):
+def addPacket(packet, addresses):
     for add in packet["adds"].values():
         if add not in addresses:
-            addresses[add] = [packet["time"]/units,packet["time"]/units,1]
+            addresses[add] = [packet["time"],packet["time"],1]
         else:
-            addresses[add][1] = packet["time"]/units
+            addresses[add][1] = packet["time"]
             addresses[add][2] += 1
 
 def makePlot(x,y,prefix):
@@ -27,10 +27,10 @@ def graphGrid(jason, coincidence=0, units=1, labels=None):
     ycoord = []
     macAddresses = {}
 
-    jason["packets"].apply(lambda row: addPacket(row, macAddresses, units),
-                           axis=1)
+    jason["packets"]["time"] /= units
+    jason["packets"].apply(lambda row: addPacket(row, macAddresses), axis=1)
 
-    last = jason["packets"].tail(1)["time"].item()/units
+    last = jason["packets"]["time"].iget(-1)
 
     closeLims = [1,5,10,15,30,60,90,120]
     closeNums = [0,0,0,0,0,0,0,0,0]
@@ -40,7 +40,7 @@ def graphGrid(jason, coincidence=0, units=1, labels=None):
             continue
         xcoord.append(value[0])
         ycoord.append(value[1])
-        diff = value[1] - value[0]
+        diff = value[1] - (value[0] + last)
         for i,lim in enumerate(closeLims):
             if diff < lim:
                 closeNums[i] += 1
