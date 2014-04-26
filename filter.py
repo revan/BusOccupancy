@@ -6,7 +6,6 @@ import pandas as pd
 # Note: Filtering out strength does not properly update num_macs.
 # This would be very difficult to implement. Not sure if we should do it.
 def filter(jason, rmRouters=False, strength=0, removeEmptyStr=False):
-    addresses = jason["packets"]["adds"]
     routers = set(jason["routers"])
     fil = jason["packets"].apply(lambda row:
                                  filterItem(row, strength, removeEmptyStr,
@@ -33,6 +32,7 @@ def filterRouters(addresses, routers):
             remove.add(type)
     for type in remove:
         del addresses[type]
+    return len(addresses)!=0
 
 # Returns True if the strength is sufficient, False otherwise
 def filterStrength(packet, str, removeEmpty):
