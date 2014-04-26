@@ -6,7 +6,7 @@ import pandas as pd
 def filter(jason, rmRouters=False, strength=0, removeEmptyStr=False):
     addresses = jason["packets"]["adds"]
     routers = set(jason["routers"])
-    if strength != 0:
+    if strength != 0 or removeEmptyStr:
         suff = jason["packets"].apply(lambda row:
                                       filterStrength(row, strength,
                                                      removeEmptyStr), axis=1)
