@@ -17,7 +17,7 @@ jason = json.load(args.infile)
 jason["packets"] = pd.DataFrame(jason["packets"])
 jason["routers"] = np.array(jason["routers"])
 
-filter(jason, rmRouters=True)
+filter(jason, rmRouters=True, strength=-60, removeEmptyStr=True)
 
 args.infile.close()
 

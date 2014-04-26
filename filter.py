@@ -1,21 +1,21 @@
 import numpy as np
 import pandas as pd
 
-def filter(jason, rmRouters=False, strength=False, strlim=0,
-           removeEmptyStr=False):
+# Note: Filtering out strength does not properly update num_macs.
+# This would be very difficult to implement. Not sure if we should do it.
+def filter(jason, rmRouters=False, strength=0, removeEmptyStr=False):
     addresses = jason["packets"]["adds"]
     routers = set(jason["routers"])
-    if strength:
+    if strength != 0:
         suff = jason["packets"].apply(lambda row:
-                                      filterStrength(row, strlim,
-                                                     removeEmptyStr))
+                                      filterStrength(row, strength,
+                                                     removeEmptyStr), axis=1)
         jason["packets"] = jason["packets"][suff]
     if rmRouters:
         addresses = addresses.apply(lambda adds: filterRouters(adds,routers))
         jason["num_macs"] -= len(jason["routers"])
         del jason["routers"]
-        nempty = jason["packets"].apply(lambda row: len(row["adds"])!=0,
-                                        axis=1)
+        nempty = jason["packets"].apply(lambda row: len(row["adds"])!=0, axis=1)
         jason["packets"] = jason["packets"][nempty]
 
 # Removes router addresses from a given address dict.
