@@ -8,17 +8,22 @@ import pandas as pd
 def filter(jason, rmRouters=False, strength=0, removeEmptyStr=False):
     addresses = jason["packets"]["adds"]
     routers = set(jason["routers"])
-    if strength != 0 or removeEmptyStr:
-        suff = jason["packets"].apply(lambda row:
-                                      filterStrength(row, strength,
-                                                     removeEmptyStr), axis=1)
-        jason["packets"] = jason["packets"][suff]
+    fil = jason["packets"].apply(lambda row:
+                                 filterItem(row, strength, removeEmptyStr,
+                                            rmRouters, routers), axis=1)
+    jason["packets"] = jason["packets"][fil]
     if rmRouters:
-        addresses = addresses.apply(lambda adds: filterRouters(adds,routers))
         jason["num_macs"] -= len(jason["routers"])
         del jason["routers"]
-        nempty = jason["packets"].apply(lambda row: len(row["adds"])!=0, axis=1)
-        jason["packets"] = jason["packets"][nempty]
+
+def filterItem(packet, strength, removeEmptyStr, rmRouters, routers):
+    if strength != 0 or removeEmptyStr:
+        if not filterStrength(packet, strength, removeEmptyStr):
+            return False
+    if rmRouters:
+        if not filterRouters(packet["adds"], routers):
+            return False
+    return True
 
 # Removes router addresses from a given address dict.
 def filterRouters(addresses, routers):
@@ -30,7 +35,7 @@ def filterRouters(addresses, routers):
         del addresses[type]
 
 # Returns True if the strength is sufficient, False otherwise
-def filterStrength(packet, str, removeEmpty=False):
+def filterStrength(packet, str, removeEmpty):
     if "str" in packet:
         return packet["str"] > str
     return not removeEmpty

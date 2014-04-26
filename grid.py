@@ -3,12 +3,12 @@ import pandas as pd
 import matplotlib.pyplot as plot
 from annotate import annotate
 
-def addPacket(packet, addresses):
+def addPacket(packet, addresses, units):
     for add in packet["adds"].values():
         if add not in addresses:
-            addresses[add] = [packet["time"],packet["time"],1]
+            addresses[add] = [packet["time"]/units,packet["time"]/units,1]
         else:
-            addresses[add][1] = packet["time"]
+            addresses[add][1] = packet["time"]/units
             addresses[add][2] += 1
 
 def makePlot(x,y,prefix):
@@ -17,74 +17,54 @@ def makePlot(x,y,prefix):
     plot.savefig('img/' + prefix + '-grid-' +
                  str(x) + 'x' + str(y) + '.png', dpi=200)
 
-def graphGrid(jason):
+def graphGrid(jason, coincidence=0, units=1, labels=None):
     PREFIX="prob"
-    # Sets how many times we want to see a MAC before it's added to the graph.
-    # Only active when PREFIX is set to "prob".
-    COINCIDENCE = 0
 
     if PREFIX=="bus":
         annot = open('data/plot.labels')
-
-    # Binsize in microseconds -- 1 is 1us, 1000 is 1ms, 100,000 is 0.1s, etc.
-    BINSIZE = 100000
 
     xcoord = []
     ycoord = []
     macAddresses = {}
 
-    #firstmSec = int(findTime.search(firstLine).group(1))/BINSIZE
-    jason["packets"].apply(lambda row: addPacket(row, macAddresses), axis=1)
+    jason["packets"].apply(lambda row: addPacket(row, macAddresses, units),
+                           axis=1)
 
-    lastSec = jason["packets"].tail(1)["time"].item()
+    last = jason["packets"].tail(1)["time"].item()/units
 
-    c25 = 0
-    c50 = 0
-    c75 = 0
-    c100 = 0
-    c125 = 0
-    c150 = 0
+    closeLims = [1,5,10,15,30,60,90,120]
+    closeNums = [0,0,0,0,0,0,0,0,0]
 
     for value in macAddresses.values():
-        if value[2] < COINCIDENCE and PREFIX=="prob":
+        if value[2] < coincidence:
             continue
         xcoord.append(value[0])
         ycoord.append(value[1])
         diff = value[1] - value[0]
-        if diff < 25:
-            c25+=1
-        if diff < 50:
-            c50+=1
-        if diff < 75:
-            c75+=1
-        if diff < 100:
-            c100+=1
-        if diff < 125:
-            c125+=1
-        if diff < 150:
-            c150+=1
+        for i,lim in enumerate(closeLims):
+            if diff < lim:
+                closeNums[i] += 1
 
     if PREFIX=="prob":
         print("Number of MACs within:")
-        print(" * 25:  "+ str(c25))
-        print(" * 50:  "+ str(c50))
-        print(" * 75:  "+ str(c75))
-        print(" * 100: "+ str(c100))
-        print(" * 125: "+ str(c125))
-        print(" * 150: "+ str(c150))
+        for i,lim in enumerate(closeLims):
+            print(" * "+str(lim)+": "+str(closeNums[i]))
 
-    plot.xlim(0,lastSec)
-    plot.ylim(0,lastSec)
+    plot.xlim(0,last)
+    plot.ylim(0,last)
     plot.scatter(xcoord, ycoord)
 
-    plot.title(PREFIX)
+    if coincidence>0:
+        plot.title(PREFIX + " -- under coincidence " + str(coincidence))
+    else:
+        plot.title(PREFIX)
     plot.xlabel('Time first seen (microseconds since ' +
                 jason["initial_time"] + ')')
     plot.ylabel('Time last seen (microseconds since ' +
                 jason["initial_time"] + ')')
 
     if PREFIX=="bus":
-        annotate(plot, annot, 10, xoff=10, yoff=-10, ymax = lastSec)
+        annotate(plot, annot, 10, xoff=10, yoff=-10, ymax = last)
         annot.close()
 
     #makePlot(5,5)
