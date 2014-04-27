@@ -1,13 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plot
-from annotate import annotate
-
-def makePlot(x,y):
-    plot.gcf().set_size_inches(x,y)
-    #plot.tight_layout()
-    plot.savefig('img/bus-unique-' +
-                 str(x) + 'x' + str(y) + '.png', dpi=200)
+from graphlib import makePlot, annotate
 
 def addToBin(time,bins,binsize):
     bins[int(time/binsize)]+=1
@@ -35,12 +29,12 @@ def plotUnique(jason, units=1000000, binsize=1, labels=None, endTime=0):
     # annotate(plot, hist, annot, BINSIZE_L)
     # annot.close()
 
-    makePlot(13,6)
-    makePlot(14,6)
-    makePlot(15,6)
-    makePlot(13,7)
-    makePlot(14,7)
-    makePlot(15,7)
-    makePlot(16,7)
+    makePlot(13,6, "bus", "unique")
+    makePlot(14,6, "bus", "unique")
+    makePlot(15,6, "bus", "unique")
+    makePlot(13,7, "bus", "unique")
+    makePlot(14,7, "bus", "unique")
+    makePlot(15,7, "bus", "unique")
+    makePlot(16,7, "bus", "unique")
 
     plot.show()

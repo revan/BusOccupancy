@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plot
-from annotate import annotate
+from graphlib import makePlot, annotate
 
 def addPacket(packet, addresses):
     for add in packet["adds"].values():
@@ -10,12 +10,6 @@ def addPacket(packet, addresses):
         else:
             addresses[add][1] = packet["time"]
             addresses[add][2] += 1
-
-def makePlot(x,y,prefix):
-    plot.gcf().set_size_inches(x,y)
-    #plot.tight_layout()
-    plot.savefig('img/' + prefix + '-grid-' +
-                 str(x) + 'x' + str(y) + '.png', dpi=200)
 
 def plotGrid(jason, coincidence=0, units=1000000, labels=None):
     PREFIX="prob"
@@ -68,11 +62,8 @@ def plotGrid(jason, coincidence=0, units=1000000, labels=None):
         annotate(plot, annot, 10, xoff=10, yoff=-10, ymax = last)
         annot.close()
 
-    #makePlot(5,5)
-    #makePlot(6,6)
-    #makePlot(5.5,5)
-    makePlot(6.5,6, PREFIX)
-    makePlot(7.5,7, PREFIX)
-    makePlot(8,7.5, PREFIX)
+    makePlot(6.5,6, PREFIX, "grid")
+    makePlot(7.5,7, PREFIX, "grid")
+    makePlot(8,7.5, PREFIX, "grid")
 
     plot.show()

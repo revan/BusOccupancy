@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plot
+
 #Adds (time, label) pairs from file to plot
 def annotate(plot, file, mod, xoff=50, yoff=60, hist=None, ymax=0):
     for line in file:
@@ -18,3 +20,9 @@ def annotate(plot, file, mod, xoff=50, yoff=60, hist=None, ymax=0):
                       arrowprops=dict(arrowstyle="fancy", fc="#d3d3d3",
                                       ec="#a8a8a8", connectionstyle=
                                       "angle3,angleA=0,angleB=-90"))
+
+def makePlot(x,y,prefix,type):
+    plot.gcf().set_size_inches(x,y)
+    #plot.tight_layout()
+    plot.savefig('img/' + prefix + '-' + type + '-' +
+                 str(x) + 'x' + str(y) + '.png', dpi=200)
