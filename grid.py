@@ -17,7 +17,7 @@ def makePlot(x,y,prefix):
     plot.savefig('img/' + prefix + '-grid-' +
                  str(x) + 'x' + str(y) + '.png', dpi=200)
 
-def graphGrid(jason, coincidence=0, units=1000000, labels=None):
+def plotGrid(jason, coincidence=0, units=1000000, labels=None):
     PREFIX="prob"
 
     if PREFIX=="bus":
@@ -40,7 +40,7 @@ def graphGrid(jason, coincidence=0, units=1000000, labels=None):
             continue
         xcoord.append(value[0])
         ycoord.append(value[1])
-        diff = value[1] - (value[0] + last)
+        diff = (value[0] + last) - value[1]
         for i,lim in enumerate(closeLims):
             if diff < lim:
                 closeNums[i] += 1
