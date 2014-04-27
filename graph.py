@@ -4,7 +4,9 @@ import json
 import numpy as np
 import pandas as pd
 from filter import filter
-from grid import graphGrid
+from grid import plotGrid
+from unique import plotUnique
+from packethist import plotPacketHistogram
 
 parser = argparse.ArgumentParser(prog='graph', description=
                                  'Create graphs from JSON created by raw2json')
@@ -21,4 +23,7 @@ filter(jason, rmRouters=True, strength=-90, removeEmptyStr=True)
 
 args.infile.close()
 
-graphGrid(jason, coincidence=3)
+#plotGrid(jason, coincidence=3)
+plotUnique(jason, binsize=3, endTime=2256)
+
+plotPacketHistogram(jason, units=1000000, binsize=1, labels=None, endTime=0, coincidence=0)

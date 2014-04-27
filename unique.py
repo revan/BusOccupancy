@@ -3,13 +3,18 @@ import pandas as pd
 import matplotlib.pyplot as plot
 from graphlib import makePlot, annotate
 
-def addToBin(time,bins,binsize):
-    bins[int(time/binsize)]+=1
+def addToBin(packet, bins, curBin, binsize):
+    if int(packet["time"]) > curBin["time"]:
+        curBin["time"] = int(packet["time"])
+        curBin["addresses"] = set()
+    for address in packet["adds"].values():
+        if address not in curBin["addresses"]:
+            bins[int(packet["time"]/binsize)]+=1
+            curBin["addresses"].add(address)
 
 def plotUnique(jason, units=1000000, binsize=1, labels=None, endTime=0):
     #annot = open('data/plot.labels')
 
-    hist = []
     jason["packets"]["time"] /= units
     last = jason["packets"]["time"].iget(-1)
     if endTime > 0:
@@ -17,7 +22,12 @@ def plotUnique(jason, units=1000000, binsize=1, labels=None, endTime=0):
         fil = jason["packets"]["time"].apply(lambda t: t<endTime)
         jason["packets"] = jason["packets"][fil]
     bins = np.zeros(int(last/binsize)+1, np.int)
-    jason["packets"]["time"].apply(lambda t: addToBin(t, bins, binsize))
+    curBin = {
+        "time": 0,
+        "addresses": set()
+    }
+    jason["packets"].apply(lambda row: addToBin(row, bins, curBin, binsize),
+                           axis=1)
 
     xaxis = [j*binsize for j in range(len(bins))]
     plot.bar(xaxis, bins, width = 1, edgecolor='#000033')

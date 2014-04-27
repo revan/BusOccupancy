@@ -1,47 +1,39 @@
-#!/bin/python
 import numpy as np
-import time as time
+import pandas as pd
 import matplotlib.pyplot as plot
-from annotate import annotate
+from graphlib import makePlot, annotate
 
-file = open('data/plot.pcap')
-annot = open('data/plot.labels')
+def addToBin(time,bins,binsize):
+    bins[int(time/binsize)]+=1
 
-times = []
+def plotPackets(jason, units=1000000, binsize=1, labels=None, endTime=0):
+    #annot = open('data/plot.labels')
 
-for i, line in enumerate(file):
-	
-	try:
-		timeObject = time.strptime(line.split()[0].split('.')[0], '%H:%M:%S')
-		if i == 0:
-			first = timeObject
-			firstSec = first.tm_sec+first.tm_min*60+first.tm_hour*3600
-			firstMin = first.tm_min*60+first.tm_hour*3600
+    jason["packets"]["time"] /= units
+    last = jason["packets"]["time"].iget(-1)
+    if endTime > 0:
+        last = min(endTime,jason["packets"]["time"].iget(-1))
+        fil = jason["packets"]["time"].apply(lambda t: t<endTime)
+        jason["packets"] = jason["packets"][fil]
+    bins = np.zeros(int(last/binsize)+1, np.int)
+    jason["packets"]["time"].apply(lambda t: addToBin(t, bins, binsize))
 
+    xaxis = [j*binsize for j in range(len(bins))]
+    plot.bar(xaxis, bins, width = 1, edgecolor='#000033')
+    plot.xlim(0, last)
+    plot.xlabel('Seconds since '+jason["initial_time"])
+    plot.ylabel('Unique MACs in '+str(binsize)+' second interval')
+    plot.title('April 7th, A Route')
 
-		times.append(timeObject)
-	except IndexError:
-		pass
+    # annotate(plot, hist, annot, BINSIZE_L)
+    # annot.close()
 
-else:
-	last = timeObject
-	lastSec = last.tm_sec+last.tm_min*60+last.tm_hour*3600
-	lastMin = last.tm_min*60+last.tm_hour*3600
-	
-file.close()
+    makePlot(13,6, "bus", "packets")
+    makePlot(14,6, "bus", "packets")
+    makePlot(15,6, "bus", "packets")
+    makePlot(13,7, "bus", "packets")
+    makePlot(14,7, "bus", "packets")
+    makePlot(15,7, "bus", "packets")
+    makePlot(16,7, "bus", "packets")
 
-secondsSince = [i.tm_sec+i.tm_min*60+i.tm_hour*3600 - firstSec for i in times]
-(hist, bin_edges) = np.histogram(secondsSince, bins = range(lastMin-firstMin))
-
-plot.bar(bin_edges[:-1], hist, width = 1)
-plot.xlim(min(bin_edges), max(bin_edges))
-plot.xlabel('Seconds since start')
-plot.ylabel('Packets in 1 second interval')
-plot.title('tcpdump -i wlp3s0 -e')
-
-
-annotate(plot, hist, annot)
-annot.close()
-
-plot.savefig('img/packets.png')
-plot.show()
+    plot.show()
