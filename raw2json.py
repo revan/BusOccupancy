@@ -68,9 +68,7 @@ for line in args.infile:
         strength = -1 * int(findStrength.search(line).group(2))
         ldic["str"] = strength
     except AttributeError:
-        print("Line does not have strength field!")
-        #print(line)
-        #print(ldic)
+        print("WARNING: Line does not have strength field!", file=sys.stderr)
     output["packets"].append(ldic)
 
 for add in macs.values():
