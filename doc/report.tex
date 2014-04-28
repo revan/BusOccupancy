@@ -1,17 +1,34 @@
-\documentclass[letterpaper]{scrartcl}
+\documentclass[letterpaper,abstract=on,titlepage=false]{scrreprt}
+%Report without title page, Abstract has a special title
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{lmodern} %Better fonts
 \graphicspath{ {img/} }
 
 \begin{document}
 \title{Undergraduate Independent Research Report}
 \subtitle{Predicting Bus Occupancy}
-\author{Daniel Bordak, Erin Corrado, Revan Sopher, and Ashley Weaver}
+%\author{Daniel Bordak, Erin Corrado, Revan Sopher, and Ashley Weaver}
+\author{
+Bordak, Daniel
+\and
+Corrado, Erin
+\and
+Sopher, Revan
+\and
+Weaver, Ashley
+}
+% You're supposed to do something like:
+%Name\\
+%email
+%\and
+%Name 2\\
+%email 2
+% But I don't know if you want that.
 
 \maketitle
 
-\section*{Abstract}
 \begin{abstract}
 In this study we address the problem of programatically predicting bus occupancy.
 We approach this in two ways: by using publicly available GPS positions to calculate stop time, and by using promiscuous Wi-Fi to count devices.
