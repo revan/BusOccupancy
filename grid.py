@@ -3,6 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plot
 import graphlib
 
+# TODO: Remove PREFIX, fix associated functionality
+# TODO: Fix annotations
+
 def addPacket(packet, addresses):
     for add in packet["adds"].values():
         if add not in addresses:
