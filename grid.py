@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plot
-from graphlib import makePlot, annotate
+import graphlib
 
 def addPacket(packet, addresses):
     for add in packet["adds"].values():
@@ -59,11 +59,11 @@ def plotGrid(jason, coincidence=0, units=1000000, labels=None):
                 jason["initial_time"] + ')')
 
     if PREFIX=="bus":
-        annotate(plot, annot, 10, xoff=10, yoff=-10, ymax = last)
+        graphlib.annotate(plot, annot, 10, xoff=10, yoff=-10, ymax = last)
         annot.close()
 
-    makePlot(6.5,6, PREFIX, "grid")
-    makePlot(7.5,7, PREFIX, "grid")
-    makePlot(8,7.5, PREFIX, "grid")
+    #graphlib.makePlot(6.5,6, PREFIX, "grid")
+    #graphlib.makePlot(7.5,7, PREFIX, "grid")
+    graphlib.makeSquarePlot(PREFIX, "grid")
 
     plot.show()

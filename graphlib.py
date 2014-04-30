@@ -26,3 +26,9 @@ def makePlot(x,y,prefix,type):
     #plot.tight_layout()
     plot.savefig('img/' + prefix + '-' + type + '-' +
                  str(x) + 'x' + str(y) + '.png', dpi=200)
+
+def makeWidePlot(prefix,type):
+    makePlot(16,7,prefix,type)
+
+def makeSquarePlot(prefix,type):
+    makePlot(8,7.5,prefix,type)
