@@ -14,7 +14,7 @@ def addPacket(packet, addresses):
             addresses[add][1] = packet["time"]
             addresses[add][2] += 1
 
-def plotGrid(jason, coincidence=0, units=1000000, labels=None, endTime=0):
+def plotGrid(jason, coincidence=0, labels=None, endTime=0):
     PREFIX="prob"
 
     if PREFIX=="bus":
@@ -24,7 +24,6 @@ def plotGrid(jason, coincidence=0, units=1000000, labels=None, endTime=0):
     ycoord = []
     macAddresses = {}
 
-    jason["packets"]["time"] /= units
     jason["packets"].apply(lambda row: addPacket(row, macAddresses), axis=1)
 
     last = jason["packets"]["time"].iget(-1)

@@ -6,10 +6,9 @@ from graphlib import makePlot, annotate
 def addToBin(time,bins,binsize):
     bins[int(time/binsize)]+=1
 
-def plotPackets(jason, units=1000000, binsize=1, labels=None, endTime=0):
+def plotPackets(jason, binsize=1, labels=None, endTime=0):
     #annot = open('data/plot.labels')
 
-    jason["packets"]["time"] /= units
     last = jason["packets"]["time"].iget(-1)
     if endTime > 0:
         last = min(endTime,jason["packets"]["time"].iget(-1))
@@ -25,7 +24,7 @@ def plotPackets(jason, units=1000000, binsize=1, labels=None, endTime=0):
     plot.ylabel('Unique MACs in '+str(binsize)+' second interval')
     plot.title('April 7th, A Route')
 
-    # annotate(plot, hist, annot, BINSIZE_L)
+    # graphlib.annotate(plot, hist, annot, BINSIZE_L)
     # annot.close()
 
     makePlot(13,6, "bus", "packets")

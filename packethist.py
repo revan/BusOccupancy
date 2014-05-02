@@ -11,11 +11,10 @@ def addPacket(packet, addresses):
             addresses[add][1] = packet["time"]
             addresses[add][2] += 1
 
-def plotPacketHistogram(jason, units=1000000, labels=None, coincidence=0):
+def plotPacketHistogram(jason, labels=None, coincidence=0):
     packetAxis = []
     macAddresses = {}
 
-    jason["packets"]["time"] /= units
     jason["packets"].apply(lambda row: addPacket(row, macAddresses), axis=1)
 
     last = jason["packets"]["time"].iget(-1)

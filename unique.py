@@ -12,10 +12,9 @@ def addToBin(packet, bins, curBin, binsize):
             bins[int(packet["time"]/binsize)]+=1
             curBin["addresses"].add(address)
 
-def plotUnique(jason, units=1000000, binsize=1, labels=None, endTime=0):
+def plotUnique(jason, binsize=1, labels=None, endTime=0):
     #annot = open('data/plot.labels')
 
-    jason["packets"]["time"] /= units
     last = jason["packets"]["time"].iget(-1)
     if endTime > 0:
         last = min(endTime,jason["packets"]["time"].iget(-1))

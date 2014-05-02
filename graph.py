@@ -13,29 +13,33 @@ from segments import plotSegments
 @click.argument('infile', type=click.File(), default='data/in.json')
 @click.option('-t', '--graph-type', help='Type of graph to create',
               required=True,
-              type=click.Choice(["unique","packets","grid","packethist", "segments"]))
+              type=click.Choice(["unique","packets","grid","packethist",
+                                 "segments"]))
 @click.option('-r', '--router-filtering', type=click.BOOL, default=True,
               help="Filter routers out of packet list.")
 @click.option('-s', '--strength-filtering', type=click.INT, default=0,
               help="Filter packets with strength less than the given value.")
-@click.option('-b', '--blank-strength-filtering', type=click.BOOL,
+@click.option('-m', '--missing-strength-filtering', type=click.BOOL,
               help="Filter packets with no strength field.")
 @click.option('-e', '--end-time', type=click.INT, default=0,
               help="Specify an end time for the dataset.")
 @click.option('-c', '--coincidence', type=click.INT, default=0,
               help="Specify under what coincidence data should be rendered.")
-@click.option('-s', '--binsize', type=click.INT, default=3,
+@click.option('-b', '--binsize', type=click.INT, default=3,
               help="Specify a binsize for graphs which use bins.")
 @click.option('-l', '--label-file', type=click.File())
 def graph(infile, graph_type, router_filtering, strength_filtering,
-          blank_strength_filtering, end_time, coincidence, binsize, label_file):
+          missing_strength_filtering, end_time, coincidence, binsize,
+          label_file):
 
+    units=1000000
     jason = json.load(infile)
     infile.close()
     jason["packets"] = pd.DataFrame(jason["packets"])
+    jason["packets"]["time"] /= units
 
     filter(jason, rmRouters=router_filtering, strength=strength_filtering,
-           removeBlankStr=blank_strength_filtering)
+           removeEmptyStr=missing_strength_filtering)
 
     if(graph_type == "unique"):
         plotUnique(jason, binsize=binsize, labels=None, endTime=end_time)
