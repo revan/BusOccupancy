@@ -35,11 +35,10 @@ def graph(infile, graph_type, router_filtering, strength_filtering,
           missing_strength_filtering, end_time, coincidence, binsize, name,
           use_labels):
 
-    units=1000000
     jason = json.load(infile)
     infile.close()
     jason["packets"] = pd.DataFrame(jason["packets"])
-    jason["packets"]["time"] /= units
+    jason["packets"]["time"] /= 1000000
 
     filter(jason, router_filtering, strength_filtering,
            missing_strength_filtering, end_time)

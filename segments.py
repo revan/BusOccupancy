@@ -27,7 +27,7 @@ def addToBins(packet, delims, currStop):
         #if address not in delims[currStop[0]]['uniques']:
         delims[currStop[0]]['uniques'].add(address)
 
-def plotSegments(json, labels=None):
+def plotSegments(json, labels=False):
     # read delimeters for each stop
     delims = readDelims()
 

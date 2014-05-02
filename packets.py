@@ -7,8 +7,6 @@ def addToBin(time,bins,binsize):
     bins[int(time/binsize)]+=1
 
 def plotPackets(jason, binsize=1, labels=None):
-    #annot = open('data/plot.labels')
-
     last = jason["packets"]["time"].iget(-1)
     bins = np.zeros(int(last/binsize)+1, np.int)
     jason["packets"]["time"].apply(lambda t: addToBin(t, bins, binsize))
@@ -20,8 +18,8 @@ def plotPackets(jason, binsize=1, labels=None):
     plot.ylabel('Unique MACs in '+str(binsize)+' second interval')
     plot.title('April 7th, A Route')
 
-    # graphlib.annotate(plot, hist, annot, BINSIZE_L)
-    # annot.close()
+    if(labels):
+        graphlib.wideAnnotate(plot, bins, binsize)
 
     graphlib.makeWidePlot("bus", "packets")
 
