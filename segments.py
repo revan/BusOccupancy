@@ -21,6 +21,11 @@ def plotSegments(jason, name="", labels=False):
     realy = []
     stopAdds = []
     for stop in delims:
+        # A note for posterity:
+        #  Pandas is weird.
+        # This outer loop contains what is essentially two inner loops, but
+        #  somehow this entire construct is 3x faster than the previous
+        #  implementation of a single loop with multiple checks.
         realy.append(stop['actual'])
         x.append(stop['start'])
         stopPackets = jason['packets']['time'].apply(lambda t: t>stop['start']
