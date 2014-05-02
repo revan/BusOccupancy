@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plot
-from graphlib import makePlot, annotate
+import graphlib
 
 def addToBin(packet, bins, curBin, binsize):
     if int(packet["time"]) > curBin["time"]:
@@ -34,12 +34,6 @@ def plotUnique(jason, binsize=1, labels=None):
     # annotate(plot, hist, annot, BINSIZE_L)
     # annot.close()
 
-    makePlot(13,6, "bus", "unique")
-    makePlot(14,6, "bus", "unique")
-    makePlot(15,6, "bus", "unique")
-    makePlot(13,7, "bus", "unique")
-    makePlot(14,7, "bus", "unique")
-    makePlot(15,7, "bus", "unique")
-    makePlot(16,7, "bus", "unique")
+    makeWidePlot("bus", "unique")
 
     plot.show()

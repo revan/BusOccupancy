@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plot
-from graphlib import makePlot, annotate
+import graphlib
 
 def addToBin(time,bins,binsize):
     bins[int(time/binsize)]+=1
@@ -23,12 +23,6 @@ def plotPackets(jason, binsize=1, labels=None):
     # graphlib.annotate(plot, hist, annot, BINSIZE_L)
     # annot.close()
 
-    makePlot(13,6, "bus", "packets")
-    makePlot(14,6, "bus", "packets")
-    makePlot(15,6, "bus", "packets")
-    makePlot(13,7, "bus", "packets")
-    makePlot(14,7, "bus", "packets")
-    makePlot(15,7, "bus", "packets")
-    makePlot(16,7, "bus", "packets")
+    graphlib.makeWidePlot("bus", "packets")
 
     plot.show()
