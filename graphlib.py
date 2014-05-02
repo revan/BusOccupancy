@@ -1,25 +1,30 @@
 import matplotlib.pyplot as plot
+import json
 
-# Adds (time, label) pairs from file to plot
-def annotate(plot, file, mod, xoff=50, yoff=60, hist=None, ymax=0):
-    for line in file:
-        (x, label) = line.split(' ', 1)
-        x = int(x)
-        label = label.rstrip()
-        if hist is None:
-            x *= mod
-            y = x
-            plot.plot([0,y],[x,y],'purple',linewidth=1)
-            plot.plot([x,y],[x,ymax],'purple',linewidth=1)
-        else:
-            y = hist[x/mod]
+def annotate(label, x, y, xoff, yoff):
+    plot.annotate(label, xy=(x, y), xytext=(xoff, yoff),
+                  textcoords="offset points",
+                  bbox=dict(boxstyle="round", fc="#d3d3d3", ec="#a8a8a8"),
+                  arrowprops=dict(arrowstyle="fancy", fc="#d3d3d3",
+                                  ec="#a8a8a8", connectionstyle=
+                                  "angle3,angleA=0,angleB=-90"))
 
-        plot.annotate(label, xy=(x, y), xytext=(xoff, yoff),
-                      textcoords="offset points",
-                      bbox=dict(boxstyle="round", fc="#d3d3d3", ec="#a8a8a8"),
-                      arrowprops=dict(arrowstyle="fancy", fc="#d3d3d3",
-                                      ec="#a8a8a8", connectionstyle=
-                                      "angle3,angleA=0,angleB=-90"))
+def wideAnnotate(plot, hist, file='data/sched.json', ymax=0):
+    phil = open(file)
+    jason = json.load(phil)
+    for stop in jason:
+        x = stop["start"]
+        y = hist[x]
+        annotate(stop["name"], x, y, 50, 60)
+
+def squareAnnotate(plot, file='data/sched.json', ymax=0):
+    phil = open(file)
+    jason = json.load(phil)
+    for stop in jason:
+        x = stop["start"]
+        plot.plot([0,x],[x,x],'purple',linewidth=1)
+        plot.plot([x,x],[x,ymax],'purple',linewidth=1)
+        annotate(stop["name"], x, x, -10, -10)
 
 def makePlot(x,y,prefix,type):
     plot.gcf().set_size_inches(x,y)

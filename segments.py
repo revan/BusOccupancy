@@ -2,19 +2,15 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plot
 import graphlib
+import json
 
-def readDelims(file='data/delims.txt'):
-    delims = []
-    with open(file) as f:
-        for line in f:
-            s = line.split()
-            delims.append({
-                "start":int(s[0]),
-                "end":int(s[1]),
-                "name":s[2],
-                "uniques": set()
-                })
-    return delims
+def readDelims(file='data/sched.json'):
+    phil = open(file)
+    jason = json.load(phil)
+    jason = [x for x in jason if x["use"]]
+    for stop in jason:
+        stop["uniques"] = set()
+    return jason
 
 def addToBins(packet, delims, currStop):
     #we're after the last stop

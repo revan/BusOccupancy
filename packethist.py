@@ -11,7 +11,7 @@ def addPacket(packet, addresses):
             addresses[add][1] = packet["time"]
             addresses[add][2] += 1
 
-def plotPacketHistogram(jason, labels=None):
+def plotPacketHistogram(jason):
     packetAxis = []
     macAddresses = {}
 

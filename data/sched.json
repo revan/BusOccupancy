@@ -1,0 +1,80 @@
+[
+{
+	"name":"BCC",
+	"start":0,
+	"end":40,
+	"use":true
+},
+{
+	"name":"Werblin",
+	"start":138,
+	"end":150,
+	"use":false
+},
+{
+	"name":"Rutgers Student Center",
+	"start":452,
+	"end":515,
+	"use":true
+},
+{
+	"name":"Scoot",
+	"start":617,
+	"end":631,
+	"use":true
+},
+{
+	"name":"SAC",
+	"start":842,
+	"end":862,
+	"use":true
+},
+{
+	"name":"Visitor's Center",
+	"start":1129,
+	"end":1137,
+	"use":false
+},
+{
+	"name":"Stadium",
+	"start":1243,
+	"end":1290,
+	"use":false
+},
+{
+	"name":"Werblin 2",
+	"start":1403,
+	"end":1411,
+	"use":false
+},
+{
+	"name":"Hill",
+	"start":1471,
+	"end":1493,
+	"use":true
+},
+{
+	"name":"ARC",
+	"start":1574,
+	"end":1580,
+	"use":true
+},
+{
+	"name":"LSM",
+	"start":1644,
+	"end":1680,
+	"use":true
+},
+{
+	"name":"Suites",
+	"start":1799,
+	"end":1816,
+	"use":true
+},
+{
+	"name":"BCC",
+	"start":1893,
+	"end":1936,
+	"use":true
+}
+]

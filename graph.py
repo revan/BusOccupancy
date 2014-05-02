@@ -29,10 +29,11 @@ from segments import plotSegments
               help="Specify a binsize for graphs which use bins.")
 @click.option('-n', '--name', required=True,
               help="Specify the output graph's title.")
-@click.option('-l', '--label-file', type=click.File())
+@click.option('-l', '--use-labels', type=click.BOOL,
+              help="If enabled, tries to read data/sched.json for labels.")
 def graph(infile, graph_type, router_filtering, strength_filtering,
-          missing_strength_filtering, end_time, coincidence, binsize, name
-          label_file):
+          missing_strength_filtering, end_time, coincidence, binsize, name,
+          use_labels):
 
     units=1000000
     jason = json.load(infile)
@@ -44,15 +45,15 @@ def graph(infile, graph_type, router_filtering, strength_filtering,
            missing_strength_filtering, end_time)
 
     if(graph_type == "unique"):
-        plotUnique(jason, binsize=binsize, labels=None)
+        plotUnique(jason, binsize=binsize, labels=use_labels)
     elif(graph_type == "packets"):
-        plotPackets(jason, binsize=binsize, labels=None)
+        plotPackets(jason, binsize=binsize, labels=use_labels)
     elif(graph_type == "grid"):
-        plotGrid(jason, coincidence=coincidence, name=name, labels=None)
+        plotGrid(jason, coincidence=coincidence, name=name, labels=use_labels)
     elif(graph_type == "packethist"):
-        plotPacketHistogram(jason, labels=None)
+        plotPacketHistogram(jason)
     elif(graph_type == "segments"):
-        plotSegments(jason, labels=None)
+        plotSegments(jason, labels=use_labels)
 
 if __name__ == '__main__':
     graph()
