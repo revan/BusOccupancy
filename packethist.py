@@ -25,11 +25,13 @@ def plotPacketHistogram(jason):
         if diff < 120:
             packetAxis.append(value[2])
 
-    plot.xlim(0,len(packetAxis));
-    plot.bar(range(len(packetAxis)), packetAxis, color="black", align="center")
+    xmax = len(packetAxis)
+    plot.xlim(0,xmax)
+    plot.yscale('log')
+    plot.bar(range(xmax), sorted(packetAxis), color="black", align="center",log=True)
     plot.xlabel("Unique MAC addresses present for the entire class period")
     plot.ylabel('Number of Packets seen for each MAC address')
-    plot.title('Packet Distribution for MAC addresses that remained the whole class period')
+    plot.title('April 7th, Classroom Packet Distribution')
 
     graphlib.makeWidePlot("class","packethist")
     plot.show()

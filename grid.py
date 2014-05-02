@@ -3,9 +3,6 @@ import pandas as pd
 import matplotlib.pyplot as plot
 import graphlib
 
-# TODO: Remove PREFIX, fix associated functionality
-# TODO: Fix annotations
-
 def addPacket(packet, addresses):
     for add in packet["adds"].values():
         if add not in addresses:
@@ -14,10 +11,7 @@ def addPacket(packet, addresses):
             addresses[add][1] = packet["time"]
             addresses[add][2] += 1
 
-def plotGrid(jason, coincidence=0, name="", labels=None):
-    #if PREFIX=="bus":
-    #    annot = open('data/plot.labels')
-
+def plotGrid(jason, coincidence=0, name="", labels=False):
     xcoord = []
     ycoord = []
     macAddresses = {}
@@ -45,9 +39,8 @@ def plotGrid(jason, coincidence=0, name="", labels=None):
     plot.ylabel('Time last seen (seconds since ' +
                 jason["initial_time"] + ')')
 
-    #if PREFIX=="bus":
-    #    graphlib.annotate(plot, annot, 10, xoff=10, yoff=-10, ymax = last)
-    #    annot.close()
+    if(labels):
+        graphlib.squareAnnotate(plot, ymax=last)
 
     graphlib.makeSquarePlot(name, "grid")
 

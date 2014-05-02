@@ -25,7 +25,7 @@ def squareAnnotate(plot, file='data/sched.json', ymax=0):
         x = stop["start"]
         plot.plot([0,x],[x,x],'purple',linewidth=1)
         plot.plot([x,x],[x,ymax],'purple',linewidth=1)
-        annotate(stop["name"], x, x, -10, -10)
+        annotate(stop["name"], x, x, 10, -10)
 
 def makePlot(x,y,prefix,type):
     plot.gcf().set_size_inches(x,y)
