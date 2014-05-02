@@ -12,14 +12,10 @@ def addToBin(packet, bins, curBin, binsize):
             bins[int(packet["time"]/binsize)]+=1
             curBin["addresses"].add(address)
 
-def plotUnique(jason, binsize=1, labels=None, endTime=0):
+def plotUnique(jason, binsize=1, labels=None):
     #annot = open('data/plot.labels')
 
     last = jason["packets"]["time"].iget(-1)
-    if endTime > 0:
-        last = min(endTime,jason["packets"]["time"].iget(-1))
-        fil = jason["packets"]["time"].apply(lambda t: t<endTime)
-        jason["packets"] = jason["packets"][fil]
     bins = np.zeros(int(last/binsize)+1, np.int)
     curBin = {
         "time": 0,

@@ -1,21 +1,23 @@
 import numpy as np
 import pandas as pd
 
-# TODO: Add end time filtering
-
 # Note: Filtering out strength does not properly update num_macs.
 # This would be very difficult to implement. Not sure if we should do it.
-def filter(jason, rmRouters=False, strength=0, removeEmptyStr=False):
+def filter(jason, rmRouters, strength, removeEmptyStr, endTime):
     routers = set(jason["routers"])
     fil = jason["packets"].apply(lambda row:
                                  filterItem(row, strength, removeEmptyStr,
-                                            rmRouters, routers), axis=1)
+                                            rmRouters, routers, endTime),
+                                 axis=1)
     jason["packets"] = jason["packets"][fil]
     if rmRouters:
         jason["num_macs"] -= len(jason["routers"])
         del jason["routers"]
 
-def filterItem(packet, strength, removeEmptyStr, rmRouters, routers):
+def filterItem(packet, strength, removeEmptyStr, rmRouters, routers, endTime):
+    if endTime>0:
+        if packet["time"]>endTime:
+            return False
     if strength != 0 or removeEmptyStr:
         if not filterStrength(packet, strength, removeEmptyStr):
             return False

@@ -11,7 +11,7 @@ def addPacket(packet, addresses):
             addresses[add][1] = packet["time"]
             addresses[add][2] += 1
 
-def plotPacketHistogram(jason, labels=None, coincidence=0):
+def plotPacketHistogram(jason, labels=None):
     packetAxis = []
     macAddresses = {}
 
@@ -20,9 +20,6 @@ def plotPacketHistogram(jason, labels=None, coincidence=0):
     last = jason["packets"]["time"].iget(-1)
 
     for value in macAddresses.values():
-        if value[2] < coincidence:
-            continue
-
         diff = value[0]+last-value[1]
 
         if diff < 120:

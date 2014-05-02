@@ -38,17 +38,17 @@ def graph(infile, graph_type, router_filtering, strength_filtering,
     jason["packets"] = pd.DataFrame(jason["packets"])
     jason["packets"]["time"] /= units
 
-    filter(jason, rmRouters=router_filtering, strength=strength_filtering,
-           removeEmptyStr=missing_strength_filtering)
+    filter(jason, router_filtering, strength_filtering,
+           missing_strength_filtering, end_time)
 
     if(graph_type == "unique"):
-        plotUnique(jason, binsize=binsize, labels=None, endTime=end_time)
+        plotUnique(jason, binsize=binsize, labels=None)
     elif(graph_type == "packets"):
-        plotPackets(jason, binsize=binsize, labels=None, endTime=end_time)
+        plotPackets(jason, binsize=binsize, labels=None)
     elif(graph_type == "grid"):
-        plotGrid(jason, coincidence=coincidence, labels=None, endTime=end_time)
+        plotGrid(jason, coincidence=coincidence, labels=None)
     elif(graph_type == "packethist"):
-        plotPacketHistogram(jason, coincidence=coincidence, labels=None)
+        plotPacketHistogram(jason, labels=None)
     elif(graph_type == "segments"):
         plotSegments(jason, labels=None)
 

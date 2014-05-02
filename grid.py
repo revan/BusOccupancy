@@ -14,7 +14,7 @@ def addPacket(packet, addresses):
             addresses[add][1] = packet["time"]
             addresses[add][2] += 1
 
-def plotGrid(jason, coincidence=0, labels=None, endTime=0):
+def plotGrid(jason, coincidence=0, labels=None):
     PREFIX="prob"
 
     if PREFIX=="bus":
@@ -64,8 +64,6 @@ def plotGrid(jason, coincidence=0, labels=None, endTime=0):
         graphlib.annotate(plot, annot, 10, xoff=10, yoff=-10, ymax = last)
         annot.close()
 
-    #graphlib.makePlot(6.5,6, PREFIX, "grid")
-    #graphlib.makePlot(7.5,7, PREFIX, "grid")
     graphlib.makeSquarePlot(PREFIX, "grid")
 
     plot.show()
