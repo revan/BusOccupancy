@@ -1,14 +1,14 @@
 import matplotlib.pyplot as plot
 
-#Adds (time, label) pairs from file to plot
+# Adds (time, label) pairs from file to plot
 def annotate(plot, file, mod, xoff=50, yoff=60, hist=None, ymax=0):
     for line in file:
         (x, label) = line.split(' ', 1)
         x = int(x)
         label = label.rstrip()
         if hist is None:
-            y = mod*x
-            x *=mod
+            x *= mod
+            y = x
             plot.plot([0,y],[x,y],'purple',linewidth=1)
             plot.plot([x,y],[x,ymax],'purple',linewidth=1)
         else:

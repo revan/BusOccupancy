@@ -9,18 +9,6 @@ from packets import plotPackets
 from packethist import plotPacketHistogram
 from segments import plotSegments
 
-graphTypes = {
-    'unique': lambda jason, units, labels, coincidence, binsize, endTime:
-    plotUnique(jason, units, binsize, labels, endTime),
-    'packets': lambda jason, units, labels, coincidence, binsize, endTime:
-    plotPackets(jason, units, binsize, labels, endTime),
-    'grid': lambda jason, units, labels, coincidence, binsize, endTime:
-    plotGrid(jason, coincidence, units, labels, endTime),
-    'packethist': lambda jason, units, labels, coincidence, binsize, endTime:
-    plotPacketHistogram(jason, units, labels, coincidence),
-    'segments': plotSegments
-}
-
 @click.command()
 @click.argument('infile', type=click.File(), default='data/in.json')
 @click.option('-t', '--graph-type', help='Type of graph to create',
@@ -49,9 +37,16 @@ def graph(infile, graph_type, router_filtering, strength_filtering,
     filter(jason, rmRouters=router_filtering, strength=strength_filtering,
            removeBlankStr=blank_strength_filtering)
 
-    graphTypes[graph_type](jason, units=1000000, labels=None,
-                           coincidence=coincidence,
-                           binsize=binsize, endTime=end_time)
+    if(graph_type == "unique"):
+        plotUnique(jason, binsize=binsize, labels=None, endTime=end_time)
+    elif(graph_type == "packets"):
+        plotPackets(jason, binsize=binsize, labels=None, endTime=end_time)
+    elif(graph_type == "grid"):
+        plotGrid(jason, coincidence=coincidence, labels=None, endTime=end_time)
+    elif(graph_type == "packethist"):
+        plotPacketHistogram(jason, coincidence=coincidence, labels=None)
+    elif(graph_type == "segments"):
+        plotSegments(jason, labels=None)
 
 if __name__ == '__main__':
     graph()
