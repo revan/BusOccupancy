@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plot
 import json
 
-def annotate(label, x, y, xoff, yoff):
+def annotate(label, x, y, xoff=0, yoff=0):
     plot.annotate(label, xy=(x, y), xytext=(xoff, yoff),
                   textcoords="offset points",
                   bbox=dict(boxstyle="round", fc="#d3d3d3", ec="#a8a8a8"),
@@ -16,6 +16,7 @@ def wideAnnotate(plot, hist, binsize, file='data/sched.json'):
         x = stop["start"]
         y = hist[int(x)/3]
         annotate(stop["name"], x, y, 50, 60)
+
 
 def squareAnnotate(plot, file='data/sched.json', ymax=0):
     phil = open(file)

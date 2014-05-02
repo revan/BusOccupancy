@@ -52,7 +52,7 @@ def graph(infile, graph_type, router_filtering, strength_filtering,
     elif(graph_type == "packethist"):
         plotPacketHistogram(jason)
     elif(graph_type == "segments"):
-        plotSegments(jason, labels=use_labels)
+        plotSegments(jason, name=name, labels=use_labels)
 
 if __name__ == '__main__':
     graph()
