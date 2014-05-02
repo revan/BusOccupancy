@@ -27,9 +27,11 @@ from segments import plotSegments
               help="Specify under what coincidence data should be rendered.")
 @click.option('-b', '--binsize', type=click.INT, default=3,
               help="Specify a binsize for graphs which use bins.")
+@click.option('-n', '--name', required=True,
+              help="Specify the output graph's title.")
 @click.option('-l', '--label-file', type=click.File())
 def graph(infile, graph_type, router_filtering, strength_filtering,
-          missing_strength_filtering, end_time, coincidence, binsize,
+          missing_strength_filtering, end_time, coincidence, binsize, name
           label_file):
 
     units=1000000
@@ -46,7 +48,7 @@ def graph(infile, graph_type, router_filtering, strength_filtering,
     elif(graph_type == "packets"):
         plotPackets(jason, binsize=binsize, labels=None)
     elif(graph_type == "grid"):
-        plotGrid(jason, coincidence=coincidence, labels=None)
+        plotGrid(jason, coincidence=coincidence, name=name, labels=None)
     elif(graph_type == "packethist"):
         plotPacketHistogram(jason, labels=None)
     elif(graph_type == "segments"):
