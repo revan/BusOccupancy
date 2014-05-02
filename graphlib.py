@@ -28,7 +28,11 @@ def makePlot(x,y,prefix,type):
                  str(x) + 'x' + str(y) + '.png', dpi=200)
 
 def makeWidePlot(prefix,type):
-    makePlot(16,7,prefix,type)
+    plot.gcf().set_size_inches(16,7)
+    plot.savefig('img/' + prefix + '-' + type +
+                 '-wide.png', dpi=200)
 
 def makeSquarePlot(prefix,type):
-    makePlot(8,7.5,prefix,type)
+    plot.gcf().set_size_inches(8,7.5)
+    plot.savefig('img/' + prefix + '-' + type +
+                 '-square.png', dpi=200)
