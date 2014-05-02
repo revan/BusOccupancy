@@ -3,47 +3,59 @@ import pandas as pd
 import matplotlib.pyplot as plot
 import graphlib
 import json
+from itertools import combinations
 
 def readDelims(file='data/sched.json'):
     phil = open(file)
     jason = json.load(phil)
-    jason = [x for x in jason if x["use"]]
+    phil.close()
     for stop in jason:
         stop["uniques"] = set()
     return jason
 
-def addToBins(packet, delims, currStop):
-    #we're after the last stop
-    if currStop[0] >= len(delims):
-        return
-
-    if packet['time'] > delims[currStop[0]]['end']:
-        currStop[0]+=1
-    if packet['time'] < delims[currStop[0]]['start']:
-        return
-
-    # add addresses to collection
-    for address in packet['adds'].values():
-        #if address not in delims[currStop[0]]['uniques']:
-        delims[currStop[0]]['uniques'].add(address)
-
-def plotSegments(json, labels=False):
+def plotSegments(jason, name="", labels=False):
     # read delimeters for each stop
     delims = readDelims()
 
-    #Get the number of addresses in each range
-    currStop = [0] #a list, because we need to pass by reference. ಠ_ಠ
-    json['packets'].apply(lambda row: addToBins(row, delims, currStop), axis=1)
+    x = []
+    realy = []
+    stopAdds = []
+    for stop in delims:
+        realy.append(stop['actual'])
+        x.append(stop['start'])
+        stopPackets = jason['packets']['time'].apply(lambda t: t>stop['start']
+                                                    and t<stop['end'])
+        currStopBin = set()
+        jason['packets']['adds'][stopPackets].apply(
+            lambda adds: currStopBin.update(adds.values()))
+        stopAdds.append(currStopBin)
 
-    #Find the intersect of each pair of consecutive stops
-    x=[]
-    y=[]
-    for currStop in range(0,len(delims)-2):
-        x.append(delims[currStop]['start'])
-        y.append(len(delims[currStop]['uniques'].intersection(
-            delims[currStop+1]['uniques'])))
+    intersectBins = [set() for i in range(len(x))]
+    combobs = combinations(range(len(x)), 2)
+    for combob in combobs:
+        #if(combob[1]-combob[0] > len(x)-4):
+        #    continue
+        curSect = stopAdds[combob[0]].intersection(stopAdds[combob[1]])
+        for i in range(combob[0],combob[1]):
+            intersectBins[i+1].update(curSect)
+    probably_junk = stopAdds[0].intersection(stopAdds[-1])
 
+    y = np.zeros(len(x), np.int)
+    for i,bin in enumerate(intersectBins):
+        y[i] = len(bin - probably_junk) + 2
+    y[0] = y[1] # For labelling purposes
+
+    plot.xlabel('Seconds since '+jason["initial_time"])
+    plot.ylabel('Number of bus occupants (predicted)')
+    plot.xlim(0,delims[-1]['end'])
+    plot.title(name)
     plot.step(x, y)
+    plot.step(x, realy, color="purple", where="post")
+
+    xy = zip(x,y)
+    if(labels):
+        for stop in delims:
+            graphlib.annotate(stop["name"], stop["start"], stop["actual"], 10,10)
 
     graphlib.makeWidePlot("bus", "segments")
 
