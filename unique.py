@@ -5,16 +5,13 @@ import graphlib
 
 def addToBin(packet, bins, curBin, binsize):
     if int(packet["time"]) > curBin["time"]:
+        bins[int(curBin["time"]/binsize)] = len(curBin["addresses"])
         curBin["time"] = int(packet["time"])
         curBin["addresses"] = set()
     for address in packet["adds"].values():
-        if address not in curBin["addresses"]:
-            bins[int(packet["time"]/binsize)]+=1
-            curBin["addresses"].add(address)
+        curBin["addresses"].add(address)
 
-def plotUnique(jason, binsize=1, labels=None):
-    #annot = open('data/plot.labels')
-
+def plotUnique(jason, binsize=1, labels=False):
     last = jason["packets"]["time"].iget(-1)
     bins = np.zeros(int(last/binsize)+1, np.int)
     curBin = {
@@ -31,9 +28,9 @@ def plotUnique(jason, binsize=1, labels=None):
     plot.ylabel('Unique MACs in '+str(binsize)+' second interval')
     plot.title('April 7th, A Route')
 
-    # annotate(plot, hist, annot, BINSIZE_L)
-    # annot.close()
+    if(labels):
+        graphlib.wideAnnotate(plot, bins, binsize)
 
-    makeWidePlot("bus", "unique")
+    graphlib.makeWidePlot("bus", "unique")
 
     plot.show()

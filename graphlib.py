@@ -9,12 +9,12 @@ def annotate(label, x, y, xoff, yoff):
                                   ec="#a8a8a8", connectionstyle=
                                   "angle3,angleA=0,angleB=-90"))
 
-def wideAnnotate(plot, hist, file='data/sched.json', ymax=0):
+def wideAnnotate(plot, hist, binsize, file='data/sched.json'):
     phil = open(file)
     jason = json.load(phil)
     for stop in jason:
         x = stop["start"]
-        y = hist[x]
+        y = hist[int(x)/3]
         annotate(stop["name"], x, y, 50, 60)
 
 def squareAnnotate(plot, file='data/sched.json', ymax=0):
