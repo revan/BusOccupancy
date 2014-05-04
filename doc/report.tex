@@ -9,6 +9,7 @@
 \begin{document}
 \title{Undergraduate Independent Research Report}
 \subtitle{Predicting Bus Occupancy}
+% Programatically Predicting?
 %\author{Daniel Bordak, Erin Corrado, Revan Sopher, and Ashley Weaver}
 \author{
 Bordak, Daniel
@@ -34,44 +35,56 @@ In this study we address the problem of programatically predicting bus occupancy
 We approach this in two ways: by using publicly available GPS positions to calculate stop time, and by using promiscuous Wi-Fi to count devices.
 While the stop time approach proved unfruitful due to the significant time requirement, the Wi-Fi approach yielded substantial data, though the acquired data was plagued by noise.
 We conclude by suggesting the efficacious, though prohibited, solution of impersonating a campus access point.
+% or asking Rutgers/First Transit to put routers on the buses
 \end{abstract}
 
 \section*{Motivation}
 
-Due to the periodic nature of class schedules, students at Rutgers tend to move between campuses at similar times during the day.
-This leads to predictable migratory patterns; however, the bus schedule does a poor job of taking student schedules into account. On Livingston campus, for example, the College Ave/Livingston buses circulate consecutively yet are nearly empty, while the Busch/Livingston buses are less frequent and are often packed to capacity.
+Due to the periodic nature of class schedules, students at Rutgers tend to move between campuses in certain known time intervals during the day.
+This leads to predictable migratory patterns; however, the bus schedule does a poor job of taking student schedules into account. 
+On Livingston campus, for example, the College Ave/Livingston buses circulate consecutively yet are nearly empty, while the Busch/Livingston buses are less frequent and are often packed to capacity.
 The aim of this project is to develop a system for better predicting the demand for buses, such that an empirical argument for the optimization of the bus schedule might be made.
+% This optimization would allow for the buses to be better utilizated and would allow students to more quickly move across campuses.
 
 \section*{Approach}
 
 In order to facilitate simultaneous contributions from all four team members, we approached the problem in two manners: by collecting data ourselves, and by using transit times.
-Two students worked on each approach, and planned to combine results into a single prediction method.
+% rather, by collecting directly collecting data about number of riders vs. stop time, and by measuring number of devices on the bus
+Two students worked on each approach, and we planned to combine results into a single prediction method.
 
 	\subsection*{Stop Length Inference}
 
-	In this approach, we planned to establish a correlation between the amount of time a bus spends at a stop and the amount of people currently riding.
-	The idea was that as a bus nears capacity, stops will be longer due to the larger number of riders entering and exiting.
+	In this approach, we planned to establish a correlation between the length of time a bus spends at a stop and the number of passengers currently riding it, our theory being that as a bus nears capacity, stops will be longer due to the larger number of riders entering and exiting.
 	Every Rutgers bus periodically updates an internet source with its position, velocity, and destination.
+	% this information is publicly available; it would not require any sensors/devices or observers to be on the bus
 	We first tried to measure the strength of this correlation; if we could prove a strong positive correlation, we could use the publicly available bus travel data to measure length of stops, and therefore predict occupancy.
+	% obviously, if we use above sentence, "publicly available" should be removed from this sentence
 	Although this method inherently depends on a weaker correlation than the number of smartphones, by running the analysis on a log of travel data, we could predict occupancy across a significantly larger domain and for no cost.
+	% while also not requiring any additional equipment physically on the buses?
 
 	\subsection*{Promiscuous WiFi}
 
-	In this approach, we used the inherent correlation between the amount of smart phones on the bus and the amount of people on the bus.
+	In this approach, we used the inherent correlation between the number of smart phones on the bus and the number of passengers.
+	% or other broadcasting devices
+	% maybe talk a little bit more about the correlation: logically, the number of devices on a bus is proportional to the number of people on the bus, because etc. I have a feeling the "vagueness" of this sentence is one of the things we'll get called out on.
 	We used a laptop running Linux and equipped with a standard wireless card and a GPS sensor.
 	The computer ran the wireless card in monitor mode, allowing the computer to process all packets it received regardless of destination.
 	The laptop logged the headers of these packets to a file, with current time and GPS coordinates.
+	% maybe explain this a little more? I don't know if you can.
 
 \section*{Results}
 
 \subsection*{Stop Length Inference}
 	In order to establish a correlation between stop length and bus occupancy, we followed a bus on its circuit, recording data about its stops.
+	% namely, the number of people either boarding or exiting the bus, and the length of the stop
 	\begin{figure}[H]
 	\includegraphics[width=11cm]{stop3}
 	\centering
 	\end{figure}
 	As we quickly found, stop length does not appear to have any correlation to occupancy.
-	This makes sense, because the amount of sedentary riders does not cause slowdowns, rather the interesting metric is the amount of people entering or exiting the bus.
+	This makes sense, because the number of sedentary riders does not cause slowdowns; rather, the relevant metric is the number of people entering or exiting the bus.
+	% in retrospect, this makes sense?
+	% cause slowdowns -> affect the stop time/delays?
 
 	\begin{figure}[H]
 	\includegraphics[width=11cm]{stop1}
@@ -79,6 +92,8 @@ Two students worked on each approach, and planned to combine results into a sing
 	\end{figure}
 
 	Plotting the net occupancy change over stop length was also inconclusive, as the longer stops could be either positive or negative changes.
+	% as a function of stop length
+	% longer stops could be due to large positive or negative changes
 	From stop timings alone, we would not be able to predict the direction of change.
 
 	\begin{figure}[H]
@@ -88,28 +103,40 @@ Two students worked on each approach, and planned to combine results into a sing
 
 	Net change, however, shows a stronger correlation, confirming our hypothesis that high rider throughput causes delays.
 	Net change is not a useful metric on its own, but if it could be proven that certain bus stops entertained mostly one of boardings or descents, we could predict the sign of the change and thus the occupancy changes over time.
+	% if certain bus stops tended to have a positive or negative net change
+	% for example, more people tend to get on at the [whatever] than get off, so a longer stop at here means a large positive change
+	% conversely, the bus stop at [whatever] tends to have a negative net change, so a longer stop here would mean that there were fewer people on the bus afterwards
 	\\
-	To test this, we waited at a single bus stop and counted the number of passengers entering and leaving each arrival of a certain bus route, and the length of the stops.
+	To test this, we waited at a single bus stop and counted the number of passengers entering and leaving each bus on a certain route, and the length of the stops.
 
 	%TODO:
 	\begin{figure}[H]
 	GRAPH OF CHANGE AT SINGLE STOP GOES HERE
 	\centering
 	\end{figure}
+	% either add a title to this graph or remove the title from all the other graphs
 
-	Data for this experiment was slower to collect, as the busses were spaced out. A brief look at this data shows that this bus stop is predominantly a descent spot; thus, longer stops at this stop would imply a net decrease in number of riders.
+	Data for this experiment was slower to collect, as the buses were spaced out.
+	% maybe mention that there was an accident that day, causing delays? 
+	A brief look at this data shows that this bus stop is predominantly a descent spot; thus, longer stops at this stop would imply a net decrease in number of riders.
+	% this data suggests that?
 	\\
 	However, the data collected is insufficient to draw these conclusions; there can be significant variation depending on time and day of the week.
 	This data collection would need to be repeated at every bus stop, which increases the time requirement to well beyond the scope of this study.
+	% at every stop for every route on every day at all times...
 	\\
 	Thus, while the preliminary foray suggests that this approach is tentatively successful, we move on to our next approach.
+	% it is not especially feasible for this study?
 	
 \subsection*{Promiscuous WiFi}
 	To collect data, we put a laptop's wireless card into monitor mode and ran the following:
+	% following command
+	% explain what monitor mode means?
 	\begin{verbatim}
 		tcpdump -e
 	\end{verbatim}
 	This command logs the MAC addresses of every packet that the wireless card sees, thus uniquely identifying every active device in the area.
+	% maybe expound a bit more about tcpdump
 	We followed a bus on its route, logging packets and stop times.
 
 	\begin{figure}[H]
@@ -117,18 +144,24 @@ Two students worked on each approach, and planned to combine results into a sing
 	\\TODO: swap out plot for new data
 	\centering
 	\end{figure}
+	% make sure the stop names are legible, remove typos
 
 	Plotting the number of packets in a histogram with one second bins, we see that there are visible differences between stops.
 	There are a few extreme spikes in network traffic, which can be ignored.
+	% why can they be ignored?
 	However, this data alone does not establish correlation between traffic and occupancy; since the range of the wireless card extends beyond the bus, there will be considerable noise.
+	% between data(?) traffic and occupancy
+	% noise caused by devices outside the bus, such as people or routers near the stop or devices in other vehicles (obviously worded better)
 	\\
 	tcpdump also records the strength of signals, so we can choose to ignore packets below a certain decibel strength:
+	% make tcpdump look like code? {verbatim}
 
 	\begin{figure}[H]
 	\includegraphics[width=11cm]{strength}
 	\\TODO: swap out plot for new data
 	\centering
 	\end{figure}
+	% make sure the stop names are legible, remove typos
 
 	Additionally, we switched out ``number of packets'' for ``number of unique MAC addresses''.
 
@@ -137,9 +170,10 @@ Two students worked on each approach, and planned to combine results into a sing
 	\\TODO: swap out plot for new data, remake with strength cutoff
 	\centering
 	\end{figure}
+	% make sure the stop names are legible, remove typos
 
 	In order to establish which devices were on the bus, we plotted the time of the first and last occurance of each device:
-
+	% plotted each address as a function of the first and last occurance
 
 	\begin{figure}[H]
 	\includegraphics[width=11cm]{firstlastbus}
@@ -148,10 +182,18 @@ Two students worked on each approach, and planned to combine results into a sing
 
 	Each point here represents a unique device, where the x-coordinate is the time of the first sighting, and the y-coordinate is the time of the last sighting.
 	Thus, the high concentration of data points along the line y=x represents the transient devices, most likely all access points.
-	The clump of data points at the top left of the plot represents devices which were seen throughout the journey. These are most likely the access points of the common first and last stop.
+	% or people outside the bus at stops or along the route?
+	The clump of data points in the top left corner of the plot represents devices which were seen throughout the journey. 
+	These are most likely the access points of the common first and last stop.
+	% because we reasoned that it was unlikely for a significant number of people to be on the bus for an entire loop
 	\\
+	% are we adding those new graphs?
 
 	TODO: Conclude
+%\section*{Conclusion}
+%	From the data above, we determined that the occupancy of a bus could be predicted by observing data traffic with some sensor placed on the bus.
+%	We can filter out some of the irrelevant data by ignoring any signals below a certain strength.
+%	This is the most feasible method, but requires external assistance with installation of devices.
 
 
 \section*{Future Work}
@@ -159,11 +201,13 @@ The largest problem with the interception of packets is outside noise.
 To address this, we would like to install an access point on the bus, with the same SSID as the campus Wi-Fi so that smart phones would automatically connect.
 We could then listen only to communications with this access point, eliminating outside traffic.
 \\
-Optimally, the routers would be officially installed and serve mobile data. This is naturally expensive and thus unlikely. Any unofficial access points installed would be an explicit violation of the terms of use of the Rutgers networks, and thus unfeasible as well.
+Optimally, the routers would be officially installed and serve mobile data. 
+This is naturally expensive and thus unlikely. 
+Any unofficial access points installed would be an explicit violation of the terms of use of the Rutgers networks, and thus unfeasible as well.
 \\
 \\
-We could also replace the laptop in our setup with a smaller unit to be installed in the busses, to collect data for longer periods of time. Running several of these units would allow us to collect enough data to make occupancy predictions.
-
+We could also replace the laptop in our setup with a smaller unit to be installed in the buses, to collect data for longer periods of time. 
+Running several of these units would allow us to collect enough data to make occupancy predictions.
 
 \section*{Team Member Contributions}
 Here is a list of the contributions made by each individual team member.
@@ -197,5 +241,6 @@ Ashley Weaver
 \begin{itemize}
   \item Collected bus data
   \item Helped to write and organize text on the poster
+  % plus everything I'm writing now.
 \end{itemize}
 \end{document}
