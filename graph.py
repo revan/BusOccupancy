@@ -8,13 +8,14 @@ from unique import plotUnique
 from packets import plotPackets
 from packethist import plotPacketHistogram
 from segments import plotSegments
+from vectors import plotVectors
 
 @click.command()
 @click.argument('infile', type=click.File(), default='data/in.json')
 @click.option('-t', '--graph-type', help='Type of graph to create',
               required=True,
               type=click.Choice(["unique","packets","grid","packethist",
-                                 "segments"]))
+                                 "segments", "vectors"]))
 @click.option('-r', '--router-filtering', type=click.BOOL, default=True,
               help="Filter routers out of packet list.")
 @click.option('-s', '--strength-filtering', type=click.INT, default=0,
@@ -53,6 +54,8 @@ def graph(infile, graph_type, router_filtering, strength_filtering,
         plotPacketHistogram(jason)
     elif(graph_type == "segments"):
         plotSegments(jason, name=name, labels=use_labels)
+    elif(graph_type == "vectors"):
+        plotVectors(jason, name=name, labels=use_labels)
 
 if __name__ == '__main__':
     graph()
