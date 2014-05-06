@@ -1,3 +1,6 @@
+# This library exists so that we have synchronized settings across graphs --
+#  our graphs should have the same style and size, so that the report does not
+#  appear erratic.
 import matplotlib.pyplot as plot
 import json
 
@@ -14,9 +17,8 @@ def wideAnnotate(plot, hist, binsize, file='data/sched.json'):
     jason = json.load(phil)
     for stop in jason:
         x = stop["start"]
-        y = hist[int(x)/3]
+        y = hist[int(x)/binsize]
         annotate(stop["name"], x, y, 50, 60)
-
 
 def squareAnnotate(plot, file='data/sched.json', ymax=0):
     phil = open(file)

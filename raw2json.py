@@ -68,13 +68,10 @@ for line in args.infile:
         strength = -1 * int(findStrength.search(line).group(2))
         ldic["str"] = strength
     except AttributeError:
-        print("WARNING: Line does not have strength field!", file=sys.stderr)
+        ldic["str"] = 0
     output["packets"].append(ldic)
 
-for add in macs.values():
-    if add["r"]:
-        output["routers"].append(add["num"])
-output["routers"].sort()
+output["routers"] = [add["num"] for add in macs.values() if add["r"]].sort()
 
 args.outfile.write(json.dumps(output))
 

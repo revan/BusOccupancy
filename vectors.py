@@ -3,63 +3,40 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plot
-import graphlib
+from graphlib import annotate, makeWidePlot
 from segments import readDelims
+from grid import addPacket
 
-def addPacket(packet, addresses):
-    for add in packet["adds"].values():
-        if add not in addresses:
-            addresses[add] = [packet["time"],packet["time"],1]
-        else:
-            addresses[add][1] = packet["time"]
-            addresses[add][2] += 1
-
-def plotVectors(json, coincidence=30, name="", labels=False):
+def plotVectors(json, coincidence=0, name="", minTime=30, maxTime=1700,
+                labels=False):
     delims = readDelims()
-    actual = []
-    stopx = []
-    for stop in delims:
-        actual.append(stop['actual'])
-        stopx.append(stop['start'])
-    vectors = {}
 
     macAddresses = {}
-
     json["packets"].apply(lambda row: addPacket(row, macAddresses), axis=1)
 
-    last = json["packets"]["time"].iget(-1)
-
-    for key in macAddresses.keys():
-        if (macAddresses[key][1] - macAddresses[key][0]) < coincidence:
-            continue
-        vectors[key] = np.zeros(last)
-        vectors[key][macAddresses[key][0] : macAddresses[key][1]] = 1
-        
-
-    sum = np.zeros(last)
-    for vector in vectors.values():
-        sum += vector
-
-    print(sum)
-    print(int(last))
-
-    plot.step(range(int(last)), sum.tolist())
+    sum = np.zeros(json["last"], dtype=np.int)
+    for val in macAddresses.values():
+        diff = val[1] - val[0]
+        if ((diff > minTime) and (diff < maxTime) and (val[2] >= coincidence)):
+            sum[val[0] : val[1]] += 1
 
     plot.xlabel('Seconds since start')
     plot.ylabel('Devices', color='b')
+    plot.step(range(int(json["last"])), sum.tolist())
 
+    actual = [stop['actual'] for stop in delims]
+    stopx = [stop['start'] for stop in delims]
     ax2 = plot.twinx()
     ax2.step(stopx, actual, 'r', where="post")
-    for t1 in ax2.get_yticklabels():
-        t1.set_color('r')
+    (t1.set_color for t1 in ax2.get_yticklabels())
     ax2.set_ylabel('Riders', color='r')
-
-    plot.xlim(0, 1816)
-
-    graphlib.makeWidePlot("bus", "vectors")
+    plot.ylim(0,30)
+    plot.xlim(0, json["last"])
 
     if(labels):
         for stop in delims:
-            graphlib.annotate(stop["name"], stop["start"], stop["actual"], 10,10)
+            annotate(stop["name"], stop["start"], stop["actual"],10,10)
+
+    makeWidePlot("bus", "vectors")
 
     plot.show()

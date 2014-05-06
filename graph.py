@@ -43,6 +43,7 @@ def graph(infile, graph_type, router_filtering, strength_filtering,
 
     filter(jason, router_filtering, strength_filtering,
            missing_strength_filtering, end_time)
+    jason["last"] = jason["packets"]["time"].iget(-1)
 
     if(graph_type == "unique"):
         plotUnique(jason, binsize=binsize, labels=use_labels)
