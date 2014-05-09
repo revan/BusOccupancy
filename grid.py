@@ -1,15 +1,15 @@
-import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plot
 import graphlib
+
 
 def addPacket(packet, addresses):
     for add in packet["adds"].values():
         if add not in addresses:
-            addresses[add] = [packet["time"],packet["time"],1]
+            addresses[add] = [packet["time"], packet["time"], 1]
         else:
             addresses[add][1] = packet["time"]
             addresses[add][2] += 1
+
 
 def plotGrid(jason, coincidence=0, name="", labels=False):
     macs = {}
@@ -22,9 +22,8 @@ def plotGrid(jason, coincidence=0, name="", labels=False):
     plot.ylim(0, jason["last"])
     plot.scatter(xcoord, ycoord)
 
-    if coincidence>0:
-        name += " -- under coincidence " + str(coincidence)
-    plot.title(name)
+    plot.title(name + " -- under coincidence " + str(coincidence)
+               if coincidence > 0 else name)
     plot.xlabel('Time first seen (seconds since ' + jason["initial_time"] + ')')
     plot.ylabel('Time last seen (seconds since ' + jason["initial_time"] + ')')
 

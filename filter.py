@@ -6,11 +6,11 @@ def filter(jason, rmRouters, strength, removeEmptyStr, endTime):
     routers = set(jason["routers"])
     # Filter Strength
     fil = jason["packets"]["str"].apply(lambda s: s > strength and
-                                        (s!=0 or not removeEmptyStr))
+                                        (s != 0 or not removeEmptyStr))
     jason["packets"] = jason["packets"][fil]
     # Filter End Time
-    if endTime>0:
-        fil = jason["packets"]["time"].apply(lambda t: t<endTime)
+    if endTime > 0:
+        fil = jason["packets"]["time"].apply(lambda t: t < endTime)
         jason["packets"] = jason["packets"][fil]
     # Filter Routers
     if rmRouters:
@@ -20,7 +20,8 @@ def filter(jason, rmRouters, strength, removeEmptyStr, endTime):
         jason["num_macs"] -= len(jason["routers"])
         del jason["routers"]
 
+
 # Returns False if the packet has no items left after routers have been removed.
 def filterRouters(macs, routers):
-    macs = dict((type,id) for type,id in macs.items() if id not in routers)
+    macs = dict((type, id) for type, id in macs.items() if id not in routers)
     return len(macs) != 0

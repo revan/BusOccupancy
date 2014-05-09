@@ -1,8 +1,7 @@
-import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plot
 import graphlib
 from grid import addPacket
+
 
 def plotPacketHistogram(jason, cutoff=120):
     macAddresses = {}
@@ -12,7 +11,7 @@ def plotPacketHistogram(jason, cutoff=120):
                   if (val[0]+jason["last"]-val[1]) < cutoff]
 
     xmax = len(packetAxis)
-    plot.xlim(0,xmax)
+    plot.xlim(0, xmax)
     plot.yscale('log')
     plot.bar(range(xmax), sorted(packetAxis), color="black", log=True)
     plot.xlabel("Unique MAC addresses present for the entire class period")

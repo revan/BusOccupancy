@@ -10,6 +10,7 @@ from packethist import plotPacketHistogram
 from segments import plotSegments
 from vectors import plotVectors
 
+
 @click.command()
 @click.argument('infile', type=click.File(), default='data/in.json')
 @click.option('-t', '--graph-type', help='Type of graph to create',
