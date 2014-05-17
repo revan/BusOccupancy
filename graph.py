@@ -2,11 +2,13 @@
 import click
 import json
 import pandas as pd
+import numpy as np
 from filter import filter
 from grid import plotGrid
 from unique import plotUnique
 from packets import plotPackets
 from packethist import plotPacketHistogram
+from strhist import plotStrengthHistogram
 from segments import plotSegments
 from vectors import plotVectors
 
@@ -15,11 +17,11 @@ from vectors import plotVectors
 @click.argument('infile', type=click.File(), default='data/in.json')
 @click.option('-t', '--graph-type', help='Type of graph to create',
               required=True,
-              type=click.Choice(["unique","packets","grid","packethist",
-                                 "segments", "vectors"]))
+              type=click.Choice(["unique", "packets", "grid", "packethist",
+                                 "segments", "vectors", "strhist"]))
 @click.option('-r', '--router-filtering', type=click.BOOL, default=True,
               help="Filter routers out of packet list.")
-@click.option('-s', '--strength-filtering', type=click.INT, default=0,
+@click.option('-s', '--strength-filtering', type=click.INT, default=-200,
               help="Filter packets with strength less than the given value.")
 @click.option('-m', '--missing-strength-filtering', type=click.BOOL,
               help="Filter packets with no strength field.")
@@ -44,6 +46,7 @@ def graph(infile, graph_type, router_filtering, strength_filtering,
 
     filter(jason, router_filtering, strength_filtering,
            missing_strength_filtering, end_time)
+    print(jason["packets"]["time"])
     jason["last"] = jason["packets"]["time"].iget(-1)
 
     if(graph_type == "unique"):
@@ -54,6 +57,8 @@ def graph(infile, graph_type, router_filtering, strength_filtering,
         plotGrid(jason, coincidence=coincidence, name=name, labels=use_labels)
     elif(graph_type == "packethist"):
         plotPacketHistogram(jason)
+    elif(graph_type == "strhist"):
+        plotStrengthHistogram(jason)
     elif(graph_type == "segments"):
         plotSegments(jason, name=name, labels=use_labels)
     elif(graph_type == "vectors"):
