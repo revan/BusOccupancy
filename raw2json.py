@@ -14,6 +14,7 @@ parser.add_argument('outfile', nargs='?', type=FileType('w'),
                     help="Output file (defaults to stdout)")
 args = parser.parse_args()
 
+# Get the first line so we can get the time from the first packet, then rewind.
 first_line = args.infile.readline()
 args.infile.seek(0)
 
@@ -69,6 +70,7 @@ for line in args.infile:
         strength = -1 * int(findStrength.search(line).group(2))
         ldic["str"] = strength
     except AttributeError:
+        # Some packets don't have a strength field.
         ldic["str"] = 0
     output["packets"].append(ldic)
 
