@@ -49,8 +49,47 @@ Two students worked on each approach, and we planned to combine results into a s
 	The computer ran the wireless card in monitor mode.
 	In normal operation, a wireless card will receive every packet in the vicinity, but discard those that are not specifically addressed to it; in monitor mode all received packets are transmitted to the operating system regardless of intended recipient.
 	The laptop logged the headers of these packets to a file.
-	The log contained time (accurate to the microsecond), source and destination MAC addresses, and signal strength.
+	The log contained time (accurate to the microsecond), source, destination, receving, and transmitting MAC addresses, and signal strength.
+    
+    \section*{Parsing the Data}
+    In order to better utilize this data, we first parsed the log files for information relevant to our goal.
+    The log file contained many details we didn't need -- things like the type of packet, or the antenna used.
+    The first step in creating the graphs was to sanitize the data; we couldn't leave all these MAC addresses since they could potentially be used to identify people.
+    We parsed the log files, assigning each address an index number starting from zero.
+    Each line was converted into an Python Dict holding the four potential addresses, the packet's strength, and what time it was sent at.
+    Some packets did not have a strength field -- these were assigned a strength of zero, which can easily be filtered out later, since this is not a strength which could potentially appear naturally.
+    Lines which were identified as routers broadcasting their existance were removed, and the address identified as a router was flagged in case they might need to be filtered later.
+    At the end of the parsing process, a JSON output is produced.
+    JSON is a open standard data interchange format.
+    Using JSON made utilizing the data much easier when it came to actually producing the graphs -- most languages, Python included, have a standard library implementation for JSON, eliminating the effort spent in re-parsing the data.\\
 
+    For the actual construction of the graphs, we needed two additional libraries -- Numpy and Pandas.
+    Numpy is a high-performance mathematical library for Python, and Pandas is a library built on top of Numpy to provide data structures used in data analysis.
+    First, these JSON files were re-read and passed into a Pandas DataFrame.
+    The data is then filtered with any combination of four filters: strength, zero strength, routers, and end time.
+    Strength filtering is simply removing packets which don't meet a certain strength cutoff, and Zero Strength filtering removes those zero-strength packets mentioned earlier.
+    Router filtering filters out any addresses which were flagged as routers during the parsing step.
+    End Time filtering removes any packets past a certain time.
+    After the data has been filtered, it can be handed off to six different helper scripts; one for each graph type.\\
+
+The packet and unique plots were created by generating an array of 3-second bins and adding the appropriate statistic to the bins.
+In the case of the packet plot, this was simply the number of packets found over those three seconds; the bin is simply an integer.
+In the case of the unique plot, however, the bin is a mathematical set holding the MAC addresses seen over the three second period.
+After the entirety of the three seconds are parsed, the bin is assigned the length of the set.\\
+
+The first-last grid, packet histogram, and vector plot were all created by checking the data set for each address.
+The first time each MAC address is encountered, it is added to a list with an initial value of the time it was seen as both its first and last time seen, and seen-count of one.
+Each additional time an address is seen, its last time seen value is updated to the current time, and its seen-count is incremented.
+In the grid, the addresses are graphed using the first time seen as the x-value and the last time seen as the y-value.
+In the packet histogram, packets which fulfill the requirement of \(t_{first} + t_{max} - t_{last} < 120\) are selected, where \(t_{max}\) is the total observation time.
+These selected packets are then graphed with their y-values set as their seen-count.
+To make the graph easier to interpret, the y-axis was made to be logarithmic, and the addresses are sorted by their y-values.
+For the vector plot, first an array of zeros was initialized with length equal to the length of observation in seconds.
+For each packet, every value between \(t_{first}\) and \(t_{last}\) was incremented.
+The resulting array was plotted as a step function, with the x-axis being its indices.\\
+
+TODO: Add section on segment plot.
+    
 \section*{Results}
 
 \subsection*{Stop Length Inference}
@@ -239,6 +278,7 @@ Daniel Bordak
   \item Cowrote Segments Plot (not in report)
   \item Rewrote Unique Device Plot and Packet Plot to allow for different binsizes (not yet in report)
   \item Wrote Stop-Time parser for use in plot annotations.
+  \item Wrote sections of the report pertaining to the creation of plots.
 \end{itemize}
 Erin Corrado
 \begin{itemize}
