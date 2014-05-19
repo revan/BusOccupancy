@@ -23,7 +23,7 @@ We conclude by suggesting modifications to the experiment, and the application o
 \section*{Motivation}
 
 Due to the periodic nature of class schedules, students at Rutgers tend to move between campuses in certain known time intervals during the day.
-This leads to predictable migratory patterns; however, the bus schedule does a poor job of taking student schedules into account. 
+This leads to predictable migratory patterns; however, the bus schedule does a poor job of taking student schedules into account.
 On Livingston campus, for example, the College Ave/Livingston buses circulate consecutively yet are nearly empty, while the Busch/Livingston buses are less frequent and are often packed to capacity.
 The aim of this project is to develop a system for better predicting the demand for buses, such that an empirical argument for the optimization of the bus schedule might be made.
 
@@ -39,6 +39,8 @@ Two students worked on each approach, and we planned to combine results into a s
 	This information is publicly available, not requiring any hardware or observers on the bus, therefore lending itself to zero-cost large-scale execution.
 	We first tried to measure the strength of this correlation; if we could prove a strong positive correlation, we could use the bus travel data to measure length of stops, and therefore predict occupancy.
 	Although this method inherently depends on a weaker correlation than the number of smartphones, by running the analysis on a log of travel data, we could predict occupancy across a significantly larger domain and for no cost.
+	\\
+	In order to establish a correlation between stop length and bus occupancy, we followed a bus on its circuit, recording data about its stops, namely, the number of people either boarding or exiting the bus and the length of the stop.
 
 	\subsection*{Promiscuous WiFi}
 
@@ -50,27 +52,46 @@ Two students worked on each approach, and we planned to combine results into a s
 	In normal operation, a wireless card will receive every packet in the vicinity, but discard those that are not specifically addressed to it; in monitor mode all received packets are transmitted to the operating system regardless of intended recipient.
 	The laptop logged the headers of these packets to a file.
 	The log contained time (accurate to the microsecond), source, destination, receving, and transmitting MAC addresses, and signal strength.
-    
-    \section*{Parsing the Data}
-    In order to better utilize this data, we first parsed the log files for information relevant to our goal.
-    The log file contained many details we didn't need -- things like the type of packet, or the antenna used.
-    The first step in creating the graphs was to sanitize the data; we couldn't leave all these MAC addresses since they could potentially be used to identify people.
-    We parsed the log files, assigning each address an index number starting from zero.
-    Each line was converted into an Python Dict holding the four potential addresses, the packet's strength, and what time it was sent at.
-    Some packets did not have a strength field -- these were assigned a strength of zero, which can easily be filtered out later, since this is not a strength which could potentially appear naturally.
-    Lines which were identified as routers broadcasting their existance were removed, and the address identified as a router was flagged in case they might need to be filtered later.
+	\\
+	To collect data, we put a laptop's wireless card into monitor mode and ran the following command:
+	\begin{verbatim}
+		tcpdump -e
+	\end{verbatim}
+	This command logs the headers of every packet that the wireless card sees, thus uniquely identifying every active device in the area.
+	The strength of signals is also recorded, so we can choose to ignore packets below a certain decibel strength.
+	We followed a bus on its route, logging packets and stop times.
+
+	\section*{Preprocessing}
+
+		\subsection*{Sanitization}
+    One of the data fields recorded is the unique MAC addresses identifying the devices.
+		Thus, the first step in creating the graphs was to sanitize the data; we couldn't leave all these MAC addresses in place since they could potentially be used to identify people and their whereabouts, which would subject our study to human subjects regulation.
+    We parsed the log files, replacing each address an index number starting from zero.
+		This way, devices are uniquely identified for our analysis, but the data can be safely distributed.
+
+		\subsection*{Parsing the Data}
+		In order to better analyze the data, we first parsed the log files for information relevant to our goal.
+		The log file contained many irrelevant details -- fields like the type of packet, or the antenna used.
+
+    Each line was converted into a Python Dictionary holding the four potential addresses, the packet's strength, and what time it was sent at. %the four potential adresses?
+    Some packets did not have a strength field -- these were assigned a strength of zero, which can easily be filtered out later, since this is not a strength which could appear naturally.
+		\\
+		Routers periodically broadcast their existance, such that devices may detect and connect.
+    Since these broadcasts are automatic and occur with or without wireless devices, lines of data which were identified as routers broadcasting were removed, and the address identified as a router was flagged in case it might need to be filtered later.
     At the end of the parsing process, a JSON output is produced.
     JSON is a open standard data interchange format.
-    Using JSON made utilizing the data much easier when it came to actually producing the graphs -- most languages, Python included, have a standard library implementation for JSON, eliminating the effort spent in re-parsing the data.\\
+    Using JSON made utilizing the data much easier when it came to producing the graphs -- most languages, Python included, have a standard library implementation for JSON, eliminating the effort spent in re-parsing the data.
 
-    For the actual construction of the graphs, we needed two additional libraries -- Numpy and Pandas.
+	\section*{Processing}
+    For the construction of the graphs, we constructed a processing framework allowing for convenient command-line invocation and parametrization of a variety of scripts.
+		We used two libraries -- Numpy and Pandas.
     Numpy is a high-performance mathematical library for Python, and Pandas is a library built on top of Numpy to provide data structures used in data analysis.
-    First, these JSON files were re-read and passed into a Pandas DataFrame.
+    First, the generated JSON files were re-read and passed into a Pandas DataFrame.
     The data is then filtered with any combination of four filters: strength, zero strength, routers, and end time.
     Strength filtering is simply removing packets which don't meet a certain strength cutoff, and Zero Strength filtering removes those zero-strength packets mentioned earlier.
     Router filtering filters out any addresses which were flagged as routers during the parsing step.
     End Time filtering removes any packets past a certain time.
-    After the data has been filtered, it can be handed off to six different helper scripts; one for each graph type.\\
+    After the data has been filtered, it is handed off to one of six different plotting scripts -- each script corresponds to one of the graph types.\\
 
 The packet and unique plots were created by generating an array of 3-second bins and adding the appropriate statistic to the bins.
 In the case of the packet plot, this was simply the number of packets found over those three seconds; the bin is simply an integer.
@@ -89,11 +110,10 @@ For each packet, every value between \(t_{first}\) and \(t_{last}\) was incremen
 The resulting array was plotted as a step function, with the x-axis being its indices.\\
 
 TODO: Add section on segment plot.
-    
+
 \section*{Results}
 
 \subsection*{Stop Length Inference}
-	In order to establish a correlation between stop length and bus occupancy, we followed a bus on its circuit, recording data about its stops, namely, the number of people either boarding or exiting the bus and the length of the stop.
 	\begin{figure}[H]
 	\includegraphics[width=11cm]{stop3}
 	\centering
@@ -140,13 +160,7 @@ TODO: Add section on segment plot.
 
 
 \subsection*{Promiscuous WiFi}
-	To collect data, we put a laptop's wireless card into monitor mode and ran the following command:
-	\begin{verbatim}
-		tcpdump -e
-	\end{verbatim}
-	This command logs the headers of every packet that the wireless card sees, thus uniquely identifying every active device in the area.
-	We followed a bus on its route, logging packets and stop times.
-	tcpdump also records the strength of signals, so we can choose to ignore packets below a certain decibel strength.
+
 
 	\subsubsection*{Packet Plot}
 
@@ -158,7 +172,7 @@ TODO: Add section on segment plot.
 
 		Plotting the number of packets in a histogram with one second bins, we see that there are visible differences between stops.
 		There are a few extreme spikes in network traffic, which can be ignored as extraneous points.
-	
+
 	\subsubsection*{Unique MAC Plot}
 
 		Network traffic is not a good indicator of occupancy, however, because it is highly susceptible to the noise of a single user transmitting many packets.
@@ -186,7 +200,7 @@ TODO: Add section on segment plot.
 
 		Each point here represents a unique device, where the x-coordinate is the time of the first sighting, and the y-coordinate is the time of the last sighting.
 		Thus, the high concentration of data points along the line y=x represents the transient devices, most likely people outside.
-		The clump of data points in the top left corner of the plot represents devices which were seen throughout the journey. 
+		The clump of data points in the top left corner of the plot represents devices which were seen throughout the journey.
 		These are most likely our own devices, or stationary devices around the common first and last stop.
 
 	\subsubsection*{Presence Vector Plot}
@@ -231,11 +245,11 @@ TODO: Add section on segment plot.
 	To address this, we would like to install an access point on the bus, with the same SSID as the campus Wi-Fi so that smart phones would automatically connect.
 	We could then listen only to communications with this access point, eliminating outside traffic.
 	\\
-	Optimally, the routers would be officially installed and serve mobile data. 
-	This is naturally expensive and thus unlikely. 
+	Optimally, the routers would be officially installed and serve mobile data.
+	This is naturally expensive and thus unlikely.
 	Any unofficial access points installed would be an explicit violation of the terms of use of the Rutgers networks, and thus unfeasible as well.
 	\\\\
-	We could also replace the laptop in our setup with a smaller unit to be installed in the buses, to collect data for longer periods of time. 
+	We could also replace the laptop in our setup with a smaller unit to be installed in the buses, to collect data for longer periods of time.
 	Running several of these units would allow us to collect enough data to make occupancy predictions.
 
 \subsection*{Change of Application}
