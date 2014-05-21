@@ -51,7 +51,6 @@ Two students worked on each approach, and we planned to combine results into a s
 	The computer ran the wireless card in monitor mode.
 	In normal operation, a wireless card will receive every packet in the vicinity, but discard those that are not specifically addressed to it; in monitor mode all received packets are transmitted to the operating system regardless of intended recipient.
 	The laptop logged the headers of these packets to a file.
-	The log contained time (accurate to the microsecond), source, destination, receving, and transmitting MAC addresses, and signal strength.
 	\\
 	To collect data, we put a laptop's wireless card into monitor mode and ran the following command:
 	\begin{verbatim}
@@ -60,56 +59,73 @@ Two students worked on each approach, and we planned to combine results into a s
 	This command logs the headers of every packet that the wireless card sees, thus uniquely identifying every active device in the area.
 	The strength of signals is also recorded, so we can choose to ignore packets below a certain decibel strength.
 	We followed a bus on its route, logging packets and stop times.
+    
+	\section*{Graph Production}
 
-	\section*{Preprocessing}
+		\subsection*{Preprocessing}
 
-		\subsection*{Sanitization}
-    One of the data fields recorded is the unique MAC addresses identifying the devices.
-		Thus, the first step in creating the graphs was to sanitize the data; we couldn't leave all these MAC addresses in place since they could potentially be used to identify people and their whereabouts, which would subject our study to human subjects regulation.
-    We parsed the log files, replacing each address an index number starting from zero.
-		This way, devices are uniquely identified for our analysis, but the data can be safely distributed.
-
-		\subsection*{Parsing the Data}
-		In order to better analyze the data, we first parsed the log files for information relevant to our goal.
-		The log file contained many irrelevant details -- fields like the type of packet, or the antenna used.
-
-    Each line was converted into a Python Dictionary holding the four potential addresses, the packet's strength, and what time it was sent at. %the four potential adresses?
-    Some packets did not have a strength field -- these were assigned a strength of zero, which can easily be filtered out later, since this is not a strength which could appear naturally.
-		\\
-		Routers periodically broadcast their existance, such that devices may detect and connect.
-    Since these broadcasts are automatic and occur with or without wireless devices, lines of data which were identified as routers broadcasting were removed, and the address identified as a router was flagged in case it might need to be filtered later.
-    At the end of the parsing process, a JSON output is produced.
+	The raw output from running tcpdump contains many irrelevant details -- fields like the type of packet, or the antenna used.
+	As such, our first step in graph production was to preprocess this data, preserving only the information relevant to our goal.
+    The main data of interest was the list of MAC addresses seen in a given packet.
+    Each of these addresses can take one of four roles -- Source, Destination, Transmitter, and Receiver.
+    Every packet will have some, but not all, of these types of addresses.
+    Since each line of tcpdump raw output represents a packet, our log files are first parsed line by line, each line individually stored as a Python Dict -- otherwise known as a Hash Map.
+    These Dicts hold the four potential addresses, the packet's strength, and what time it was sent at (in microseconds) -- all the other information was disregarded.\\
+    A few special considerations needed to be made during preprocessing:
+    \begin{itemize}
+    \item Packets may not have a strength field -- these are assigned a strength of zero, which can easily be filtered out later, since this is not a strength which could possibly appear naturally.
+    \item Some lines contain only the address of a router, with no particular destination in mind.
+    These are broadcast packets, sent to notify devices of the router's existence.
+    Since we are monitoring personal devices, not routers, these lines are ignored, and the address identified as a router is flagged for future filtering.
+    \item Since MAC addresses are usually unique device identifiers, they could potentially be used to identify device owners.
+      This kind of risk could subject our study to human subject regulations.
+      In order to avoid this risk, addresses are saved into the Dicts as index numbers (starting from zero) rather than the actual address.
+      This way, we can still differentiate between multiple devices without having to worry about our data being used for morally questionable purposes.
+    \end{itemize}
+    At the end of the parsing process, the Dicts are dumped into a JSON output file.
     JSON is a open standard data interchange format.
     Using JSON made utilizing the data much easier when it came to producing the graphs -- most languages, Python included, have a standard library implementation for JSON, eliminating the effort spent in re-parsing the data.
 
-	\section*{Processing}
-    For the construction of the graphs, we constructed a processing framework allowing for convenient command-line invocation and parametrization of a variety of scripts.
-		We used two libraries -- Numpy and Pandas.
+	\subsection*{Filtering}
+    The preprocessing done above is only performed once per dataset.
+    Therefore, any sort of filtering that might change between two graphs must be done immediately before the construction of the graph.
+    We built four filters to be run at this stage:
+    \begin{itemize}
+    \item The Strength filter removes packets below a given strength threshold.
+      For example, a strength filter of -50 would filter out packets of -51dB.
+    \item The Zero-Strength filter removes packets which have a strength field of zero.
+      These packets correspond to tcpdump output lines missing a strength field, as mentioned above in the preprocessing section.
+    \item The Router filter removes any addresses which were flagged as routers during the parsing step.
+      It also removes any packets which would no longer contain any addresses after the previous is performed.
+    \item The End Time filter removes any packets past a certain time.
+      This is desirable when you only want to look at a part of a dataset.
+      We never produced a Start Time filter since the need never arose.
+    \end{itemize}
+
+    \subsection*{Graphing}
+    For the construction of the graphs, a few additional libraries were needed: Numpy, Pandas, and Matplotlib.
     Numpy is a high-performance mathematical library for Python, and Pandas is a library built on top of Numpy to provide data structures used in data analysis.
-    First, the generated JSON files were re-read and passed into a Pandas DataFrame.
-    The data is then filtered with any combination of four filters: strength, zero strength, routers, and end time.
-    Strength filtering is simply removing packets which don't meet a certain strength cutoff, and Zero Strength filtering removes those zero-strength packets mentioned earlier.
-    Router filtering filters out any addresses which were flagged as routers during the parsing step.
-    End Time filtering removes any packets past a certain time.
-    After the data has been filtered, it is handed off to one of six different plotting scripts -- each script corresponds to one of the graph types.\\
-
-The packet and unique plots were created by generating an array of 3-second bins and adding the appropriate statistic to the bins.
-In the case of the packet plot, this was simply the number of packets found over those three seconds; the bin is simply an integer.
-In the case of the unique plot, however, the bin is a mathematical set holding the MAC addresses seen over the three second period.
-After the entirety of the three seconds are parsed, the bin is assigned the length of the set.\\
-
-The first-last grid, packet histogram, and vector plot were all created by checking the data set for each address.
-The first time each MAC address is encountered, it is added to a list with an initial value of the time it was seen as both its first and last time seen, and seen-count of one.
-Each additional time an address is seen, its last time seen value is updated to the current time, and its seen-count is incremented.
-In the grid, the addresses are graphed using the first time seen as the x-value and the last time seen as the y-value.
-In the packet histogram, packets which fulfill the requirement of \(t_{first} + t_{max} - t_{last} < 120\) are selected, where \(t_{max}\) is the total observation time.
-These selected packets are then graphed with their y-values set as their seen-count.
-To make the graph easier to interpret, the y-axis was made to be logarithmic, and the addresses are sorted by their y-values.
-For the vector plot, first an array of zeros was initialized with length equal to the length of observation in seconds.
-For each packet, every value between \(t_{first}\) and \(t_{last}\) was incremented.
-The resulting array was plotted as a step function, with the x-axis being its indices.\\
-
-TODO: Add section on segment plot.
+    %TODO: Write about Matplotlib.
+    In order to simplify the graph production process, we made individual scripts for each graph type, plus a meta-script to make a united interface.
+    This meta-script reads a JSON file obtained from the preprocessing step, imports the data into a Pandas DataFrame (which can be thought of as a complicated 2D array), and sends this off to be filtered, as explained in the filtering step.
+    After the data has been filtered, it is handed off to one of the six plotting scripts:
+    \begin{itemize}
+      \item The Packet and Unique plots were created by generating an array of 3-second bins and adding the appropriate statistic to the bins.
+      In the case of the packet plot, this was simply the number of packets found over those three seconds; the bin is simply an integer.
+      In the case of the unique plot, however, the bin is a mathematical set holding the MAC addresses seen over the three second period.
+      After the entirety of the three seconds are parsed, the bin is assigned the length of the set.
+    \item The First-Last Grid, Packet Histogram, and Vector plot were all created by checking the data set for each address.
+      The first time each MAC address is encountered, it is added to a list with an initial value of the time it was seen as both its first and last time seen, and seen-count of one.
+      Each additional time an address is seen, its last time seen value is updated to the current time, and its seen-count is incremented.
+      In the Grid, the addresses are graphed using the first time seen as the x-value and the last time seen as the y-value.
+      In the packet histogram, packets which fulfill the requirement of \(t_{first} + t_{max} - t_{last} < 120\) are selected, where \(t_{max}\) is the total observation time.
+      These selected packets are then graphed with their y-values set as their seen-count.
+      To make the graph easier to interpret, the y-axis was made to be logarithmic, and the addresses are sorted by their y-values.
+      For the Vector plot, first an array of zeros was initialized with length equal to the length of observation in seconds.
+      For each packet, every value between \(t_{first}\) and \(t_{last}\) was incremented.
+      The resulting array was plotted as a step function, with the x-axis being its indices.
+      \item TODO: Segment plot
+    \end{itemize}
 
 \section*{Results}
 
