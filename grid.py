@@ -14,7 +14,7 @@ def addPacket(packet, addresses):
             addresses[add][1] = packet["time"]
             addresses[add][2] += 1
 
-def plotGrid(jason, coincidence=0, units=1000000, labels=None):
+def plotGrid(jason, coincidence=0, units=1000000, labels=None, endTime=0):
     PREFIX="prob"
 
     if PREFIX=="bus":

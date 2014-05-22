@@ -11,11 +11,7 @@ def addPacket(packet, addresses):
             addresses[add][1] = packet["time"]
             addresses[add][2] += 1
 
-
-def plotPacketHistogram(jason, units=1000000, binsize=1, labels=None, endTime=0,
-                        coincidence=0):
-
-    indices = []
+def plotPacketHistogram(jason, units=1000000, labels=None, coincidence=0):
     packetAxis = []
     macAddresses = {}
 
@@ -24,22 +20,20 @@ def plotPacketHistogram(jason, units=1000000, binsize=1, labels=None, endTime=0,
 
     last = jason["packets"]["time"].iget(-1)
 
-    i = 0
-
     for value in macAddresses.values():
         if value[2] < coincidence:
             continue
 
-        check = value[0]+last-value[1]
+        diff = value[0]+last-value[1]
 
-        if check < 120:
-            indices.append(i)
+        if diff < 120:
             packetAxis.append(value[2])
-            i += 1
 
-    plot.bar(indices, packetAxis, color = "black", align = "center")
+    plot.xlim(0,len(packetAxis));
+    plot.bar(range(len(packetAxis)), packetAxis, color="black", align="center")
     plot.xlabel("Unique MAC addresses present for the entire class period")
     plot.ylabel('Number of Packets seen for each MAC address')
     plot.title('Packet Distribution for MAC addresses that remained the whole class period')
 
+    graphlib.makeWidePlot("class","packethist")
     plot.show()
