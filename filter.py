@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 
+# TODO: Add end time filtering
+
 # Note: Filtering out strength does not properly update num_macs.
 # This would be very difficult to implement. Not sure if we should do it.
 def filter(jason, rmRouters=False, strength=0, removeEmptyStr=False):
