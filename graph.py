@@ -2,6 +2,8 @@
 import argparse
 import json
 from filter import filter
+import numpy as np
+import pandas as pd
 
 parser = argparse.ArgumentParser(prog='graph', description=
                                  'Create graphs from JSON created by raw2json')
@@ -12,7 +14,10 @@ args = parser.parse_args()
 
 jason = json.load(args.infile)
 
-filter(jason, routers=True)
+jason["packets"] = pd.DataFrame(jason["packets"])
+jason["routers"] = np.array(jason["routers"])
+
+filter(jason, rmRouters=True)
 
 args.infile.close()
 

@@ -1,41 +1,34 @@
-from blist import blist,sortedset
+import numpy as np
+import pandas as pd
 
-def filter(jason, routers=False, strength=False, strlim=0,
+def filter(jason, rmRouters=False, strength=False, strlim=0,
            removeEmptyStr=False):
-    routers = sortedset(jason["routers"])
-    removeArr = blist()
-    for packet in jason["packets"]:
-        removePkt = False
-        if routers:
-            removePkt = filterRouters(packet, routers)
-        if strength:
-            removePkt = removePkt or filterStrength(packet, strlim,
-                                                    removeEmptyStr)
-        if removePkt:
-            removeArr.append(packet)
-    for packet in removeArr:
-        jason["packets"].remove(packet)
-    if routers:
+    addresses = jason["packets"]["adds"]
+    routers = set(jason["routers"])
+    if strength:
+        suff = jason["packets"].apply(lambda row:
+                                      filterStrength(row, strlim,
+                                                     removeEmptyStr))
+        jason["packets"] = jason["packets"][suff]
+    if rmRouters:
+        addresses = addresses.apply(lambda adds: filterRouters(adds,routers))
+        jason["num_macs"] -= len(jason["routers"])
         del jason["routers"]
+        nempty = jason["packets"].apply(lambda row: len(row["adds"])!=0,
+                                        axis=1)
+        jason["packets"] = jason["packets"][nempty]
 
-# Removes router addresses from each packet
-# Returns True if a packet has no addresses attached to it
-def filterRouters(packet, routers):
-    remove=blist()
-    for type, address in packet["adds"].items():
-        if address in routers:
-            remove.append(type)
+# Removes router addresses from a given address dict.
+def filterRouters(addresses, routers):
+    remove = set()
+    for type, add in addresses.items():
+        if add in routers:
+            remove.add(type)
     for type in remove:
-        del packet["adds"][type]
-    if len(packet["adds"]) == 0:
-        return True
-    return False
+        del addresses[type]
 
-# Returns True if a packet doesn't meet the strength limit
+# Returns True if the strength is sufficient, False otherwise
 def filterStrength(packet, str, removeEmpty=False):
     if "str" in packet:
-        if packet["str"] < str:
-            return True
-    elif removeEmpty:
-        return True
-    return False
+        return packet["str"] > str
+    return not removeEmpty
