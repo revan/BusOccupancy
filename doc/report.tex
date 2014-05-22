@@ -1,5 +1,5 @@
-\documentclass[12pt,journal,compsoc]{IEEEtran}
-\usepackage[T1]{fontenc}
+\documentclass[11pt,journal,compsoc]{IEEEtran} % Set to 11pt if we ever have the luxury of doing so.
+%\usepackage[T1]{fontenc}
 \usepackage{graphicx}
 \usepackage[cmex10]{amsmath}
 \usepackage{fixltx2e}
@@ -156,14 +156,14 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
 
 \subsection*{Stop Length Inference}
 	\begin{figure}[!t]
-      \includegraphics[width=0.5\textwidth]{stop3}
+      \includegraphics[width=0.5\textwidth]{occupancy}
       \caption{Bus Occupancy as a function of Stop Length}
 	\end{figure}
 	As we quickly realized, stop length does not appear to have any correlation to occupancy.
 	This makes sense, because the number of sedentary riders does not cause slowdowns; rather, the relevant metric is the number of people entering or exiting the bus.
 
 	\begin{figure}[!t]
-	  \includegraphics[width=0.5\textwidth]{stop1}
+	  \includegraphics[width=0.5\textwidth]{netdelta}
       \caption{Net Delta Occupancy as a function of Stop Length}
 	\end{figure}
 
@@ -171,7 +171,7 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
 	From stop timings alone, we would not be able to predict the direction of change.
 
 	\begin{figure}[!t]
-	  \includegraphics[width=0.5\textwidth]{stop2}
+	  \includegraphics[width=0.5\textwidth]{absdelta}
       \caption{Absolute Delta Occupancy as a function of Stop Length}
 	\end{figure}
 
@@ -183,7 +183,7 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
 	To test this, we waited at a single bus stop and counted the number of passengers entering and leaving each bus on a certain route, and the length of the stops.
 
 	\begin{figure}[!t]
-	  \includegraphics[width=0.5\textwidth]{onestop}
+	  \includegraphics[width=0.5\textwidth]{onestopcrop}
       \caption{Net Delta Occupancy, Single Stop}
 	\end{figure}
 	% either add a title to this graph or remove the title from all the other graphs
