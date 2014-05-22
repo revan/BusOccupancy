@@ -1,4 +1,4 @@
-\documentclass[letterpaper,english]{scrartcl}
+\documentclass[letterpaper]{scrartcl}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
 \usepackage{float}
@@ -15,7 +15,7 @@
 \begin{abstract}
 In this study we address the problem of programatically predicting bus occupancy.
 We approach this in two ways: by using publically available GPS positions to calculate stop time, and by using promiscuous Wi-Fi to count devices.
-While the stop time approach proved unfruitful due to a lack of correlation between stop time and occupancy, ...
+While the stop time approach proved unfruitful due to a lack of correlation between stop time and occupancy, the Wi-Fi approach yielded substantial data -- though plagued by noise. We conclude by suggesting the efficacious, though prohibited, solution of impersonating a campus access point.
 \end{abstract}
 
 \section*{Motivation}
@@ -116,13 +116,16 @@ Two students worked on each approach, planning to combine results into a single 
 
 	In order to establish which devices were on the bus, we can also plot the time of the first and last occurance of each device:
 
+
 	\begin{figure}[H]
-	%\includegraphics[width=11cm]{}
-	\\TODO: make plot
+	\includegraphics[width=11cm]{firstlastbus}
 	\centering
 	\end{figure}
 
-	TODO: ANALYSIS
+	Each point here represents a unique device, where the x-coordinate is the time of the first sighting, and the y-coordinate is the time of the last sighting.
+	Thus, the high concentration of data points along the line y=x represents the transient devices, most likely all access points.
+	The clump of data points at the top left of the plot represents devices which were seen throughout the journey -- these are most likely in fact the access points of the common first and last stop.
+	\\
 
 
 \section*{Future Work}
