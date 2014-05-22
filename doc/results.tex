@@ -29,6 +29,8 @@ This clearly increases the time requirement to well beyond the scope of this stu
 Thus, while the preliminary foray suggests that this approach is tentatively successful, it is not feasible for this study.
 We move on to our next approach.
 
+\FloatBarrier
+
 \subsection*{Promiscuous WiFi}
     
 \subsubsection*{Packet Plot}
@@ -38,28 +40,29 @@ Plotting the number of packets in a histogram with three second bins (fig.~\ref{
 This roughly lines up to the expected traffic around each stop -- stops like the BCC, Hill, the ARC, and the entirety of College Avenue have a large amount of traffic, while stops near the Visitor's Center and Werblin have very little.
 
 \subsubsection*{Unique MAC Plot}
+\bigfig{unique}{Unique MAC addresses detected per 3-second bin}{fig:busunique}
 
 Network traffic is not a good indicator of occupancy, however, because it represents the amount of activity, rather than the number of actors; a single person transmitting a large amount of data may be interpreted as multiple people with the Packet Plot.
 As such, our next step was to switch out ``number of packets'' for ``number of unique MAC addresses''.
 The Router filter would be used here, since we don't want to count routers among the number of riders.
-
-\bigfig{unique}{Unique MAC addresses detected per 3-second bin}{fig:busunique}
-
 The values on this plot differ noticeably between stops.
 However, this is not due to occupancy; there are clearly not nearly that many people on the bus.
 Instead, it seems that the shape of the plot is primarily influenced by the proximity to routers -- the portions of the bus loop by athletic fields and between campuses has nearly no data.
 
-\subsubsection*{First-Last Grid Plot}
-In order to establish which devices were on the bus, we plotted the time of the first and last occurrence of each device.
+\FloatBarrier
 
+\subsubsection*{First-Last Grid Plot}
 \bigfig{bus-grid-fixed}{First and Last times seen for each MAC address observed while on the bus route}{fig:busgrid}
 
+In order to establish which devices were on the bus, we plotted the time of the first and last occurrence of each device.
 Each point here represents a unique device, where the x-coordinate is the time of the first sighting, and the y-coordinate is the time of the last sighting.
 Thus, the high concentration of data points along the line \(y=x\) represents the transient devices, most likely people the bus was passing by.
 The clump of data points in the top left corner of the plot represents devices which were seen throughout the journey.
 These are most likely our own devices, or stationary devices around the geographically identical first and last stops.
 
 \subsubsection*{Presence Vector Plot}
+\bigfig{bus-vectors-wide}{Predicted number of passengers using the Vector approximation}{fig:vector}
+
 In an attempt to minimize noise from the above transient devices and to compensate for the lack of traffic in uninhabited areas, we construct a plot similar to the previous. % This isn't a complete thought
 For every address we encountered in the collection, we create a vector defined by the following function:
 \begin{equation*}
@@ -70,9 +73,6 @@ For every address we encountered in the collection, we create a vector defined b
 \end{equation*}
 
 We sum these vectors into a single vector, where the value at any point indicates how many devices we can infer are presently on the bus.
-
-\bigfig{bus-vectors-wide}{Predicted number of passengers using the Vector approximation}{fig:vector}
-
 Overlaid on this plot is the step function corresponding to the observed number of riders.
 It is scaled differently, as there is approximately a three time difference between the devices seen and the people riding.
 
@@ -82,4 +82,4 @@ We do see, however, that the two changes in occupancy in this region seem to cor
 		
 Thus, we can conclude that this approach is successful. % I don't know about that, it seems really shaky to just declare that here.
 
-\clearpage
+%\FloatBarrier

@@ -3,6 +3,7 @@
 \usepackage{graphicx}
 \usepackage[cmex10]{amsmath}
 \usepackage{stfloats}
+\usepackage[section,above]{placeins}
 \graphicspath{ {img/} }
 
 % IMPORTANT:
@@ -10,7 +11,7 @@
 %  In other words, use a blank line instead of \\ to start a new paragraph.
 
 \newcommand{\minifig}[3]{
-  \begin{figure}[!tb]
+  \begin{figure}[!tbp]
     \includegraphics[width=\columnwidth]{#1}
     \caption{#2}
     \label{#3}
@@ -18,7 +19,7 @@
 }
 
 \newcommand{\bigfig}[3]{
-  \begin{figure*}[!tb]
+  \begin{figure*}[!tbp]
     \includegraphics[width=\textwidth]{#1}
     \caption{#2}
     \label{#3}
