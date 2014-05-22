@@ -7,56 +7,51 @@ import re
 from annotate import annotate
 from sys import argv
 
+findMac = re.compile("([0-9a-f]{2}:){5}([0-9a-f]{2})")
+findTime = re.compile(" (\d+)us")
+
+# Binsize in microseconds -- 1 is 1us, 1000 is 1ms, 100,000 is 0.1s, etc.
+BINSIZE = 100000
+
 script, filename = argv
 file = open(filename)
 
 xcoord = []
 ycoord = []
 macAddresses = {}
-prevSecond = 0
+
+firstLine = file.readline()
+firstmSec = int(findTime.search(firstLine).group(1))/BINSIZE
+file.seek(0)
 
 for i, line in enumerate(file):
     try:
-        timeObject = time.strptime(line.split()[0].split('.')[0], '%H:%M:%S')
-        if i == 0:
-            first = timeObject
-            firstSec = first.tm_sec+first.tm_min*60+first.tm_hour*3600
-            # firstMin = first.tm_min*60+first.tm_hour*3600
+        tim = int(findTime.search(line).group(1))/BINSIZE
+        msec = tim - firstmSec
 
-        second = timeObject.tm_sec+timeObject.tm_min*60+timeObject.tm_hour*3600 - firstSec
-        print "found a packet at t=" + str(second)
-        #minute = timeObject.tm_min*60+timeObject.tm_hour*3600
-
-        for mac in re.findall("([0-9a-f]{2}:){5}([0-9a-f]{2})", line):
+        for mac in findMac.findall(line):
             if "BSSID" in mac:
-                print "It's a router, I think"
+                #print "It's a router, I think"
                 continue
             if mac not in macAddresses:
-                print "It's a new one"
-                #tempList = []
-                #tempList.append(second)
-                macAddresses[mac] = [second, second]
+                #print "It's a new one"
+                macAddresses[mac] = [msec, msec]
             else:
-                #macAddresses[mac].append(second)
-                macAddresses[mac][1] = second
+                macAddresses[mac][1] = msec
 
     except IndexError:
         print i
 
 else:
-    last = timeObject
-    lastSec = second
-    # lastMin = minute
+    lastSec = msec
 file.close()
 
 for value in macAddresses.itervalues():
     xcoord.append(value[0])
     ycoord.append(value[1])
-    #if len(value) == 1:
-    #    ycoord.append(value[0])
-    #else:
-    #    ycoord.append(value[-1])
 plot.xlim(0,lastSec)
 plot.ylim(0,lastSec)
 plot.scatter(xcoord, ycoord)
+
+plot.savefig('img/grid.png')
 plot.show()

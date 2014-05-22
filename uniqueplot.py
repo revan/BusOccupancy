@@ -13,7 +13,7 @@ findTime = re.compile(" (\d+)us")
 
 END_TIME = 0
 # Binsize in microseconds -- 1 is 1us, 1000 is 1ms, 100,000 is 0.1s, etc.
-BINSIZE = 1000000
+BINSIZE = 100000
 
 hist = []
 bin = []
