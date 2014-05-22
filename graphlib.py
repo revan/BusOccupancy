@@ -17,7 +17,7 @@ def annotate(label, x, y, xoff=0, yoff=0):
 def wideAnnotate(plot, hist, binsize, file='data/sched.json'):
     phil = open(file)
     jason = json.load(phil)
-    for stop in jason:
+    for stop in reversed(jason):
         x = stop["start"]
         y = hist[int(x)/binsize]
         annotate(stop["name"], x, y, 25, 30)
@@ -35,13 +35,12 @@ def squareAnnotate(plot, file='data/sched.json', ymax=0):
 
 def makePlot(x, y, prefix, type):
     plot.gcf().set_size_inches(x, y)
-    # plot.tight_layout()
     plot.savefig('img/' + prefix + '-' + type + '-' +
                  str(x) + 'x' + str(y) + '.png', dpi=200)
 
 
 def makeWidePlot(prefix, type):
-    plot.gcf().set_size_inches(7, 5)
+    plot.gcf().set_size_inches(7, 4)
     plot.savefig('img/' + prefix + '-' + type + '-wide.png', dpi=200,
                  bbox_inches='tight')
 

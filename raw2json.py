@@ -74,7 +74,7 @@ for line in args.infile:
         ldic["str"] = 0
     output["packets"].append(ldic)
 
-output["routers"] = [add["num"] for add in macs.values() if add["r"]].sort()
+output["routers"] = sorted(add["num"] for add in macs.values() if add["r"])
 
 args.outfile.write(json.dumps(output))
 
