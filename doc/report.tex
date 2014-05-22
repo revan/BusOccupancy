@@ -1,13 +1,29 @@
-\documentclass[11pt,journal,compsoc]{IEEEtran} % Set to 11pt if we ever have the luxury of doing so.
+\documentclass[12pt,journal,compsoc]{IEEEtran} % Set to 11pt if we ever have the luxury of doing so.
 %\usepackage[T1]{fontenc}
 \usepackage{graphicx}
 \usepackage[cmex10]{amsmath}
-\usepackage{fixltx2e}
+\usepackage{stfloats}
 \graphicspath{ {img/} }
 
 % IMPORTANT:
 %  This document class uses logical paragraphs rather than manual ones.
 %  In other words, use a blank line instead of \\ to start a new paragraph.
+
+\newcommand{\minifig}[3]{
+  \begin{figure}[!tb]
+    \includegraphics[width=\columnwidth]{#1}
+    \caption{#2}
+    \label{#3}
+  \end{figure}
+}
+
+\newcommand{\bigfig}[3]{
+  \begin{figure*}[!tb]
+    \includegraphics[width=\textwidth]{#1}
+    \caption{#2}
+    \label{#3}
+  \end{figure*}
+}
 
 \begin{document}
 \title{Programatically Predicting [Bus] Occupancy\\
@@ -43,42 +59,43 @@ The aim of this project is to develop a system for better predicting the demand 
 %	We can filter out some of the irrelevant data by ignoring any signals below a certain strength.
 %	This is the most feasible method, but requires external assistance with installation of devices.
 
-\pagebreak
+\clearpage
 
+%TODO: Add descriptions of difficulties encountered in doing each bullet point.
 \appendix[Team Member Contributions]
 Daniel Bordak
 \begin{itemize}
-  \item Collected tcpdump and classroom data
-  \item Created tcpdump output parser used in all plots (not yet in report)
-  \item Optimized graph plotting functions for speed and maintainability
-  \item Cowrote First-Last Grid Plot
-  \item Cowrote Segments Plot (not in report)
-  \item Rewrote Unique Device Plot and Packet Plot to allow for different binsizes (not yet in report)
-  \item Wrote script to generate stop annotations, used on most plots.
-  \item Wrote sections of the report pertaining to the creation of plots
+\item Collected tcpdump and classroom data
+\item Created tcpdump output parser used in all plots (not yet in report)
+\item Optimized graph plotting functions for speed and maintainability
+\item Cowrote First-Last Grid Plot
+\item Cowrote Segments Plot (not in report)
+\item Rewrote Unique Device Plot and Packet Plot to allow for different binsizes (not yet in report)
+\item Wrote script to generate stop annotations, used on most plots.
+\item Wrote sections of the report pertaining to the creation of plots
 \end{itemize}
 Erin Corrado
 \begin{itemize}
-  \item Collected bus and classroom data
-  \item Cowrote First-Last Grid Plot
-  \item Wrote length/occupancy correlation plot
-  \item Cowrote poster
-  \item Cowrote Packet Histogram
+\item Collected bus and classroom data
+\item Cowrote First-Last Grid Plot
+\item Wrote length/occupancy correlation plot
+\item Cowrote poster
+\item Cowrote Packet Histogram
 \end{itemize}
 Revan Sopher
 \begin{itemize}
-  \item Wrote Proposal
-  \item Collected tcpdump data
-  \item Wrote Raw Packet Plot
-  \item Wrote Unique Device Plot
-  \item Cowrote Segments Plot (not in report)
-  \item Wrote Vector Plot
-  \item Wrote Report
+\item Wrote Proposal
+\item Collected tcpdump data
+\item Wrote Raw Packet Plot
+\item Wrote Unique Device Plot
+\item Cowrote Segments Plot (not in report)
+\item Wrote Vector Plot
+\item Wrote Report
 \end{itemize}
 Ashley Weaver
 \begin{itemize}
-  \item Collected bus data
-  \item Cowrote Poster
-  \item Commented on report
+\item Collected bus data
+\item Cowrote Poster
+\item Commented on report
 \end{itemize}
 \end{document}
