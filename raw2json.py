@@ -76,7 +76,7 @@ for line in args.infile:
 
 output["routers"] = sorted(add["num"] for add in macs.values() if add["r"])
 
-args.outfile.write(json.dumps(output))
+json.dump(output, args.outfile)
 
 args.infile.close()
 args.outfile.close()

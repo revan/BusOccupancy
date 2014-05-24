@@ -60,10 +60,18 @@ Thus, the high concentration of data points along the line \(y=x\) represents th
 The clump of data points in the top left corner of the plot represents devices which were seen throughout the journey.
 These are most likely our own devices, or stationary devices around the geographically identical first and last stops.
 
+\subsubsection*{Segments Plot}
+\bigfig{bus-segments-wide}{Predicted number of passengers using the Segments approximation}{fig:segments}
+The segments plot was created using the procedure for segments plot described in the Graphing section. The plot (Fig. 8) shows the actual number of bus passengers as we observed (the purple function) overlayed
+with the function that we calculated using the lengths of each intersect-set (the blue function). One can see that the calculated function is accurate for the stops after Werblin.
+The discrepancy between the actual and calculated number of bus passengers at the BCC may be influenced by the fact that we had started observation and recording at this location. In this method, more routers
+equals more stop-to-stop change. This fact means the calculated function will appear more accurate in areas with more devices. There are more routers around the College Avenue areas, so the calculated function
+appears more accurate at these stops in comparison to stops like Werblin, which have fewer surrounding devices and routers. Due to the limitations of this method, we progressed to creating the vector plot.
+
 \subsubsection*{Presence Vector Plot}
 \bigfig{bus-vectors-wide}{Predicted number of passengers using the Vector approximation}{fig:vector}
 
-In an attempt to minimize noise from the above transient devices and to compensate for the lack of traffic in uninhabited areas, we construct a plot similar to the previous. % This isn't a complete thought
+In an attempt to minimize noise from the above transient devices and to compensate for the lack of traffic in uninhabited areas, we constructed a plot similar to the previous. 
 For every address we encountered in the collection, we create a vector defined by the following function:
 \begin{equation*}
   f(t) = \begin{cases}

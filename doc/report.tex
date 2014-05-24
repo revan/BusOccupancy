@@ -3,7 +3,9 @@
 \usepackage{graphicx}
 \usepackage[cmex10]{amsmath}
 \usepackage{stfloats}
-\usepackage[section,above]{placeins}
+\usepackage[section]{placeins}
+\usepackage{minted}
+\usemintedstyle{tango}
 \graphicspath{ {img/} }
 
 % IMPORTANT:
@@ -11,7 +13,7 @@
 %  In other words, use a blank line instead of \\ to start a new paragraph.
 
 \newcommand{\minifig}[3]{
-  \begin{figure}[!tbp]
+  \begin{figure}[!t]
     \includegraphics[width=\columnwidth]{#1}
     \caption{#2}
     \label{#3}
@@ -19,10 +21,18 @@
 }
 
 \newcommand{\bigfig}[3]{
-  \begin{figure*}[!tbp]
+  \begin{figure*}[!t]
     \includegraphics[width=\textwidth]{#1}
     \caption{#2}
     \label{#3}
+  \end{figure*}
+}
+
+\newcommand{\logfig}[4]{
+  \begin{figure*}[!t]
+    \inputminted{#1}{#2}
+    \caption{#3}
+    \label{#4}
   \end{figure*}
 }
 
@@ -70,7 +80,7 @@ Daniel Bordak
 \item Created tcpdump output parser used in all plots (not yet in report)
 \item Optimized graph plotting functions for speed and maintainability
 \item Cowrote First-Last Grid Plot
-\item Cowrote Segments Plot (not in report)
+\item Cowrote Segments Plot 
 \item Rewrote Unique Device Plot and Packet Plot to allow for different binsizes (not yet in report)
 \item Wrote script to generate stop annotations, used on most plots.
 \item Wrote sections of the report pertaining to the creation of plots
@@ -89,7 +99,7 @@ Revan Sopher
 \item Collected tcpdump data
 \item Wrote Raw Packet Plot
 \item Wrote Unique Device Plot
-\item Cowrote Segments Plot (not in report)
+\item Cowrote Segments Plot
 \item Wrote Vector Plot
 \item Wrote Report
 \end{itemize}
@@ -99,4 +109,5 @@ Ashley Weaver
 \item Cowrote Poster
 \item Commented on report
 \end{itemize}
+
 \end{document}

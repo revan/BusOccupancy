@@ -2,6 +2,8 @@
 
 \subsection*{Preprocessing}
 
+\logfig{json}{fancybus.json}{Example json output, abbreviated}{fig:json}
+
 The raw output from running tcpdump contains many irrelevant details -- fields like the type of packet, or the antenna used.
 As such, our first step in graph production was to preprocess this data, preserving only the information relevant to our goal.
 The main data of interest was the list of MAC addresses seen in a given packet.
@@ -24,6 +26,7 @@ A few special considerations needed to be made during this step:
   In order to avoid this risk, addresses are saved into the Dicts as index numbers (starting from zero) rather than the actual address.
   This way, we can still differentiate between multiple devices without having to worry about our data being used for morally questionable purposes.
 \end{itemize}
+
 At the end of the parsing process, the Dicts are dumped into a JSON output file.
 JSON is a open standard data interchange format.
 Using JSON made utilizing the data much easier when it came to producing the graphs; most languages, Python included, have a standard library implementation for JSON, eliminating the effort spent in re-parsing the data. % TODO: Add example JSON output -- re-run raw2json with prettyprint on.

@@ -18,15 +18,22 @@ In order to establish a correlation between stop length and bus occupancy, we fo
 
 \subsection*{Promiscuous WiFi}
 
+\logfig{text}{bus.dat}{Example tcpdump output\protect\footnotemark}{fig:tcpdump}
+
 In this approach, we used the inherent correlation between the number of smartphones on the bus and the number of passengers; it is reasonable to assume that more devices means more passengers, since the devices travel with the passengers.
 We hold that this correlation is fundamental enough to not require investigation, unlike the other approach.
 
 Data collection was performed with a laptop running Linux, equipped with a typical 802.11n wireless card and a GPS sensor.
 The computer ran the wireless card in monitor mode.
 In normal operation, a wireless card will receive every packet in the vicinity, but discard those that are not specifically addressed to it; in monitor mode all received packets are transmitted to the operating system regardless of intended recipient. With this setup, we ran the following command:
-\begin{verbatim}
-  tcpdump -e
-\end{verbatim}
+\mint{bash}|tcpdump -e|
 This command logs the headers of every packet that the wireless card sees, thus uniquely identifying every active device in the area.
 The strength of signals is also recorded, so we can choose to ignore packets below a certain decibel strength.
-We rode a bus along its route, logging packets and stop times. %TODO: Add example bits of a log file, with the addresses replaced with ``XX:XX:XX:XX:XX''
+We rode a bus along its route, logging packets and stop times.
+
+\footnotetext{
+  This logfile has been modified from its original version.
+  It has been formatted to fit this page.
+  The original output had one line per packet.
+  Additionally, MAC addresses have been censored to protect the privacy of those we observed.
+}
