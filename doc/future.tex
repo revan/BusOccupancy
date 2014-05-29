@@ -1,5 +1,9 @@
 \section{Future Work}
 
+\bigfig{lecture-grid}{First and Last times seen for each MAC address during the class period}{fig:probgrid}
+
+\bigfig{packethist-sorted}{Number of packets involving each MAC address present during the entirety of the class period}{fig:probhist}
+
 \subsection*{Continuation of Benchmark}
 The Stop Length Inference approach seemed promising, but we would need to benchmark every stop several times in order to be able to know which direction of occupancy change a long stop indicates.
 As such, there is substantial opportunity to complete this benchmarking in order to complete that approach.
@@ -17,11 +21,7 @@ We could also replace the laptop in our setup with a smaller unit to be installe
 Running several of these units would allow us to collect enough data to make occupancy predictions.
 
 \subsection*{Alternative Application}
-While we initially set out to programatically predict the occupancy of buses, the Promiscuous Wi-Fi approach is also applicable to the determination of the occupancy of other scenarios.
-To demonstrate, we ran tcpdump for twenty minutes during a lecture, and followed a similar analysis procedure.
-The concept of "stops" doesn't apply to this situation; however, we can still derive interesting results.
 
-\bigfig{lecture-grid}{First and Last times seen for each MAC address during the class period}{fig:probgrid}
 
 As before, the points around \(y=x\) consist of transient devices.
 The points in the clump to the top right is probably due to a buildup of students outside the lecture hall awaiting the following class.
@@ -30,10 +30,10 @@ The points in the clump to the top left represent the devices that were present 
 There were exactly 106 students in the lecture hall during this collection; while determining the exact boundaries is of a complexity outside the scope of this project, the clump in the top left contains approximately 100 points.
 This suggests that this approach does generate an accurate count of the lecture hall occupancy.
 
-\bigfig{packethist-sorted}{Number of packets involving each MAC address present during the entirety of the class period}{fig:probhist}
-
 In this plot we see that we can partition devices into classes based on how frequent the packets.
 While a small number of devices were generating enormous amounts of network traffic with millions of packets, others generated orders of magnitude fewer.
 	
 This suggests another interesting path of inquiry: monitoring the interest of an audience based on network traffic.
 The assumption here is that a bored audience is more likely to cause network traffic by web browsing.
+
+\FloatBarrier
