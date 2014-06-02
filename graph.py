@@ -2,7 +2,7 @@
 import click
 import json
 import pandas as pd
-import numpy as np
+import matplotlib
 from filter import filter
 from grid import plotGrid
 from unique import plotUnique
@@ -46,8 +46,9 @@ def graph(infile, graph_type, router_filtering, strength_filtering,
 
     filter(jason, router_filtering, strength_filtering,
            missing_strength_filtering, end_time)
-    print(jason["packets"]["time"])
     jason["last"] = jason["packets"]["time"].iget(-1)
+
+    matplotlib.rcParams.update({'font.size': 11})
 
     if(graph_type == "unique"):
         plotUnique(jason, binsize=binsize, labels=use_labels)

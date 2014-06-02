@@ -15,7 +15,7 @@ def plotPackets(jason, binsize=1, labels=None):
     plot.bar(xaxis, bins, width=1, edgecolor='#000033')
     plot.xlim(0, jason["last"])
     plot.xlabel('Seconds since '+jason["initial_time"])
-    plot.ylabel('Unique MACs in '+str(binsize)+' second interval')
+    plot.ylabel('Number of Packets in '+str(binsize)+' second interval')
     plot.title('April 7th, A Route')
 
     if(labels):

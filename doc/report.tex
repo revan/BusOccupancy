@@ -1,18 +1,20 @@
-\documentclass[letterpaper,abstract=on,titlepage=false]{scrreprt}
+%\documentclass[letterpaper,abstract,titlepage=false,twocolumn]{scrreprt}
+\documentclass[12pt]{IEEEtran}
 %Report without title page, Abstract has a special title
-\usepackage[T1]{fontenc}
+%\usepackage[T1]{fontenc}
 \usepackage{graphicx}
+%\usepackage{fixltx2e}
 \usepackage{float}
-\usepackage{lmodern} %Better fonts
+%\usepackage{lmodern} %Better fonts
 \graphicspath{ {img/} }
 
 \begin{document}
-\title{Programatically Predicting Bus Occupancy}
-\subtitle{Undergraduate Independent Research Report}
-\author{Daniel Bordak, Erin Corrado, Revan Sopher, and Ashley Weaver}
+\title{Programatically Predicting Bus Occupancy\\
+{\large Undergraduate Independent Research Report}}
+\author{Daniel~Bordak, Erin~Corrado, Revan~Sopher, and Ashley~Weaver}
 
 \maketitle
-
+                      
 \begin{abstract}
 In this study we address the problem of programatically predicting bus occupancy.
 We approach this in two ways: by using publicly available GPS positions to calculate stop time, and by using promiscuous Wi-Fi to count devices.
@@ -20,21 +22,22 @@ While the stop time approach proved unfruitful due to the significant time requi
 We conclude by suggesting modifications to the experiment, and the application of this methodology to the determination of occupancy of other locales.
 \end{abstract}
 
-\section*{Motivation}
+\section{Motivation}
 
-Due to the periodic nature of class schedules, students at Rutgers tend to move between campuses in certain known time intervals during the day.
+                      \IEEEPARstart{D}{ue to}
+the periodic nature of class schedules, students at Rutgers tend to move between campuses in certain known time intervals during the day.
 This leads to predictable migratory patterns.
 However, the bus schedule does a poor job of taking student schedules into account -- for example, on Livingston campus, the buses headed to College Avenue can often be found lined up at the stops consecutively, while the buses headed to Busch are much rarer.
 To make matters worse, the Busch buses are usually packed to capacity between class periods.
 The aim of this project is to develop a system for better predicting the demand for buses, such that an empirical argument for the optimization of the bus schedule might be made.
 
-\section*{Approach}
+\section{Approach}
 
 In order to facilitate simultaneous contributions from all four team members, we approached the problem in two manners: by directly collecting data about number of riders vs. stop time, and by measuring number of devices on the bus.
 Two students were assigned to work on each approach.
 Ultimately, we planned to combine results into a single prediction method.
 
-	\subsection*{Stop Length Inference}
+\subsection*{Stop Length Inference}
 
 	In this approach, we planned to establish a correlation between the length of time a bus spends at a stop and the number of passengers currently aboard.
 Our initial theory was that a bus nearing capacity would take longer at stops due to the larger number of riders entering and exiting.
@@ -45,7 +48,7 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
 	\\
 	In order to establish a correlation between stop length and bus occupancy, we followed a bus on its circuit, recording data about its stops. Specifically, we recorded the number of people boarding or departing the bus, the length of the stop, and what time it was.
 
-	\subsection*{Promiscuous WiFi}
+\subsection*{Promiscuous WiFi}
 
 	In this approach, we used the inherent correlation between the number of smartphones on the bus and the number of passengers; it is reasonable to assume that more devices means more passengers, since the devices travel with the passengers.
 	We hold that this correlation is fundamental enough to not require investigation, unlike the other approach.\\
@@ -59,23 +62,26 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
 	The strength of signals is also recorded, so we can choose to ignore packets below a certain decibel strength.
 	We followed a bus on its route, logging packets and stop times.
     
-	\section*{Graph Production}
+\section{Graph Production}
 
-		\subsection*{Preprocessing}
+\subsection*{Preprocessing}
 
 	The raw output from running tcpdump contains many irrelevant details -- fields like the type of packet, or the antenna used.
 	As such, our first step in graph production was to preprocess this data, preserving only the information relevant to our goal.
     The main data of interest was the list of MAC addresses seen in a given packet.
-    Each of these addresses can take one of four roles -- Source, Destination, Transmitter, and Receiver.
+    Each of these addresses can take one of four roles: Source, Destination, Transmitter, and Receiver.
     Every packet will have some, but not all, of these types of addresses.
     Since each line of tcpdump raw output represents a packet, our log files are first parsed line by line, each line individually stored as a Python Dict -- otherwise known as a Hash Map.
-    These Dicts hold the four potential addresses, the packet's strength, and what time it was sent at (in microseconds) -- all the other information was disregarded.\\
-    A few special considerations needed to be made during preprocessing:
+    These Dicts hold the four potential addresses, the packet's strength, and what time it was sent at (in microseconds).
+    All the other information was disregarded; ignoring information during preprocessing is the simplest way of removing it from the data.\\
+    A few special considerations needed to be made during this step:
     \begin{itemize}
-    \item Packets may not have a strength field -- these are assigned a strength of zero, which can easily be filtered out later, since this is not a strength which could possibly appear naturally.
+    \item Packets may not have a strength field.
+      To make data handling easier later on, these are assigned a strength of zero.
+      This is easier since it can be filtered out later simply by checking that the strength field is nonzero; a zero strength appearing naturally is impossible. 
     \item Some lines contain only the address of a router, with no particular destination in mind.
-    These are broadcast packets, sent to notify devices of the router's existence.
-    Since we are monitoring personal devices, not routers, these lines are ignored, and the address identified as a router is flagged for future filtering.
+      These are broadcast packets, sent to notify devices of the router's existence.
+      Since we are monitoring personal devices, not routers, these lines are ignored, and the address identified as a router is flagged for future filtering.
     \item Since MAC addresses are usually unique device identifiers, they could potentially be used to identify device owners.
       This kind of risk could subject our study to human subject regulations.
       In order to avoid this risk, addresses are saved into the Dicts as index numbers (starting from zero) rather than the actual address.
@@ -83,9 +89,9 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
     \end{itemize}
     At the end of the parsing process, the Dicts are dumped into a JSON output file.
     JSON is a open standard data interchange format.
-    Using JSON made utilizing the data much easier when it came to producing the graphs -- most languages, Python included, have a standard library implementation for JSON, eliminating the effort spent in re-parsing the data.
+    Using JSON made utilizing the data much easier when it came to producing the graphs; most languages, Python included, have a standard library implementation for JSON, eliminating the effort spent in re-parsing the data.
 
-	\subsection*{Filtering}
+\subsection*{Filtering}
     The preprocessing done above is only performed once per dataset.
     Therefore, any sort of filtering that might change between two graphs must be done immediately before the construction of the graph.
     We built four filters to be run at this stage:
@@ -98,10 +104,10 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
       It also removes any packets which would no longer contain any addresses after the previous is performed.
     \item The End Time filter removes any packets past a certain time.
       This is desirable when you only want to look at a part of a dataset.
-      We never produced a Start Time filter since the need never arose.
+      We never produced a corresponding Start Time filter since the need never arose.
     \end{itemize}
 
-    \subsection*{Graphing}
+\subsection*{Graphing}
     For the construction of the graphs, a few additional libraries were needed: Numpy, Pandas, and Matplotlib.
     Numpy is a high-performance mathematical library for Python, and Pandas is a library built on top of Numpy to provide data structures used in data analysis.
     %TODO: Write about Matplotlib.
@@ -109,7 +115,7 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
     This meta-script reads a JSON file obtained from the preprocessing step, imports the data into a Pandas DataFrame (which can be thought of as a complicated 2D array), and sends this off to be filtered, as explained in the filtering step.
     After the data has been filtered, it is handed off to one of the six plotting scripts:
     \begin{itemize}
-      \item The Packet and Unique plots were created by generating an array of 3-second bins and adding the appropriate statistic to the bins.
+    \item The Packet and Unique plots were created by generating an array of 3-second bins and adding the appropriate statistic to the bins.
       In the case of the packet plot, this was simply the number of packets found over those three seconds; the bin is simply an integer.
       In the case of the unique plot, however, the bin is a mathematical set holding the MAC addresses seen over the three second period.
       After the entirety of the three seconds are parsed, the bin is assigned the length of the set.
@@ -123,30 +129,27 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
       For the Vector plot, first an array of zeros was initialized with length equal to the length of observation in seconds.
       For each packet, every value between \(t_{first}\) and \(t_{last}\) was incremented.
       The resulting array was plotted as a step function, with the x-axis being its indices.
-      \item TODO: Segment plot
+    \item TODO: Segment plot
     \end{itemize}
 
 \section*{Results}
 
 \subsection*{Stop Length Inference}
 	\begin{figure}[H]
-	\includegraphics[width=11cm]{stop3}
-	\centering
+	\includegraphics[width=0.5\textwidth]{stop3}
 	\end{figure}
-	As we quickly found, stop length does not appear to have any correlation to occupancy.
+	As we quickly realized, stop length does not appear to have any correlation to occupancy.
 	This makes sense, because the number of sedentary riders does not cause slowdowns; rather, the relevant metric is the number of people entering or exiting the bus.
 
 	\begin{figure}[H]
-	\includegraphics[width=11cm]{stop1}
-	\centering
+	\includegraphics[width=0.5\textwidth]{stop1}
 	\end{figure}
 
 	Plotting the net occupancy change as a function of stop length was also inconclusive, as the longer stops could signify either positive or negative changes.
 	From stop timings alone, we would not be able to predict the direction of change.
 
 	\begin{figure}[H]
-	\includegraphics[width=11cm]{stop2}
-	\centering
+	\includegraphics[width=0.5\textwidth]{stop2}
 	\end{figure}
 
 	Net change, however, shows a stronger correlation, confirming our hypothesis that high rider throughput causes delays. % That wasn't our hypothesis... Re-read Approach/Stop Length Inference.
@@ -158,8 +161,7 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
 
 	%TODO:
 	\begin{figure}[H]
-	GRAPH OF CHANGE AT SINGLE STOP GOES HERE
-	\centering
+	\includegraphics[width=0.5\textwidth]{onestop}
 	\end{figure}
 	% either add a title to this graph or remove the title from all the other graphs
 
@@ -176,12 +178,10 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
 \subsection*{Promiscuous WiFi}
     
 	\subsubsection*{Packet Plot}
-
-		\begin{figure}[H]
-		\includegraphics[width=11cm]{packets}
+		\begin{figure*}[!t]
+		\includegraphics[width=\textwidth]{packets-fixed}
 		\\TODO: swap out plot for new data
-		\centering
-		\end{figure}
+		\end{figure*}
 
 		Plotting the number of packets in a histogram with one second bins, we see that there are visible differences between stops. % I think I used 3 second bins...
 		There are a few extreme spikes in network traffic, which can be ignored as extraneous points.
@@ -192,11 +192,9 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
 		As such, our next step was to switch out ``number of packets'' for ``number of unique MAC addresses''.
 		The Router filter would be used here, since we don't want to count routers among the number of riders.
 
-		\begin{figure}[H]
-		\includegraphics[width=16cm]{bus-unique-no-filtering}
-		\\TODO: remake with strength cutoff, step function overlay, fix spelling of Scott
-		\centering
-		\end{figure}
+		\begin{figure*}[!t]
+		\includegraphics[width=\textwidth]{bus-unique-fixed}
+		\end{figure*}
 
 		The values on this plot differ noticeably between stops.
 		However, this is not due to occupancy; there are clearly not nearly that many people on the bus.
@@ -206,9 +204,7 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
 		In order to establish which devices were on the bus, we plotted the time of the first and last occurrence of each device:
 
 		\begin{figure}[H]
-		\includegraphics[width=16cm]{bus-grid-no-filtering}
-		\\TODO: remake with strength cutoff, fix spelling of Scott
-		\centering
+		\includegraphics[width=0.5\textwidth]{bus-grid-fixed}
 		\end{figure}
 
 		Each point here represents a unique device, where the x-coordinate is the time of the first sighting, and the y-coordinate is the time of the last sighting.
@@ -230,10 +226,9 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
 
 		We sum these vectors into a single vector, where the value at any point indicates how many devices we can infer are presently on the bus.
 
-		\begin{figure}[H]
-		\includegraphics[width=17cm]{bus-vectors-wide}
-		\centering
-		\end{figure}
+		\begin{figure*}[!t]
+		\includegraphics[width=\textwidth]{bus-vectors-wide}
+		\end{figure*}
 
 		Overlaid on this plot is the step function corresponding to the observed number of riders.
 		It is scaled differently, as there is approximately a three time difference between the devices seen and the people riding.
@@ -251,11 +246,11 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
 
 \section*{Future Work}
     
-    \subsection*{Continuation of Benchmark}
+\subsection*{Continuation of Benchmark}
 	The Stop Length Inference approach seemed promising, but we would need to benchmark every stop several times in order to be able to know which direction of occupancy change a long stop indicates.
     As such, there is substantial opportunity to complete this benchmarking in order to complete that approach.
 
-    \subsection*{Alternative Approach}
+\subsection*{Alternative Approach}
 	The largest problem with the interception of packets is outside noise.
 	To address this, we would like to install an access point on the bus, with the same SSID as the campus Wi-Fi so that smart phones would automatically connect.
 	We could then listen only to communications with this access point, eliminating outside traffic.
@@ -267,16 +262,14 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
 	We could also replace the laptop in our setup with a smaller unit to be installed in the buses, to collect data for longer periods of time.
 	Running several of these units would allow us to collect enough data to make occupancy predictions.
 
-    \subsection*{Alternative Application}
+\subsection*{Alternative Application}
 	While we initially set out to programatically predict the occupancy of buses, the Promiscuous Wi-Fi approach is also applicable to the determination of the occupancy of other scenarios.
 	To demonstrate, we ran tcpdump for twenty minutes during a lecture, and followed a similar analysis procedure.
-	The concept of "stops" doesn't apply to this situation, however we can still derive interesting results.
+	The concept of "stops" doesn't apply to this situation; however, we can still derive interesting results.
 
 	\begin{figure}[H]
-		\includegraphics[width=12cm]{prob-grid-final}
-		\centering
-		\\TODO: Title "Lecture"
-	\end{figure}
+		\includegraphics[width=0.5\textwidth]{lecture-grid}
+		\end{figure}
 
 	As before, the points around \(y=x\) consist of transient devices.
 	The points in the clump to the top right is probably due to a buildup of students outside the lecture hall awaiting the following class.
@@ -284,13 +277,10 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
 	\\
 	There were exactly 106 students in the lecture hall during this collection; while determining the exact boundaries is of a complexity outside the scope of this project, the clump in the top left contains approximately 100 points.
 	This suggests that this approach does generate an accurate count of the lecture hall occupancy.
-    TODO: Rewrite second paragraph since initial count of ~100 points was inaccurate.
 
-	\begin{figure}[H]
-		\includegraphics[width=17cm]{packethist-log}
-		\centering
-		\\TODO: Replace with sorted version
-	\end{figure}
+	\begin{figure*}[!t]
+		\includegraphics[width=\textwidth]{packethist-sorted}
+		\end{figure*}
 
 	In this plot we see that we can partition devices into classes based on how frequent the packets.
 	While a small number of devices were generating enormous amounts of network traffic with millions of packets, others generated orders of magnitude fewer.
@@ -298,17 +288,17 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
 	This suggests another interesting path of inquiry: monitoring the interest of an audience based on network traffic.
 	The assumption here is that a bored audience is more likely to cause network traffic by web browsing.
 
-\chapter*{Team Member Contributions}
+\appendix[Team Member Contributions]
 Daniel Bordak
 \begin{itemize}
   \item Collected tcpdump and classroom data
   \item Created tcpdump output parser used in all plots (not yet in report)
-  \item Optimized graph plotting functions for speed
+  \item Optimized graph plotting functions for speed and maintainability
   \item Cowrote First-Last Grid Plot
   \item Cowrote Segments Plot (not in report)
   \item Rewrote Unique Device Plot and Packet Plot to allow for different binsizes (not yet in report)
-  \item Wrote Stop-Time parser for use in plot annotations.
-  \item Wrote sections of the report pertaining to the creation of plots.
+  \item Wrote script to generate stop annotations, used on most plots.
+  \item Wrote sections of the report pertaining to the creation of plots
 \end{itemize}
 Erin Corrado
 \begin{itemize}
@@ -316,6 +306,7 @@ Erin Corrado
   \item Cowrote First-Last Grid Plot
   \item Wrote length/occupancy correlation plot
   \item Cowrote poster
+  \item Cowrote Packet Histogram
 \end{itemize}
 Revan Sopher
 \begin{itemize}
