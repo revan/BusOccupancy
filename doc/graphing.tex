@@ -1,6 +1,6 @@
 \section{Graph Production}
 
-\subsection*{Preprocessing}
+\subsection{Preprocessing}
 
 \biglst{json}{fancybus.json}{Example json output, abbreviated}{lst:json}
 
@@ -31,7 +31,7 @@ At the end of the parsing process, the Dicts are dumped into a JSON output file.
 JSON is a open standard data interchange format.
 Using JSON made utilizing the data much easier when it came to producing the graphs; most languages, Python included, have a standard library implementation for JSON, eliminating the effort spent in re-parsing the data. % TODO: Add example JSON output -- re-run raw2json with prettyprint on.
 
-\subsection*{Filtering}
+\subsection{Filtering}
 The preprocessing done above is only performed once per dataset.
 Therefore, any sort of filtering that might change between two graphs must be done immediately before the construction of the graph.
 We built four filters to be run at this stage:
@@ -47,7 +47,7 @@ We built four filters to be run at this stage:
   We never produced a corresponding Start Time filter since the need never arose.
 \end{itemize}
 
-\subsection*{Graphing}
+\subsection{Graphing}
 For the construction of the graphs, a few additional libraries were needed: Numpy, Pandas, and Matplotlib.
 Numpy is an advanced mathematical library for Python, and Pandas is a library built on top of Numpy to provide high-performance data structures.
 We used these for data analysis.

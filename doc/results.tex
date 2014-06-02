@@ -5,7 +5,7 @@
 \minifig{netdelta}{Net Delta Occupancy as a function of Stop Length}{fig:netdelta}
 \minifig{absdelta}{Absolute Delta Occupancy as a function of Stop Length}{fig:absdelta}
 \minifig{onestopcrop}{Net Delta Occupancy, Single Stop}{fig:onestop}
-\subsection*{Stop Length Inference}
+\subsection{Stop Length Inference}
 
 Analyzing this data (fig.~\ref{fig:occ}), it quickly became apparant that stop length does not have any correlation to occupancy.
 This makes sense, because the number of sedentary riders does not cause slowdowns; rather, the relevant metric is the number of people entering or exiting the bus.
@@ -29,16 +29,13 @@ This clearly increases the time requirement to well beyond the scope of this stu
 Thus, while the preliminary foray suggests that this approach is tentatively successful, it is not feasible for this study.
 We move on to our next approach.
 
-\FloatBarrier
-\subsection*{Promiscuous WiFi}
+\subsection{Promiscuous WiFi}
     
 \subsubsection*{Packet Plot}
 \bigfig{packets}{Packets detected per 3-second bin}{fig:buspackets}
 
 Plotting the number of packets in a histogram with three second bins (fig.~\ref{fig:buspackets}), we see that there are visible differences between stops.
 This roughly lines up to the expected traffic around each stop -- stops like the BCC, Hill, the ARC, and the entirety of College Avenue have a large amount of traffic, while stops near the Visitor's Center and Werblin have very little.
-\the\columnwidth
-\the\textwidth
 
 \subsubsection*{Unique MAC Plot}
 \bigfig{unique}{Unique MAC addresses detected per 3-second bin}{fig:busunique}
@@ -74,8 +71,8 @@ In an attempt to minimize noise from the above transient devices and to compensa
 For every address we encountered in the collection, we create a vector defined by the following function:
 \begin{equation*}
   f(t) = \begin{cases}
-    1 & t_{firstSeen} \le t \le t_{lastSeen}\\
-    0 & otherwise
+    1 & t_{\text{firstSeen}} \le t \le t_{\text{lastSeen}}\\
+    0 & \text{otherwise}
   \end{cases}
 \end{equation*}
 
