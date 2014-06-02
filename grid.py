@@ -20,7 +20,7 @@ def plotGrid(jason, coincidence=0, name="", labels=False):
 
     plot.xlim(0, jason["last"])
     plot.ylim(0, jason["last"])
-    plot.scatter(xcoord, ycoord)
+    plot.hexbin(xcoord, ycoord, bins='log')
 
     plot.title(name + " -- under coincidence " + str(coincidence)
                if coincidence > 0 else name)
