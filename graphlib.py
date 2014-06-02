@@ -14,13 +14,15 @@ def annotate(label, x, y, xoff=0, yoff=0):
                                   "angle3,angleA=0,angleB=-90"))
 
 
-def wideAnnotate(plot, hist, binsize, file='data/sched.json'):
+def wideAnnotate(plot, hist, binsize, ymax=10000, file='data/sched.json'):
     phil = open(file)
     jason = json.load(phil)
+    yprev = -ymax
     for stop in reversed(jason):
         x = stop["start"]
         y = hist[int(x)/binsize]
-        annotate(stop["name"], x, y, 25, 30)
+        annotate(stop["name"], x, y, 15, 25 if abs(yprev-y) < ymax/20 else 15)
+        yprev = y
 
 
 def squareAnnotate(plot, file='data/sched.json', ymax=0):
@@ -40,12 +42,14 @@ def makePlot(x, y, prefix, type):
 
 
 def makeWidePlot(prefix, type):
-    plot.gcf().set_size_inches(7, 4)
-    plot.savefig('img/' + prefix + '-' + type + '-wide.png', dpi=200,
+    plot.gcf().set_size_inches(6.9, 3.8)
+    plot.tight_layout()
+    plot.savefig('img/' + prefix + '-' + type + '-wide.pgf',
                  bbox_inches='tight')
 
 
 def makeSquarePlot(prefix, type):
-    plot.gcf().set_size_inches(7, 7)
-    plot.savefig('img/' + prefix + '-' + type +
-                 '-square.png', dpi=200)
+    plot.gcf().set_size_inches(6.9, 6.5)
+    plot.tight_layout()
+    plot.savefig('img/' + prefix + '-' + type + '-square.pgf',
+                 bbox_inches='tight')

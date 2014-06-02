@@ -1,17 +1,17 @@
 \section{Results}
 
-\subsection*{Stop Length Inference}
 \minifig{occupancy}{Bus Occupancy as a function of Stop Length}{fig:occ}
 %TODO: Clarify whether this is for the following or preceeding stop. I don't actually remember.
 \minifig{netdelta}{Net Delta Occupancy as a function of Stop Length}{fig:netdelta}
+\minifig{absdelta}{Absolute Delta Occupancy as a function of Stop Length}{fig:absdelta}
+\minifig{onestopcrop}{Net Delta Occupancy, Single Stop}{fig:onestop}
+\subsection*{Stop Length Inference}
 
 Analyzing this data (fig.~\ref{fig:occ}), it quickly became apparant that stop length does not have any correlation to occupancy.
 This makes sense, because the number of sedentary riders does not cause slowdowns; rather, the relevant metric is the number of people entering or exiting the bus.
 Plotting the net occupancy change as a function of stop length (fig.~\ref{fig:netdelta}) was also inconclusive, as the longer stops could signify either positive or negative changes.
 From stop timings alone, we would not be able to predict the direction of change.
     
-\minifig{absdelta}{Absolute Delta Occupancy as a function of Stop Length}{fig:absdelta}
-\minifig{onestopcrop}{Net Delta Occupancy, Single Stop}{fig:onestop}
 
 Absolute change (fig.~\ref{fig:absdelta}), however, shows a much stronger correlation than either of the previous graphs.
 Absolute change is not a useful metric on its own, but if it could be proven that certain bus stops tended to have a generally positive or negative net change, we could predict the sign of the change and thus the occupancy changes over time.
@@ -29,6 +29,7 @@ This clearly increases the time requirement to well beyond the scope of this stu
 Thus, while the preliminary foray suggests that this approach is tentatively successful, it is not feasible for this study.
 We move on to our next approach.
 
+\FloatBarrier
 \subsection*{Promiscuous WiFi}
     
 \subsubsection*{Packet Plot}
@@ -36,6 +37,8 @@ We move on to our next approach.
 
 Plotting the number of packets in a histogram with three second bins (fig.~\ref{fig:buspackets}), we see that there are visible differences between stops.
 This roughly lines up to the expected traffic around each stop -- stops like the BCC, Hill, the ARC, and the entirety of College Avenue have a large amount of traffic, while stops near the Visitor's Center and Werblin have very little.
+\the\columnwidth
+\the\textwidth
 
 \subsubsection*{Unique MAC Plot}
 \bigfig{unique}{Unique MAC addresses detected per 3-second bin}{fig:busunique}
@@ -48,7 +51,7 @@ However, this is not due to occupancy; there are clearly not nearly that many pe
 Instead, it seems that the shape of the plot is primarily influenced by the proximity to routers -- the portions of the bus loop by athletic fields and between campuses has nearly no data.
 
 \subsubsection*{First-Last Grid Plot}
-\bigfig{bus-grid-fixed}{First and Last times seen for each MAC address observed while on the bus route}{fig:busgrid}
+\bigfig{bus-grid}{First and Last times seen for each MAC address observed while on the bus route}{fig:busgrid}
 
 In order to establish which devices were on the bus, we plotted the time of the first and last occurrence of each device.
 Each point here represents a unique device, where the x-coordinate is the time of the first sighting, and the y-coordinate is the time of the last sighting.
@@ -57,7 +60,7 @@ The clump of data points in the top left corner of the plot represents devices w
 These are most likely our own devices, or stationary devices around the geographically identical first and last stops.
 
 \subsubsection*{Segments Plot}
-\bigfig{bus-segments-wide}{Predicted number of passengers using the Segments approximation}{fig:segments}
+\bigfig{segments}{Predicted number of passengers using the Segments approximation}{fig:segments}
 The segments plot was created using the procedure for segments plot described in the Graphing section. The plot (Fig. 8) shows the actual number of bus passengers as we observed (the purple function) overlayed
 with the function that we calculated using the lengths of each intersect-set (the blue function). One can see that the calculated function is accurate for the stops after Werblin.
 The discrepancy between the actual and calculated number of bus passengers at the BCC may be influenced by the fact that we had started observation and recording at this location. In this method, more routers
@@ -65,7 +68,7 @@ equals more stop-to-stop change. This fact means the calculated function will ap
 appears more accurate at these stops in comparison to stops like Werblin, which have fewer surrounding devices and routers. Due to the limitations of this method, we progressed to creating the vector plot.
 
 \subsubsection*{Presence Vector Plot}
-\bigfig{bus-vectors-wide}{Predicted number of passengers using the Vector approximation}{fig:vector}
+\bigfig{vectors}{Predicted number of passengers using the Vector approximation}{fig:vector}
 
 In an attempt to minimize noise from the above transient devices and to compensate for the lack of traffic in uninhabited areas, we constructed a plot similar to the previous. 
 For every address we encountered in the collection, we create a vector defined by the following function:

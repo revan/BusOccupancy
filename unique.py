@@ -33,7 +33,7 @@ def plotUnique(jason, binsize=1, name="", labels=False):
     plot.title(name)
 
     if(labels):
-        graphlib.wideAnnotate(plot, b.bins, binsize)
+        graphlib.wideAnnotate(plot, b.bins, binsize, ymax=max(b.bins))
 
     graphlib.makeWidePlot("bus", "unique")
 

@@ -19,7 +19,7 @@ def plotPackets(jason, binsize=1, labels=None):
     plot.title('April 7th, A Route')
 
     if(labels):
-        graphlib.wideAnnotate(plot, bins, binsize)
+        graphlib.wideAnnotate(plot, bins, binsize, ymax=max(bins))
 
     graphlib.makeWidePlot("bus", "packets")
 
