@@ -1,11 +1,8 @@
-%\documentclass[letterpaper,abstract,titlepage=false,twocolumn]{scrreprt}
-\documentclass[12pt]{IEEEtran}
-%Report without title page, Abstract has a special title
-%\usepackage[T1]{fontenc}
+\documentclass[12pt,journal,compsoc]{IEEEtran}
+\usepackage[T1]{fontenc}
 \usepackage{graphicx}
-%\usepackage{fixltx2e}
-\usepackage{float}
-%\usepackage{lmodern} %Better fonts
+\usepackage[cmex10]{amsmath}
+\usepackage{fixltx2e}
 \graphicspath{ {img/} }
 
 \begin{document}
@@ -13,19 +10,20 @@
 {\large Undergraduate Independent Research Report}}
 \author{Daniel~Bordak, Erin~Corrado, Revan~Sopher, and Ashley~Weaver}
 
-\maketitle
-                      
+\IEEEtitleabstractindextext{% Comment to prevent unwanted space
 \begin{abstract}
 In this study we address the problem of programatically predicting bus occupancy.
 We approach this in two ways: by using publicly available GPS positions to calculate stop time, and by using promiscuous Wi-Fi to count devices.
 While the stop time approach proved unfruitful due to the significant time requirement in establishing a benchmark by which to interpret the data, the Wi-Fi approach yielded an accurate model once we compensated for noise.
 We conclude by suggesting modifications to the experiment, and the application of this methodology to the determination of occupancy of other locales.
-\end{abstract}
+\end{abstract}}
+
+\maketitle
 
 \section{Motivation}
 
-                      \IEEEPARstart{D}{ue to}
-the periodic nature of class schedules, students at Rutgers tend to move between campuses in certain known time intervals during the day.
+\IEEEPARstart{D}{ue to}
+the periodic nature of class schedules, students at Rutgers tend to move between campuses during certain known time intervals during the day.
 This leads to predictable migratory patterns.
 However, the bus schedule does a poor job of taking student schedules into account -- for example, on Livingston campus, the buses headed to College Avenue can often be found lined up at the stops consecutively, while the buses headed to Busch are much rarer.
 To make matters worse, the Busch buses are usually packed to capacity between class periods.
@@ -109,8 +107,9 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
 
 \subsection*{Graphing}
     For the construction of the graphs, a few additional libraries were needed: Numpy, Pandas, and Matplotlib.
-    Numpy is a high-performance mathematical library for Python, and Pandas is a library built on top of Numpy to provide data structures used in data analysis.
-    %TODO: Write about Matplotlib.
+    Numpy is an advanced mathematical library for Python, and Pandas is a library built on top of Numpy to provide high-performance data structures.
+    We used these for data analysis.
+    Matplotlib is a 2D plotting library, which we used to generate the graphs. 
     In order to simplify the graph production process, we made individual scripts for each graph type, plus a meta-script to make a united interface.
     This meta-script reads a JSON file obtained from the preprocessing step, imports the data into a Pandas DataFrame (which can be thought of as a complicated 2D array), and sends this off to be filtered, as explained in the filtering step.
     After the data has been filtered, it is handed off to one of the six plotting scripts:
@@ -129,27 +128,51 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
       For the Vector plot, first an array of zeros was initialized with length equal to the length of observation in seconds.
       For each packet, every value between \(t_{first}\) and \(t_{last}\) was incremented.
       The resulting array was plotted as a step function, with the x-axis being its indices.
-    \item TODO: Segment plot
+    \item The segment plot is the most complicated plot we generated.
+      First, a list of mathematical sets are generated, one for each stop.
+      These sets are called the stop-sets.
+      The stop-sets are populated with the MAC addresses seen during the corresponding stop.
+      Next, a second list of mathematical sets are generated, again, one for each stop.
+      These sets are called the intersect-sets.
+      The intersect-sets are filled with the intersect between the stop-set of the same index value, and every other stop-set, combined by union.
+      For instance, intersect-set 2 would contain
+      \begin{multline*}
+      \left(stop_2 \cap stop_0\right) \cup \left(stop_2 \cap stop_1\right) \cup \\
+      \left(stop_2 \cap stop_3\right) \cup \dots \cup \left(stop_2 \cap stop_n\right)
+      \end{multline*}
+      The length of each intersect-set is considered to be the number of people on the bus at the stop.
+      A special exception is made for the intersect of stop-set 0 and stop-set n.
+      This set represents addresses present both at the beginning of the ride and the end.
+      No normal student would do this -- this would consist only of ourselves and possibly devices present around this stop.
+      As such, this set is instead subtracted from all other intersect sets; it is likely garbage.
+      Afterward, we add a flat value of 2 to every stop, representing the two of us we filtered out.
     \end{itemize}
+    Some graphs also had the actual number of people on the bus, as observed, overlaid.
+    This overlay was generated with a simple step function, using the value at n+1 as the value for the line between n and n+1.
 
-\section*{Results}
+\pagebreak
+
+\section{Results}
 
 \subsection*{Stop Length Inference}
-	\begin{figure}[H]
-	\includegraphics[width=0.5\textwidth]{stop3}
+	\begin{figure}[!t]
+      \includegraphics[width=0.5\textwidth]{stop3}
+      \caption{Bus Occupancy as a function of Stop Length}
 	\end{figure}
 	As we quickly realized, stop length does not appear to have any correlation to occupancy.
 	This makes sense, because the number of sedentary riders does not cause slowdowns; rather, the relevant metric is the number of people entering or exiting the bus.
 
-	\begin{figure}[H]
-	\includegraphics[width=0.5\textwidth]{stop1}
+	\begin{figure}[!t]
+	  \includegraphics[width=0.5\textwidth]{stop1}
+      \caption{Net Delta Occupancy as a function of Stop Length}
 	\end{figure}
 
 	Plotting the net occupancy change as a function of stop length was also inconclusive, as the longer stops could signify either positive or negative changes.
 	From stop timings alone, we would not be able to predict the direction of change.
 
-	\begin{figure}[H]
-	\includegraphics[width=0.5\textwidth]{stop2}
+	\begin{figure}[!t]
+	  \includegraphics[width=0.5\textwidth]{stop2}
+      \caption{Absolute Delta Occupancy as a function of Stop Length}
 	\end{figure}
 
 	Net change, however, shows a stronger correlation, confirming our hypothesis that high rider throughput causes delays. % That wasn't our hypothesis... Re-read Approach/Stop Length Inference.
@@ -159,9 +182,9 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
 \\
 	To test this, we waited at a single bus stop and counted the number of passengers entering and leaving each bus on a certain route, and the length of the stops.
 
-	%TODO:
-	\begin{figure}[H]
-	\includegraphics[width=0.5\textwidth]{onestop}
+	\begin{figure}[!t]
+	  \includegraphics[width=0.5\textwidth]{onestop}
+      \caption{Net Delta Occupancy, Single Stop}
 	\end{figure}
 	% either add a title to this graph or remove the title from all the other graphs
 
@@ -215,14 +238,12 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
 	\subsubsection*{Presence Vector Plot}
 		In an attempt to minimize noise from the above transient devices and to compensate for the lack of traffic in uninhabited areas, we construct a plot similar to the previous. % This isn't a complete thought
 		For every address we encountered in the collection, we create a vector defined by the following function:
-		\begin{displaymath}
-		f(t) = \left\{
-			\begin{array}{lr}
+		\begin{equation*}
+		f(t) = \begin{cases}
 			1 & t_{firstSeen} \le t \le t_{lastSeen}\\
 			0 & otherwise
-			\end{array}
-		\right.
-		\end{displaymath}
+		\end{cases}
+		\end{equation*}
 
 		We sum these vectors into a single vector, where the value at any point indicates how many devices we can infer are presently on the bus.
 
@@ -244,7 +265,7 @@ Our initial theory was that a bus nearing capacity would take longer at stops du
 %	We can filter out some of the irrelevant data by ignoring any signals below a certain strength.
 %	This is the most feasible method, but requires external assistance with installation of devices.
 
-\section*{Future Work}
+\section{Future Work}
     
 \subsection*{Continuation of Benchmark}
 	The Stop Length Inference approach seemed promising, but we would need to benchmark every stop several times in order to be able to know which direction of occupancy change a long stop indicates.
