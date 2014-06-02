@@ -15,7 +15,8 @@
 \begin{abstract}
 In this study we address the problem of programatically predicting bus occupancy.
 We approach this in two ways: by using publically available GPS positions to calculate stop time, and by using promiscuous Wi-Fi to count devices.
-While the stop time approach proved unfruitful due to a lack of correlation between stop time and occupancy, the Wi-Fi approach yielded substantial data -- though plagued by noise. We conclude by suggesting the efficacious, though prohibited, solution of impersonating a campus access point.
+While the stop time approach proved unfruitful due to the significant time requirement, the Wi-Fi approach yielded substantial data -- though plagued by noise.
+We conclude by suggesting the efficacious, though prohibited, solution of impersonating a campus access point.
 \end{abstract}
 
 \section*{Motivation}
@@ -69,6 +70,8 @@ Two students worked on each approach, planning to combine results into a single 
 
 	Net change, however, shows a stronger correlation, confirming our hypothesis that high rider throughput causes delays.
 	Net change is not a useful metric on its own, but if it could be proven that certain bus stops entertained mostly one of boardings or descents, we could predict the sign of the change and thus the occupancy changes over time.
+	\\
+	To test this, we waited at a single bus stop and counted the number of passengers entering and leaving each arrival of a certain bus route, and the length of the stops.
 
 	%TODO:
 	\begin{figure}[H]
@@ -76,10 +79,13 @@ Two students worked on each approach, planning to combine results into a single 
 	\centering
 	\end{figure}
 
-	A cursory analysis of this idea suggested that bust stops are not in fact characterized by one of either boardings or descents.
-	Thus, we abandoned this line of inquiry.
-
-
+	Data for this experiment was slower to collect, as the busses are spaced out. A brief look at this data shows that this bus stop is predominantly a descent spot; thus, longer stops at this stop would imply a net decrease in number of riders.
+	\\
+	However, the data collected is insufficient to draw these conclusions; there can be significant variation depending on time and day.
+	This data collection would need to be repeated at every bus stop, which grows the time requirement to well beyond the scope of this study.
+	\\
+	Thus, while the preliminary foray suggests that this approach is tentatively successful, we move on to our next approach.
+	
 \subsection*{Promiscuous WiFi}
 	To collect data, we put the wireless card into Monitor mode and ran the following:
 	\begin{verbatim}
@@ -106,7 +112,7 @@ Two students worked on each approach, planning to combine results into a single 
 	\centering
 	\end{figure}
 
-	Additionally, we switched out "number of packets" for "number of unique MAC addresses".
+	Additionally, we switched out ``number of packets'' for ``number of unique MAC addresses''.
 
 	\begin{figure}[H]
 	\includegraphics[width=11cm]{unique}
@@ -126,6 +132,8 @@ Two students worked on each approach, planning to combine results into a single 
 	Thus, the high concentration of data points along the line y=x represents the transient devices, most likely all access points.
 	The clump of data points at the top left of the plot represents devices which were seen throughout the journey -- these are most likely in fact the access points of the common first and last stop.
 	\\
+
+	TODO: Conclude
 
 
 \section*{Future Work}
