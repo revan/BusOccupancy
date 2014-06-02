@@ -5,35 +5,45 @@
 \bigfig{packethist-sorted}{Number of packets involving each MAC address present during the entirety of the class period}{fig:probhist}
 
 \subsection*{Continuation of Benchmark}
-The Stop Length Inference approach seemed promising, but we would need to benchmark every stop several times in order to be able to know which direction of occupancy change a long stop indicates.
-As such, there is substantial opportunity to complete this benchmarking in order to complete that approach.
+As mentioned earlier, the Stop Length Inference approach seemed promising, when looking at the simple quantity of traffic at a stop.
+In order to utilize this, however, we would need to determine the tendency of each particular stop.
+This means we would need to extensively analyze each stop individually over long periods of time.
+Our preliminary research indicates this approach offers great opportunity for future research available.
+This research would, unfortunately, take far too much time for four college students.
 
 \subsection*{Alternative Approach}
-The largest problem with the interception of packets is outside noise.
-To address this, we would like to install an access point on the bus, with the same SSID as the campus Wi-Fi so that smart phones would automatically connect.
-We could then listen only to communications with this access point, eliminating outside traffic.
-	
-Optimally, the routers would be officially installed and serve mobile data.
-This is naturally expensive and thus unlikely.
-Any unofficial access points installed would be an explicit violation of the terms of use of the Rutgers networks, and thus unfeasible as well.
+The largest problem with the interception of packets is the distance between the bus and access points.
+Much, possibly most of our detected packets were from passersby due to their relative proximity to routers; without a router to transfer a packet to, there cannot be a packet to detect.
 
-We could also replace the laptop in our setup with a smaller unit to be installed in the buses, to collect data for longer periods of time.
+One possible solution to this issue would be the installation of WiFi access points on Rutgers buses, using the standard Campus WiFi Access Point SSID.
+Using the same SSID would cause student smartphones to automatically connect, without requiring any effort on the part of the students.
+This would limit detection to Rutgers students, as well; no others would be able to connect to this AP.
+This might, in fact, reduce accuracy on the College Avenue campus, but the overall impact would most likely be an increase in accuracy.
+Optimally, these routers would be officially installed.
+It is unlikely that Rutgers or First Transit would install these devices strictly for the purpose of detection, since our methods are still unproven.
+Adding functionality in the way of internet, a router's expected purpose, could likely be done only through mobile data due to the bus routes going far outside the range of campuses.
+Mobile data is very expensive, however, making this unlikely.
+Any access points installed unofficially would be an explicit violation of the terms of use of the Rutgers networks, and, as such, even more infeasible.
+
+Putting this burden of observation onto other students rather than officials would be much more manageable in terms of dealing with bureacracy.
+To do this, we could replace the laptop in our setup with a smaller, dedicated unit to be installed in the buses, to collect data for longer periods of time.
 Running several of these units would allow us to collect enough data to make occupancy predictions.
+However, the manpower required for this also makes this an improbable option.
 
 \subsection*{Alternative Application}
-
-
-As before, the points around \(y=x\) consist of transient devices.
+The methods we developed for the purpose of measuring bus occupancy can also be used for similar measurements in other settings.
+To prove this, we measured occupancy in a classroom (fig.~\ref{fig:probgrid}.
+Just as with the bus data, the points around \(y=x\) consist of transient devices.
 The points in the clump to the top right is probably due to a buildup of students outside the lecture hall awaiting the following class.
 The points in the clump to the top left represent the devices that were present for the duration of the capture.
-	
-There were exactly 106 students in the lecture hall during this collection; while determining the exact boundaries is of a complexity outside the scope of this project, the clump in the top left contains approximately 100 points.
+Other scattered points may be noise, but could also be sleeping devices which only report themselves occasionally.
+
+There were exactly 106 students in the lecture hall during this collection.
+While judging exact cutoffs for the measurement area is of a complexity outside the scope of this project, a rough estimate of the clump in the top left gives about 120 addresses.
+In order to judge how reliable this count is, we created a new type of plot, counting the packets including each of these long-present devices (fig~\ref{fig:probhist}).
+This plot shows that most devices measured transmitted or received a reasonable quantity of packets -- only a few are particularly low on packet count.
 This suggests that this approach does generate an accurate count of the lecture hall occupancy.
 
-In this plot we see that we can partition devices into classes based on how frequent the packets.
-While a small number of devices were generating enormous amounts of network traffic with millions of packets, others generated orders of magnitude fewer.
-	
-This suggests another interesting path of inquiry: monitoring the interest of an audience based on network traffic.
-The assumption here is that a bored audience is more likely to cause network traffic by web browsing.
-
-\FloatBarrier
+We can also observe that some devices are involved in a significantly larger quantity of packets.
+This graph is generated with router filtering on, meaning it is unlikely that these are routers.
+% More observations here?
