@@ -1,80 +1,94 @@
 [
 {
-	"name":"BCC",
+	"name":"Buell",
 	"start":0,
 	"end":40,
-	"actual":20
+	"actual":20,
+	"code":1
 },
 {
 	"name":"Werblin",
 	"start":138,
 	"end":150,
-	"actual":27
+	"actual":27,
+	"code":2
 },
 {
 	"name":"Rutgers Student Center",
 	"start":452,
 	"end":515,
-	"actual":8
+	"actual":8,
+	"code":3
 },
 {
 	"name":"Scott",
 	"start":617,
 	"end":631,
-	"actual":9
+	"actual":9,
+	"code":4
+	
 },
 {
 	"name":"SAC",
 	"start":842,
 	"end":862,
-	"actual":14
+	"actual":14,
+	"code":5
 },
 {
 	"name":"Visitor's Center",
 	"start":1129,
 	"end":1137,
-	"actual":16
+	"actual":16,
+	"code":6
 },
 {
 	"name":"Stadium",
 	"start":1243,
 	"end":1290,
-	"actual":11
+	"actual":11,
+	"code":7
 },
 {
 	"name":"Werblin 2",
 	"start":1403,
 	"end":1411,
-	"actual":11
+	"actual":11,
+	"code":8
 },
 {
 	"name":"Hill",
 	"start":1471,
 	"end":1493,
-	"actual":8
+	"actual":8,
+	"code":9
 },
 {
 	"name":"ARC",
 	"start":1574,
 	"end":1580,
-	"actual":6
+	"actual":6,
+	"code":10
 },
 {
 	"name":"LSM",
 	"start":1644,
 	"end":1680,
-	"actual":5
+	"actual":5,
+	"code":11
 },
 {
 	"name":"Suites",
 	"start":1799,
 	"end":1816,
-	"actual":13
+	"actual":13,
+	"code":12
 },
 {
 	"name":"BCC",
 	"start":1893,
 	"end":1936,
-	"actual":24
+	"actual":24,
+	"code":13
 }
 ]
