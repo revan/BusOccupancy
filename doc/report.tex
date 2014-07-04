@@ -70,29 +70,41 @@ However, the bus schedule does a poor job of taking student schedules into accou
 To make matters worse, the Busch buses are usually packed to capacity between class periods.
 The aim of this project is to develop a system for better predicting the demand for buses, such that an empirical argument for the optimization of the bus schedule might be made.
 
-\section{Bus Route}
-We decided to monitor the A route.
-This is the route connecting Busch and College Ave clockwise.
-We chose this route because it's busy and runs often.
-\minifig{aroutebusch}{A Route: Busch Classrooms}{fig:aroutebusch}
-1: Buell Apartments
-2: Werblin Recreation Center
-\minifig{aroutecollegeave}{A Route: College Ave}{aroutecollegeave}
-3: Rutgers Student Center
-4: Scott Hall
-5: Student Activity Center
-\minifig{aroutestadium}{A Route: Busch Stadium}{fig:aroutestadium}
-6: Visitor's Center
-7: Stadium
-\minifig{aroutebusch}{A Route: Busch Classrooms}{fig:aroutebusch}
-8: Werblin Recreation Center
-9: Hill Center
-10: Allison Road Classrooms Building
-11: Library of Science & Medicine
-12: Busch Suites
-13: Busch Campus Center
-
 \input{approach}
+
+\section{Bus Route}
+The Rutgers bus system encompasses several routes between its campuses.
+For the purpose of our study, we needed only to monitor one; conducting all collections on the same path is essential to producing comparable data.
+We decided to monitor the A route, the route connecting Busch and College Ave campuses clockwise.
+We chose this route because of its high passenger throughput and its urban setting would suggest a higher concentration of wireless devices.
+
+\minifig{aroutebusch}{A Route: Busch Classrooms} {fig:aroutebusch}
+
+
+\minifig{aroutecollegeave}{A Route: College Ave}{aroutecollegeave}
+
+
+\minifig{aroutestadium}{A Route: Busch Stadium}{fig:aroutestadium}
+
+\begin{figure}[!h]
+  \centering
+  \begin{tabular}{ l | r }
+    1 & Buell Apartments\\
+    2 & Werblin Recreation Center\\
+    3 & Rutgers Student Center\\
+    4 & Scott Hall\\
+    5 & Student Activity Center\\
+    6 & Visitor's Center\\
+    7 & Stadium\\
+    8 & Werblin Recreation Center\\
+    9 & Hill Center\\
+    10 & Allison Road Classrooms Building\\
+    11 & Library of Science \& Medicine\\
+    12 & Busch Suites\\
+    13 & Busch Campus Center\\
+  \end{tabular}
+\end{figure}
+
 \input{graphing}
 \input{results}
 \input{future}
@@ -137,7 +149,7 @@ We chose this route because it's busy and runs often.
 \ditem{Wrote length/occupancy correlation plot.}{
   Data was difficult to interpret at times.
   Data was time consuming to collect and limited.
-                                                                         }
+}
 \ditem{Cowrote poster.}{
   Difficulty with trying to get the poster printed and transported to the proper place in time.
 }
@@ -153,7 +165,7 @@ We chose this route because it's busy and runs often.
 \subsection*{Revan Sopher}
 \begin{description}
 \item [Wrote Proposal] \hfill \\
-	Designed two-method approach, laying out plan for study. Written at 3:00AM of deadline while team slept; difficulty staying awake.
+	Designed two-method approach, laying out plan for study. Written at 3:00AM of deadline while team slept.
 \item [Collected tcpdump data] \hfill \\
 	First data collection of study, so needed to figure out which tool to use and how to use it, and how to put a wireless card in monitor mode.
 \item [Wrote Raw Packet Plot] \hfill \\
@@ -165,7 +177,7 @@ We chose this route because it's busy and runs often.
 \item [Wrote Vector Plot] \hfill \\
 	Need to create and sum vectors from the data caused this plot to be significantly different.
 \item [Wrote Report] \hfill \\
-	Wrote entirety of report as first submitted.
+	Wrote entirety of report as first submitted. Wrangled with LaTeX for later revisions.
 \end{description}
 
 \subsection*{Ashley Weaver}
