@@ -29,3 +29,6 @@ vectors: data/bus.json
 packethist: data/class.json
 	python3 graph.py -t packethist data/class.json -n $(PROB_TITLE)\
 	 -s $(PROB_STR) -r True -m True
+
+report:
+	cd doc && lualatex -shell-escape report.tex
