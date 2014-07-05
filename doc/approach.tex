@@ -18,7 +18,12 @@ In order to establish a correlation between stop length and bus occupancy, we fo
 
 \subsection{Promiscuous WiFi}
 
-\biglst{text}{bus.dat}{Example tcpdump output\protect\footnotemark}{lst:tcpdump}
+\biglst{text}{bus.dat}{
+  Example tcpdump output.
+  This logfile has been modified from its original version.
+  It has been formatted to fit this page; the original output had one line per packet.
+  Additionally, MAC addresses have been censored to protect the privacy of those we observed.
+}{lst:tcpdump}
 
 In this approach, we used the inherent correlation between the number of smartphones on the bus and the number of passengers; it is reasonable to assume that more devices means more passengers, since the devices travel with the passengers.
 Nonetheless, we would try to prove this correlation by comparing collected network information with logged bus occupancy.
@@ -30,9 +35,3 @@ In normal operation, a wireless card will receive every packet in the vicinity, 
 This command logs the headers of every packet that the wireless card sees, thus uniquely identifying every active device in the area.
 The strength of signals is also recorded, so we can choose to ignore packets below a certain decibel strength.
 We initially planned to add a GPS device to the computer, so as to automate the logging of position along with the network data, but we found it easier to manually record approximate physical locations; we rode a bus along its route, logging packets and stop times.
-
-\footnotetext{
-  This logfile has been modified from its original version.
-  It has been formatted to fit this page; the original output had one line per packet.
-  Additionally, MAC addresses have been censored to protect the privacy of those we observed.
-}
