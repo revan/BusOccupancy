@@ -48,7 +48,7 @@ def plotSegments(jason, name="", labels=False):
 
     if(labels):
         for stop in delims:
-            annotate(stop["name"], stop["start"], stop["actual"], 10, 10)
+            annotate(stop["code"], stop["start"], stop["actual"], 10, 10)
 
     makeWidePlot("bus", "segments")
 

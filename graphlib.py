@@ -8,7 +8,7 @@ import json
 def annotate(label, x, y, xoff=0, yoff=0):
     plot.annotate(label, xy=(x, y), xytext=(xoff, yoff),
                   textcoords="offset points",
-                  bbox=dict(boxstyle="round", fc="#d3d3d3", ec="#a8a8a8"),
+                  bbox=dict(boxstyle="square,pad=0.1", fc="#d3d3d3", ec="#a8a8a8"),
                   arrowprops=dict(arrowstyle="->", fc="#d3d3d3",
                                   ec="#a8a8a8", connectionstyle=
                                   "angle3,angleA=0,angleB=-90"))
@@ -42,9 +42,11 @@ def makePlot(x, y, prefix, type):
 
 
 def makeWidePlot(prefix, type):
-    plot.gcf().set_size_inches(3.4, 3.8)
+    plot.gcf().set_size_inches(3.4, 3.4)
     plot.tight_layout()
     plot.savefig('img/' + prefix + '-' + type + '-wide.png',
+                 bbox_inches='tight')
+    plot.savefig('img/' + prefix + '-' + type + '-wide.pgf',
                  bbox_inches='tight')
 
 

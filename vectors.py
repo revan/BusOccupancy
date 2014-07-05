@@ -35,7 +35,7 @@ def plotVectors(json, coincidence=0, name="", minTime=30, maxTime=1700,
 
     if(labels):
         for stop in delims:
-            annotate(stop["name"], stop["start"], stop["actual"], 10, 10)
+            annotate(stop["code"], stop["start"], stop["actual"], 10, 10)
 
     makeWidePlot("bus", "vectors")
 
