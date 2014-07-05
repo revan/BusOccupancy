@@ -1,6 +1,5 @@
 \documentclass[12pt,journal,compsoc]{IEEEtran} % Set to 11pt if we ever have the luxury of doing so.
 \usepackage[T1]{fontenc}
-\usepackage{graphicx}
 \usepackage[cmex10]{amsmath}
 \usepackage{stfloats}
 \usepackage[section]{placeins}
@@ -8,15 +7,16 @@
 \usepackage{pgfplots}
 \usepackage{minted}
 \usemintedstyle{tango}
-\usepgfplotslibrary{external}
-\tikzexternalize
+\usepackage{graphicx}
 \graphicspath{ {img/} }
+\usetikzlibrary{external}
+\tikzexternalize
 
 % IMPORTANT:
 %  This document class uses logical paragraphs rather than manual ones.
 %  In other words, use a blank line instead of \\ to start a new paragraph.
 
-\newcommand{\minifig}[3]{
+\newcommand{\minipic}[3]{
   \begin{figure}[!t]
     \centering
     \includegraphics[width=\columnwidth]{#1}
@@ -25,9 +25,19 @@
   \end{figure}
 }
 
+\newcommand{\minifig}[3]{
+  \begin{figure}[!t]
+    \centering
+    \tikzsetnextfilename{#1}
+    \input{fig/#1.pgf}
+    \caption{#2}
+    \label{#3}
+  \end{figure}
+}
 \newcommand{\bigfig}[3]{
   \begin{figure*}[!t]
     \centering
+    \tikzsetnextfilename{#1}
     \input{fig/#1.pgf}
     \caption{#2}
     \label{#3}
@@ -73,22 +83,15 @@ The aim of this project is to develop a system for better predicting the demand 
 \input{approach}
 
 \section{Bus Route}
-The Rutgers bus system encompasses several routes between its campuses.
-For the purpose of our study, we needed only to monitor one; conducting all collections on the same path is essential to producing comparable data.
-We decided to monitor the A route, the route connecting Busch and College Ave campuses clockwise.
-We chose this route because of its high passenger throughput and its urban setting would suggest a higher concentration of wireless devices.
 
-\minifig{aroutebusch}{A Route: Busch Classrooms} {fig:aroutebusch}
+\minipic{aroutebusch}{A Route: Busch Classrooms} {fig:aroutebusch}
+\minipic{aroutecollegeave}{A Route: College Ave}{fig:aroutecollegeave}
+\minipic{aroutestadium}{A Route: Busch Stadium}{fig:aroutestadium}
 
-
-\minifig{aroutecollegeave}{A Route: College Ave}{aroutecollegeave}
-
-
-\minifig{aroutestadium}{A Route: Busch Stadium}{fig:aroutestadium}
-
-\begin{figure}[!h]
+\begin{figure}[!t]
   \centering
   \begin{tabular}{ r|l }
+    Label & Name of Stop\\ \hline
     1 & Buell Apartments\\
     2 & Werblin Recreation Center\\
     3 & Rutgers Student Center\\
@@ -103,7 +106,20 @@ We chose this route because of its high passenger throughput and its urban setti
     12 & Busch Suites\\
     13 & Busch Campus Center\\
   \end{tabular}
+  \caption{Bus stop key}
+  \label{fig:stops}
 \end{figure}
+
+The Rutgers bus system encompasses several routes between its campuses.
+For the purpose of our study, we needed only to monitor one; conducting all collections on the same path is essential to producing comparable data.
+We decided to monitor the A route, one of the two routes connecting the Busch and College Avenue campuses.
+The other of the two routes, the H route, was not selected due to its somewhat lower number of buses; it was easier for us to find A buses whenever we needed to collect data.
+The particular advantages to this route inluded its variety of locations: Busch and College Avenue have a good contrast in terms of population, and thus device, density.
+Additionally, the regularity of short buses improved our ability to collect data -- some Rutgers buses are of double length, making them harder for a single person to identify the number of passengers and the quantity of traffic on and off the bus.
+
+We began riding the route on Bush Campus (fig.~\ref{fig:aroutebusch}), at the Busch Campus Center.
+It was too early to begin data collection there, however, so the first stop recognized in our dataset is the Buell Apartment stop, also on Busch.
+
 
 \input{graphing}
 \input{results}
@@ -134,10 +150,16 @@ We chose this route because of its high passenger throughput and its urban setti
   The desire to reduce redundancy led to the implementation of a common parser between both stop data and packet data.
   This script was applied to all graphs based on bus data.
 }
-\ditem{Wrote sections of the report pertaining to the creation of plots.}{
+\ditem{Wrote all plot generation sections.}{
   Difficulty encountered in remembering everything I did.% Heehee
 }
-\ditem{Formatted report, including logfile syntax highlighting.}{TODO: Expand this a lot.}
+\ditem{Formatted report.}{
+  Difficulty figuring out a whole lot of \LaTeX stuff.
+}
+\ditem{Rewrote report.}{
+  Original draft was inaccurate as to the purpose of some graphs, etc.
+  Difficulty in choosing what needed to be rewritten, and of course rewriting large sections of the report.
+}
 \end{description}
 
 \subsection*{Erin Corrado}

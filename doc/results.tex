@@ -1,10 +1,10 @@
 \section{Results}
 
-\minifig{occupancy}{Bus Occupancy as a function of Stop Length}{fig:occ}
+\minipic{occupancy}{Bus Occupancy as a function of Stop Length}{fig:occ}
 %TODO: Clarify whether this is for the following or preceeding stop. I don't actually remember.
-\minifig{netdelta}{Net Delta Occupancy as a function of Stop Length}{fig:netdelta}
-\minifig{absdelta}{Absolute Delta Occupancy as a function of Stop Length}{fig:absdelta}
-\minifig{onestopcrop}{Net Delta Occupancy, Single Stop}{fig:onestop}
+\minipic{netdelta}{Net Delta Occupancy as a function of Stop Length}{fig:netdelta}
+\minipic{absdelta}{Absolute Delta Occupancy as a function of Stop Length}{fig:absdelta}
+\minipic{onestopcrop}{Net Delta Occupancy, Single Stop}{fig:onestop}
 \subsection{Stop Length Inference}
 
 Analyzing this data (fig.~\ref{fig:occ}), it quickly became apparant that stop length does not have any correlation to occupancy.
@@ -32,13 +32,13 @@ We move on to our next approach.
 \subsection{Promiscuous WiFi}
     
 \subsubsection*{Packet Plot}
-\bigfig{packets}{Packets detected per 3-second bin}{fig:buspackets}
+\minifig{packets}{Packets detected per 3-second bin}{fig:buspackets}
 
 Plotting the number of packets in a histogram with three second bins (fig.~\ref{fig:buspackets}), we see that there are visible differences between stops.
 This roughly lines up to the expected traffic around each stop -- stops like the BCC, Hill, the ARC, and the entirety of College Avenue have a large amount of traffic, while stops near the Visitor's Center and Werblin have very little.
 
 \subsubsection*{Unique Devices Plot}
-\bigfig{unique}{Unique MAC addresses detected per 3-second bin}{fig:busunique}
+\minifig{unique}{Unique MAC addresses detected per 3-second bin}{fig:busunique}
 
 Network traffic is not a good indicator of occupancy, however, because it represents the amount of activity, rather than the number of actors; a single person transmitting a large amount of data may be interpreted as multiple people with the Packet Plot.
 As such, our next step was to switch out ``number of packets'' for ``number of unique MAC addresses'' (fig.~\ref{fig:busunique}).
@@ -57,11 +57,12 @@ Thus, the high concentration of data points along the line \(y=x\) represents th
 The clump of data points in the top left corner of the plot represents devices which were seen throughout the journey.
 These are most likely our own devices, or stationary devices around the geographically identical first and last stops.
 
-As a variation on this, we also plotted the same data as a ``heat map'' (fig.~\ref{fig:bushmap}), such that higher concentrations of points are depicted by more vivid colors.
-This has the advantage of clarifying the tightly clustered points (between Rutgers Student Center and SAC, for example) rather than converging to black.
+As a variation on this, we also plotted the same data as a heat map (fig.~\ref{fig:bushmap}), such that higher concentrations of points are depicted by more vivid colors.
+In the original grid plot, any number of datapoints at the same coordinates would be shown the same as a single datapoint.
+This method allows us to see more easily how many points are in each area of the plot (between Rutgers Student Center and SAC, for example).
 
 \subsubsection*{Segments Plot}
-\bigfig{segments}{Predicted number of passengers using the Segments approximation}{fig:segments}
+\minifig{segments}{Predicted number of passengers using the Segments approximation}{fig:segments}
 The segments plot was created using the procedure for segments plot described in the Graphing section.
 The plot (fig.~\ref{fig:segments}) shows the actual number of bus passengers as we observed (the purple function) overlayed with the function that we calculated using the lengths of each intersect-set (the blue function).
 One can see that the calculated function is accurate for the stops after Werblin.
@@ -71,7 +72,7 @@ There are more routers around the College Avenue areas, so the calculated functi
 Due to the limitations of this method, we progressed to creating the vector plot.
 
 \subsubsection*{Presence Vector Plot}
-\bigfig{vectors}{Predicted number of passengers using the Vector approximation}{fig:vector}
+\minifig{vectors}{Predicted number of passengers using the Vector approximation}{fig:vector}
 
 In an attempt to minimize noise from the above transient devices and to compensate for the lack of traffic in uninhabited areas, we constructed a plot (fig.~\ref{fig:vector}) similar to the previous. 
 For every address we encountered in the collection, we create a vector defined by the following function:
