@@ -5,9 +5,9 @@
 \usepackage[section]{placeins}
 \usepackage{pgf}
 \usepackage{pgfplots}
-\usepackage{listings}
 \usepackage{minted}
 \usemintedstyle{tango}
+\usepackage{inconsolata}
 \usepackage{graphicx}
 \graphicspath{ {img/} }
 \usetikzlibrary{external}
@@ -18,7 +18,7 @@
 %  In other words, use a blank line instead of \\ to start a new paragraph.
 
 \newcommand{\minipic}[3]{
-  \begin{figure}[!H]
+  \begin{figure}[!t]
     \centering
     \includegraphics[width=\columnwidth]{#1}
     \caption{#2}
@@ -45,17 +45,13 @@
   \end{figure*}
 }
 
-\lstset{
-  basicstyle=\ttfamily\footnotesize,
-  breaklines=true
-}
-\newcommand{\biglst}[3]{
-  \begin{figure}[!t]
-    \lstinputlisting{#1}
+\newcommand{\biglst}[4]{
+  \begin{listing}[!t]
+    \inputminted[fontsize=\small]{#1}{#2}
     \centering
-    \caption{#2}
-    \label{#3}
-  \end{figure}
+    \caption{#3}
+    \label{#4}
+  \end{listing}
 }
 
 \newcommand{\ditem}[2]{\item[#1] \hfill \\ #2}

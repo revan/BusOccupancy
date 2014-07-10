@@ -1,12 +1,20 @@
-13:55:42.381750 273707991us tsft short preamble 11.0 Mb/s 2462 MHz 11b
-    -54dB signal antenna 1 RA:XX:XX:XX:XX:XX:XX (oui Unknown)
+13:55:42.381750 273707991us tsft short preamble
+    11.0 Mb/s 2462 MHz 11b -54dB signal antenna 1
+    RA:XX:XX:XX:XX:XX:XX (oui Unknown)
     Acknowledgment
-13:55:42.381761 273708457us tsft 11.0 Mb/s 2462 MHz 11b -52dB signal
-    antenna 1 RA:XX:XX:XX:XX:XX:XX (oui Unknown) Clear-To-Send
-13:55:42.384772 273711771us tsft 11.0 Mb/s 2462 MHz 11b -52dB signal
-    antenna 1 RA:XX:XX:XX:XX:XX:XX (oui Unknown) TA:XX:XX:XX:XX:XX:XX
-    (oui Unknown) Request-To-Send
-13:55:42.385499 273712406us tsft 11.0 Mb/s 2462 MHz 11b -60dB signal
-    antenna 1 BSSID:XX:XX:XX:XX:XX:XX (oui Unknown) DA:Broadcast
-    SA:XX:XX:XX:XX:XX:XX (oui Unknown) Beacon (RUWireless_Secure)
-    [6.0 9.0 11.0* 12.0 18.0 24.0 36.0 48.0 Mbit] ESS CH: 11, PRIVACY
+13:55:42.381761 273708457us tsft 11.0 Mb/s
+    2462 MHz 11b -52dB signal antenna 1
+    RA:XX:XX:XX:XX:XX:XX (oui Unknown)
+    Clear-To-Send
+13:55:42.384772 273711771us tsft 11.0 Mb/s
+    2462 MHz 11b -52dB signal antenna 1
+    RA:XX:XX:XX:XX:XX:XX (oui Unknown)
+    TA:XX:XX:XX:XX:XX:XX (oui Unknown)
+    Request-To-Send
+13:55:42.385499 273712406us tsft 11.0 Mb/s
+    2462 MHz 11b -60dB signal antenna 1
+    BSSID:XX:XX:XX:XX:XX:XX (oui Unknown)
+    DA:Broadcast SA:XX:XX:XX:XX:XX:XX
+    (oui Unknown) Beacon (RUWireless_Secure)
+    [6.0 9.0 11.0* 12.0 18.0 24.0 36.0 48.0 Mbit]
+    ESS CH: 11, PRIVACY
