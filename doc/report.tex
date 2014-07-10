@@ -5,6 +5,7 @@
 \usepackage[section]{placeins}
 \usepackage{pgf}
 \usepackage{pgfplots}
+\usepackage{listings}
 \usepackage{minted}
 \usemintedstyle{tango}
 \usepackage{graphicx}
@@ -17,7 +18,7 @@
 %  In other words, use a blank line instead of \\ to start a new paragraph.
 
 \newcommand{\minipic}[3]{
-  \begin{figure}[!t]
+  \begin{figure}[!H]
     \centering
     \includegraphics[width=\columnwidth]{#1}
     \caption{#2}
@@ -44,13 +45,17 @@
   \end{figure*}
 }
 
-\newcommand{\biglst}[4]{
-  \begin{listing*}[!t]
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  breaklines=true
+}
+\newcommand{\biglst}[3]{
+  \begin{figure}[!t]
+    \lstinputlisting{#1}
     \centering
-    \inputminted{#1}{#2}
-    \caption{#3}
-    \label{#4}
-  \end{listing*}
+    \caption{#2}
+    \label{#3}
+  \end{figure}
 }
 
 \newcommand{\ditem}[2]{\item[#1] \hfill \\ #2}
@@ -114,7 +119,7 @@ The Rutgers bus system encompasses several routes between its campuses.
 For the purpose of our study, we needed only to monitor one; conducting all collections on the same path is essential to producing comparable data.
 We decided to monitor the A route, one of the two routes connecting the Busch and College Avenue campuses.
 The other of the two routes, the H route, was not selected due to its somewhat lower number of buses; it was easier for us to find A buses whenever we needed to collect data.
-The particular advantages to this route inluded its variety of locations: Busch and College Avenue have a good contrast in terms of population, and thus device, density.
+The particular advantages to this route included its variety of locations: Busch and College Avenue have a good contrast in terms of population, and thus device, density.
 Additionally, the regularity of short buses improved our ability to collect data -- some Rutgers buses are of double length, making them harder for a single person to identify the number of passengers and the quantity of traffic on and off the bus.
 
 We began riding the route on Bush Campus (fig.~\ref{fig:aroutebusch}), at the Busch Campus Center.
@@ -133,7 +138,7 @@ It was too early to begin data collection there, however, so the first stop reco
 \ditem{Collected tcpdump and classroom data}{}
 \ditem{Created tcpdump output parser}{
   Current implementation's design came from privacy concerns and speed requirements.
-  Encountered difficulties in matching arbitrary MAC addresses and determining their type, as well as the aformentioned privacy concerns.
+  Encountered difficulties in matching arbitrary MAC addresses and determining their type, as well as the aforementioned privacy concerns.
 }
 \ditem{Optimized graph plotting functions}{
   First implementation of original plotting functions were painfully slow and had large amounts of redundant code.

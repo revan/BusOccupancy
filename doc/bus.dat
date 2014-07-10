@@ -10,17 +10,3 @@
     antenna 1 BSSID:XX:XX:XX:XX:XX:XX (oui Unknown) DA:Broadcast
     SA:XX:XX:XX:XX:XX:XX (oui Unknown) Beacon (RUWireless_Secure)
     [6.0 9.0 11.0* 12.0 18.0 24.0 36.0 48.0 Mbit] ESS CH: 11, PRIVACY
-13:55:42.392394 273719191us tsft 11.0 Mb/s 2462 MHz 11b -63dB signal
-    antenna 1 RA:XX:XX:XX:XX:XX:XX (oui Unknown) Clear-To-Send
-13:55:42.393450 273720182us tsft 11.0 Mb/s 2462 MHz 11b -53dB signal
-    antenna 1 RA:XX:XX:XX:XX:XX:XX (oui Unknown) Clear-To-Send
-13:55:42.397328 273724050us tsft short preamble 11.0 Mb/s 2462 MHz 11b
-    -36dB signal antenna 1 RA:XX:XX:XX:XX:XX:XX (oui Unknown) 
-    TA:XX:XX:XX:XX:XX:XX (oui Unknown) Request-To-Send
-13:55:42.403168 273730219us tsft 11.0 Mb/s 2462 MHz 11b -60dB signal
-    antenna 1 RA:XX:XX:XX:XX:XX:XX (oui Unknown) Clear-To-Send
-13:55:42.404761 273731123us tsft 11.0 Mb/s 2462 MHz 11b -58dB signal
-    antenna 1 RA:XX:XX:XX:XX:XX:XX (oui Unknown) Clear-To-Send
-13:55:42.404776 273731489us tsft 11.0 Mb/s 2462 MHz 11b -58dB signal
-    antenna 1 RA:XX:XX:XX:XX:XX:XX (oui Unknown) TA:XX:XX:XX:XX:XX:XX
-    (oui Unknown) Request-To-Send
