@@ -9,9 +9,9 @@
 \usemintedstyle{tango}
 \usepackage{inconsolata}
 \usepackage{graphicx}
+\usepackage{cite}
 \graphicspath{ {img/} }
-\usetikzlibrary{external}
-\tikzexternalize
+\pgfrealjobname{report}
 
 % IMPORTANT:
 %  This document class uses logical paragraphs rather than manual ones.
@@ -29,8 +29,9 @@
 \newcommand{\minifig}[3]{
   \begin{figure}[!t]
     \centering
-    \tikzsetnextfilename{#1}
+    \beginpgfgraphicnamed{tikz/#1}
     \input{fig/#1.pgf}
+    \endpgfgraphicnamed
     \caption{#2}
     \label{#3}
   \end{figure}
@@ -38,8 +39,9 @@
 \newcommand{\bigfig}[3]{
   \begin{figure*}[!t]
     \centering
-    \tikzsetnextfilename{#1}
+    \beginpgfgraphicnamed{tikz/#1}
     \input{fig/#1.pgf}
+    \endpgfgraphicnamed
     \caption{#2}
     \label{#3}
   \end{figure*}
@@ -220,5 +222,8 @@ It was too early to begin data collection there, however, so the first stop reco
 	Bus was often delayed due to traffic.
 }
 \end{description}
+
+\bibliography{references}
+\bibliographystyle{ieeetr}
 
 \end{document}
