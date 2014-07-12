@@ -55,39 +55,47 @@ Matplotlib is a 2D plotting library, which we used to generate the graphs.
 In order to simplify the graph production process, we made individual scripts for each graph type, plus a meta-script to make a united interface.
 This meta-script reads a JSON file obtained from the preprocessing step, imports the data into a Pandas DataFrame (which can be thought of as a complicated 2D array), and sends this off to be filtered, as explained in the filtering step.
 After the data has been filtered, it is handed off to one of the six plotting scripts:
-\begin{itemize}
-\item The Packet and Unique plots were created by generating an array of 3-second bins and adding the appropriate statistic to the bins.
-  In the case of the packet plot, this was simply the number of packets found over those three seconds; the bin is simply an integer.
-  In the case of the unique plot, however, the bin is a mathematical set holding the MAC addresses seen over the three second period.
-  After the entirety of the three seconds are parsed, the bin is assigned the length of the set.
-\item The First-Last Grid, Packet Histogram, and Vector plot were all created by checking the data set for each address.
-  The first time each MAC address is encountered, it is added to a list with an initial value of the time it was seen as both its first and last time seen, and seen-count of one.
-  Each additional time an address is seen, its last time seen value is updated to the current time, and its seen-count is incremented.
-  In the Grid, the addresses are graphed using the first time seen as the x-value and the last time seen as the y-value.
-  In the packet histogram, packets which fulfill the requirement of \(t_{first} + t_{max} - t_{last} < 120\) are selected, where \(t_{max}\) is the total observation time.
-  These selected packets are then graphed with their y-values set as their seen-count.
-  To make the graph easier to interpret, the y-axis was made to be logarithmic, and the addresses are sorted by their y-values.
-  For the Vector plot, first an array of zeros was initialized with length equal to the length of observation in seconds.
-  For each packet, every value between \(t_{first}\) and \(t_{last}\) was incremented.
-  The resulting array was plotted as a step function, with the x-axis being its indices.
-\item The segment plot is the most complicated plot we generated.
-  First, a list of mathematical sets are generated, one for each stop.
-  These sets are called the stop-sets.
-  The stop-sets are populated with the MAC addresses seen during the corresponding stop.
-  Next, a second list of mathematical sets are generated, again, one for each stop.
-  These sets are called the intersect-sets.
-  The intersect-sets are filled with the intersect between the stop-set of the same index value, and every other stop-set, combined by union.
-  For instance, intersect-set 2 would contain
-  \begin{multline*}
-    \left(stop_2 \cap stop_0\right) \cup \left(stop_2 \cap stop_1\right) \cup \\
-    \left(stop_2 \cap stop_3\right) \cup \dots \cup \left(stop_2 \cap stop_n\right)
-  \end{multline*}
-  The length of each intersect-set is considered to be the number of people on the bus at the stop.
-  A special exception is made for the intersect of stop-set 0 and stop-set n.
-  This set represents addresses present both at the beginning of the ride and the end.
-  No normal student would do this -- this would consist only of ourselves and possibly devices present around this stop.
-  As such, this set is instead subtracted from all other intersect sets; it is likely garbage.
-  Afterward, we add a flat value of 2 to every stop, representing the two of us we filtered out.
-\end{itemize}
+
+\subsubsection*{Normal Plots}
+The Packet and Unique plots were our easiest plots to generate.
+This is because they utilized the data in a fashion similar to how it was stored.
+They were created by generating an array of 3-second bins and adding the appropriate statistic to the bins.
+In the case of the packet plot, this was simply the number of packets found over those three seconds; the bin is simply an integer.
+In the case of the unique plot, however, the bin is a mathematical set holding the MAC addresses seen over the three second period.
+After the entirety of the three seconds are parsed, the bin is assigned the length of the set.
+
+\subsubsection*{Inverted Data Plots}
+The First-Last Grid, Packet Histogram, and Vector plot were created by analyzing our data in a different fashion.
+Rather than looking at each packet over time, we instead looked at the data as a list of addresses, each containing a list of times at which it appeared -- an inverted data index.
+The first time each MAC address is encountered, it is added to a list with an initial value of the time it was seen as both its first and last time seen, and seen-count of one.
+Each additional time an address is seen, its last time seen value is updated to the current time, and its seen-count is incremented.
+In the Grid, the addresses are graphed using the first time seen as the x-value and the last time seen as the y-value.
+In the packet histogram, packets which fulfill the requirement of \(t_{first} + t_{max} - t_{last} < 120\) are selected, where \(t_{max}\) is the total observation time.
+These selected packets are then graphed with their y-values set as their seen-count.
+To make the graph easier to interpret, the y-axis was made to be logarithmic, and the addresses are sorted by their y-values.
+For the Vector plot, first an array of zeros was initialized with length equal to the length of observation in seconds.
+For each packet, every value between \(t_{first}\) and \(t_{last}\) was incremented.
+The resulting array was plotted as a step function, with the x-axis being its indices.
+
+\subsubsection*{Segment Plot}
+The segment plot is the most complicated plot we generated.
+First, a list of mathematical sets are generated, one for each stop.
+These sets are called the stop-sets.
+The stop-sets are populated with the MAC addresses seen during the corresponding stop.
+Next, a second list of mathematical sets are generated, again, one for each stop.
+These sets are called the intersect-sets.
+The intersect-sets are filled with the intersect between the stop-set of the same index value, and every other stop-set, combined by union.
+For instance, intersect-set 2 would contain
+\begin{multline*}
+  \left(stop_2 \cap stop_0\right) \cup \left(stop_2 \cap stop_1\right) \cup \\
+  \left(stop_2 \cap stop_3\right) \cup \dots \cup \left(stop_2 \cap stop_n\right)
+\end{multline*}
+The length of each intersect-set is considered to be the number of people on the bus at the stop.
+A special exception is made for the intersect of stop-set 0 and stop-set n.
+This set represents addresses present both at the beginning of the ride and the end.
+No normal student would do this -- this would consist only of ourselves and possibly devices present around this stop.
+As such, this set is instead subtracted from all other intersect sets; it is likely garbage.
+Afterward, we add a flat value of 2 to every stop, representing the two of us we filtered out.
+
 Some graphs also had the actual number of people on the bus, as observed, overlaid.
 This overlay was generated with a simple step function, using the value at n+1 as the value for the line between n and n+1.
