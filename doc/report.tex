@@ -9,7 +9,9 @@
 \usemintedstyle{tango}
 \usepackage{inconsolata}
 \usepackage{graphicx}
-\usepackage{cite}
+\usepackage[backend=biber,style=ieee]{biblatex}
+\addbibresource{report.bib}
+
 \graphicspath{ {img/} }
 \pgfrealjobname{report}
 
@@ -164,6 +166,9 @@ It was too early to begin data collection there, however, so the first stop reco
   Original draft was inaccurate as to the purpose of some graphs, etc.
   Difficulty in choosing what needed to be rewritten, and of course rewriting large sections of the report.
 }
+\ditem{Added Bibliography.}{
+  Difficulty in figuring out modern best practices for \LaTeX bibliographies.
+}
 \end{description}
 
 \subsection*{Erin Corrado}
@@ -223,7 +228,6 @@ It was too early to begin data collection there, however, so the first stop reco
 }
 \end{description}
 
-\bibliography{references}
-\bibliographystyle{ieeetr}
+\printbibliography
 
 \end{document}
