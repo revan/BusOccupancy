@@ -31,15 +31,16 @@ Running several of these units would allow us to collect enough data to make occ
 However, the manpower required for this also makes this an improbable option.
 
 \subsection{Potential Upcoming Problems}
-Our current method of predicting bus occupancy is by monitoring unique MAC addresses.
-This is already utilized in the real world to determine traffic patterns.
+Any of our occupancy graphing methods depend upon MAC addresses corresponding to passengers.
+Similar techniques are utilized in the real world to determine traffic patterns. 
 For example, the city of Houston uses the MAC addresses from Bluetooth devices to figure out the flow of traffic on city streets in their TranStar monitoring system ~\cite{ios8_privacy}.
 Unfortunately, this technique may not be effective for much longer.
-The next update for iOS, iOS 8, is expected to be released in fall 2014 ~\cite{ios8_overview}.
+The next update for iOS, iOS 8, is expected to be released in Fall 2014 ~\cite{ios8_overview}.
 This update will change how Apple devices broadcast their packets when searching for networks.
-The device will randomly generate a MAC address during each round of scanning and will not display the real MAC address.
-The reason for this update is to deter tracking by companies for the purpose of targeted advertisements and to provide higher security for consumers ~\cite{ios8_privacy}.
-Apple iPhones make up over 40\% of the smartphones owned in the US, and so this update would greatly impact the effectiveness of our program ~\cite{iphone_ownership}.
+The device will randomly generate a MAC address during each round of scanning, rather than display the hardware MAC address.
+This is to deter tracking by companies for the purpose of targeted advertisements and to provide higher security for consumers ~\cite{ios8_privacy}.
+Though we have no malicious intent, this privacy feature will still put an end to our tracking -- rather than seeing an iPhone moving along a bus route, we will instead see many fake devices, with no apparent correlation.
+Unfortunately for us, Apple iPhones make up over 40\% of the smartphones owned in the US, so this update would greatly reduce the effectiveness of our program ~\cite{iphone_ownership}.
 
 \subsection{Alternative Application}
 The methods we developed for the purpose of measuring bus occupancy can also be used for similar measurements in other settings.
