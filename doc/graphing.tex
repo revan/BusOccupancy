@@ -28,7 +28,7 @@ A few special considerations needed to be made during this step:
 \end{itemize}
 
 At the end of the parsing process, the Dicts are dumped into a JSON output file.
-JSON is a open standard data interchange format.
+JSON is a open standard data interchange format ~\cite{json}.
 Using JSON made utilizing the data much easier when it came to producing the graphs; most languages, Python included, have a standard library implementation for JSON, eliminating the effort spent in re-parsing the data. % TODO: Add example JSON output -- re-run raw2json with prettyprint on.
 
 \subsection{Filtering}
@@ -49,9 +49,9 @@ We built four filters to be run at this stage:
 
 \subsection{Graphing}
 For the construction of the graphs, a few additional libraries were needed: Numpy, Pandas, and Matplotlib.
-Numpy is an advanced mathematical library for Python, and Pandas is a library built on top of Numpy to provide high-performance data structures.
+Numpy is an advanced mathematical library for Python ~\cite{numpy}, and Pandas is a library built on top of Numpy to provide high-performance data structures ~\cite{pandas}.
 We used these for data analysis.
-Matplotlib is a 2D plotting library, which we used to generate the graphs. 
+Matplotlib is a 2D plotting library, which we used to generate the graphs ~\cite{matplotlib}. 
 In order to simplify the graph production process, we made individual scripts for each graph type, plus a meta-script to make a united interface.
 This meta-script reads a JSON file obtained from the preprocessing step, imports the data into a Pandas DataFrame (which can be thought of as a complicated 2D array), and sends this off to be filtered, as explained in the filtering step.
 After the data has been filtered, it is handed off to one of the six plotting scripts:

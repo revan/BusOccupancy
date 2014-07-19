@@ -9,7 +9,7 @@ Ultimately, we planned to combine results into a single prediction method.
 In this approach, we planned to establish a correlation between the length of time a bus spends at a stop and the number of passengers currently aboard.
 Our initial theory was that a bus nearing capacity would take longer at stops due to the larger number of riders entering and exiting.
 Every Rutgers bus periodically reports its position, velocity, and destination to an online service -- nextbus.com's Public API.
-This service is free to use, and its information is publicly available. %TODO: Add example XML
+This service is free to use, and its information is publicly available ~\cite{nextbus}. %TODO: Add example XML
 As such, using it would not require any hardware or observers on the bus, allowing for cheap, large-scale execution.
 We first tried to measure the strength of this correlation; if we could prove a strong positive correlation, we could use the bus travel data to measure length of stops, and therefore predict occupancy.
 By running the analysis on a log of travel data, we could predict occupancy across a significantly larger domain and for theoretically no cost.
@@ -32,6 +32,6 @@ Data collection was performed with a laptop running Linux, equipped with a typic
 The computer ran the wireless card in monitor mode.
 In normal operation, a wireless card will receive every packet in the vicinity, but discard those that are not specifically addressed to it; in monitor mode all received packets are transmitted to the operating system regardless of intended recipient. With this setup, we ran the following command:
 \mint{bash}|tcpdump -e|
-This command logs the headers of every packet that the wireless card sees, thus uniquely identifying every active device in the area.
+This command logs the headers of every packet that the wireless card sees, thus uniquely identifying every active device in the area ~\cite{tcpdump}.
 The strength of signals is also recorded, so we can choose to ignore packets below a certain decibel strength.
 We initially planned to add a GPS device to the computer, so as to automate the logging of position along with the network data, but we found it easier to manually record approximate physical locations; we rode a bus along its route, logging packets and stop times.
