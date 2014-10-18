@@ -18,9 +18,9 @@ A few special considerations needed to be made during this step:
 \item Packets may not have a strength field.
   To make data handling easier later on, these are assigned a strength of zero.
   This is easier since it can be filtered out later simply by checking that the strength field is nonzero; a zero strength appearing naturally is impossible. 
-\item Some lines contain only the address of a router, with no particular destination in mind.
+\item Some entries contain only the address of a router, with no particular destination in mind.
   These are broadcast packets, sent to notify devices of the router's existence.
-  Since we are monitoring personal devices, not routers, these lines are ignored, and the address identified as a router is flagged for future filtering.
+  Since we are monitoring personal devices, not routers, these entries are ignored, and the address identified as a router is flagged for future filtering.
 \item Since MAC addresses are usually unique device identifiers, they could potentially be used to identify device owners.
   This kind of risk could subject our study to human subject regulations.
   In order to avoid this risk, addresses are saved into the Dicts as index numbers (starting from zero) rather than the actual address.
@@ -36,7 +36,7 @@ The preprocessing done above is only performed once per dataset.
 Therefore, any sort of filtering that might change between two graphs must be done immediately before the construction of the graph.
 We built four filters to be run at this stage:
 \begin{itemize}
-\item The Strength filter removes packets below a given strength threshold.
+\item The Strength filter removes packets below a given signal strength threshold.
   For example, a strength filter of -50 would filter out packets of -51dB.
 \item The Zero-Strength filter removes packets which have a strength field of zero.
   These packets correspond to tcpdump output lines missing a strength field, as mentioned above in the preprocessing section.
@@ -59,7 +59,7 @@ After the data has been filtered, it is handed off to one of the six plotting sc
 \subsubsection*{Normal Plots}
 The Packet and Unique plots were our easiest plots to generate.
 This is because they utilized the data in a fashion similar to how it was stored.
-They were created by generating an array of 3-second bins and adding the appropriate statistic to the bins.
+They were created by generating an array of 3-second duration bins and adding the appropriate statistic to the bins.
 In the case of the packet plot, this was simply the number of packets found over those three seconds; the bin is simply an integer.
 In the case of the unique plot, however, the bin is a mathematical set holding the MAC addresses seen over the three second period.
 After the entirety of the three seconds are parsed, the bin is assigned the length of the set.
@@ -70,11 +70,12 @@ Rather than looking at each packet over time, we instead looked at the data as a
 The first time each MAC address is encountered, it is added to a list with an initial value of the time it was seen as both its first and last time seen, and seen-count of one.
 Each additional time an address is seen, its last time seen value is updated to the current time, and its seen-count is incremented.
 In the Grid, the addresses are graphed using the first time seen as the x-value and the last time seen as the y-value.
-In the packet histogram, packets which fulfill the requirement of \(t_{first} + t_{max} - t_{last} < 120\) are selected, where \(t_{max}\) is the total observation time.
+In the packet histogram, packets which fulfill the requirement of \[t_\text{first} + t_\text{max} - t_\text{last} < 120\] are selected, where \(t_\text{max}\) is the total observation time.
+The threshold of $120$, or two minutes, was chosen to allow for some leeway in case a device was not detected immediately.
 These selected packets are then graphed with their y-values set as their seen-count.
 To make the graph easier to interpret, the y-axis was made to be logarithmic, and the addresses are sorted by their y-values.
 For the Vector plot, first an array of zeros was initialized with length equal to the length of observation in seconds.
-For each packet, every value between \(t_{first}\) and \(t_{last}\) was incremented.
+For each packet, every value between \(t_\text{first}\) and \(t_\text{last}\) was incremented.
 The resulting array was plotted as a step function, with the x-axis being its indices.
 
 \subsubsection*{Segment Plot}
@@ -93,9 +94,9 @@ For instance, intersect-set 2 would contain
 The length of each intersect-set is considered to be the number of people on the bus at the stop.
 A special exception is made for the intersect of stop-set 0 and stop-set n.
 This set represents addresses present both at the beginning of the ride and the end.
-No normal student would do this --- this would consist only of ourselves and possibly devices present around this stop.
+No normal student would do this --- this would consist only of our own devices and possibly devices present around this stop.
 As such, this set is instead subtracted from all other intersect sets; it is likely garbage.
-Afterward, we add a flat value of 2 to every stop, representing the two of us we filtered out.
+Afterward, we add a flat value of $2$ to every stop, representing our two cellphones which we filtered out.
 
 Some graphs also had the actual number of people on the bus, as observed, overlaid.
-This overlay was generated with a simple step function, using the value at n+1 as the value for the line between n and n+1.
+This overlay was generated with a simple step function, using the value at $n+1$ as the value for the line between $n$ and $n+1$.
