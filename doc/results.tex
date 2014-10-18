@@ -35,7 +35,7 @@ We move on to our next approach.
 \minifig{packets}{Packets detected per 3-second bin}{fig:buspackets}
 
 Plotting the number of packets in a histogram with three second bins (fig.~\ref{fig:buspackets}), we see that there are visible differences between stops.
-This roughly lines up to the expected traffic around each stop -- stops like the BCC, Hill, the ARC, and the entirety of College Avenue have a large amount of traffic, while stops near the Visitor's Center and Werblin have very little.
+This roughly lines up to the expected traffic around each stop --- stops like the BCC, Hill, the ARC, and the entirety of College Avenue have a large amount of traffic, while stops near the Visitor's Center and Werblin have very little.
 
 \subsubsection*{Unique Devices Plot}
 \minifig{unique}{Unique MAC addresses detected per 3-second bin}{fig:busunique}
@@ -45,7 +45,7 @@ As such, our next step was to switch out ``number of packets'' for ``number of u
 The Router filter would be used here, since we don't want to count routers among the number of riders.
 The values on this plot differ noticeably between stops.
 However, this is not due to occupancy; there are clearly not nearly that many people on the bus.
-Instead, it seems that the shape of the plot is primarily influenced by the proximity to routers -- the portions of the bus loop by athletic fields and between campuses has nearly no data.
+Instead, it seems that the shape of the plot is primarily influenced by the proximity to routers --- the portions of the bus loop by athletic fields and between campuses has nearly no data.
 
 \subsubsection*{First-Last Grid Plot}
 \bigfig{bus-grid}{First and Last times seen for each MAC address observed while on the bus route}{fig:busgrid}
@@ -89,7 +89,7 @@ It is scaled differently, as there is approximately a three time difference betw
 
 We see that there appears to be an excellent correlation here, with the exception of the 400-700 second segment. % uhh... what about 0-400? That's also pretty bad.
 This segment corresponds to the entrance to the College Avenue campus, a highly concentrated area which appears to have contributed considerable noise.
-We do see, however, that the two changes in occupancy in this region seem to correspond to peaks in the traffic -- this means that the traffic is probably higher than the actual by a constant value in that area, which we can account for in prediction.
+We do see, however, that the two changes in occupancy in this region seem to correspond to peaks in the traffic --- this means that the traffic is probably higher than the actual by a constant value in that area, which we can account for in prediction.
 		
 Thus, we can conclude that this approach is successful. % I don't know about that, it seems really shaky to just declare that here.
 

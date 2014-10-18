@@ -8,7 +8,7 @@ Ultimately, we planned to combine results into a single prediction method.
 
 In this approach, we planned to establish a correlation between the length of time a bus spends at a stop and the number of passengers currently aboard.
 Our initial theory was that a bus nearing capacity would take longer at stops due to the larger number of riders entering and exiting.
-Every Rutgers bus periodically reports its position, velocity, and destination to an online service -- nextbus.com's Public API.
+Every Rutgers bus periodically reports its position, velocity, and destination to an online service --- nextbus.com's Public API.
 This service is free to use, and its information is publicly available ~\cite{nextbus}. %TODO: Add example XML
 As such, using it would not require any hardware or observers on the bus, allowing for cheap, large-scale execution.
 We first tried to measure the strength of this correlation; if we could prove a strong positive correlation, we could use the bus travel data to measure length of stops, and therefore predict occupancy.

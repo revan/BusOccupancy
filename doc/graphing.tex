@@ -4,12 +4,12 @@
 
 \biglst{json}{fancybus.json}{Example json output, abbreviated}{lst:json}
 
-The raw output from running tcpdump contains many irrelevant details -- fields like the type of packet, or the antenna used.
+The raw output from running tcpdump contains many irrelevant details --- fields like the type of packet, or the antenna used.
 As such, our first step in graph production was to preprocess this data, preserving only the information relevant to our goal.
 The main data of interest was the list of MAC addresses seen in a given packet.
 Each of these addresses can take one of four roles: Source, Destination, Transmitter, or Receiver.
 Every packet will have some, but not all, of these types of addresses.
-Since each line of tcpdump raw output represents a packet, our log files are first parsed line by line, each line individually stored as a Python Dict -- otherwise known as a Hash Map.
+Since each line of tcpdump raw output represents a packet, our log files are first parsed line by line, each line individually stored as a Python Dict --- otherwise known as a Hash Map.
 These Dicts hold the four potential addresses, the packet's strength, and what time it was sent at (in microseconds).
 All the other information was disregarded; ignoring information during preprocessing is the simplest way of removing it from the data.
 
@@ -29,7 +29,7 @@ A few special considerations needed to be made during this step:
 
 At the end of the parsing process, the Dicts are dumped into a JSON output file.
 JSON is a open standard data interchange format ~\cite{json}.
-Using JSON made utilizing the data much easier when it came to producing the graphs; most languages, Python included, have a standard library implementation for JSON, eliminating the effort spent in re-parsing the data. % TODO: Add example JSON output -- re-run raw2json with prettyprint on.
+Using JSON made utilizing the data much easier when it came to producing the graphs; most languages, Python included, have a standard library implementation for JSON, eliminating the effort spent in re-parsing the data. % TODO: Add example JSON output --- re-run raw2json with prettyprint on.
 
 \subsection{Filtering}
 The preprocessing done above is only performed once per dataset.
@@ -66,7 +66,7 @@ After the entirety of the three seconds are parsed, the bin is assigned the leng
 
 \subsubsection*{Inverted Data Plots}
 The First-Last Grid, Packet Histogram, and Vector plot were created by analyzing our data in a different fashion.
-Rather than looking at each packet over time, we instead looked at the data as a list of addresses, each containing a list of times at which it appeared -- an inverted data index.
+Rather than looking at each packet over time, we instead looked at the data as a list of addresses, each containing a list of times at which it appeared --- an inverted data index.
 The first time each MAC address is encountered, it is added to a list with an initial value of the time it was seen as both its first and last time seen, and seen-count of one.
 Each additional time an address is seen, its last time seen value is updated to the current time, and its seen-count is incremented.
 In the Grid, the addresses are graphed using the first time seen as the x-value and the last time seen as the y-value.
@@ -93,7 +93,7 @@ For instance, intersect-set 2 would contain
 The length of each intersect-set is considered to be the number of people on the bus at the stop.
 A special exception is made for the intersect of stop-set 0 and stop-set n.
 This set represents addresses present both at the beginning of the ride and the end.
-No normal student would do this -- this would consist only of ourselves and possibly devices present around this stop.
+No normal student would do this --- this would consist only of ourselves and possibly devices present around this stop.
 As such, this set is instead subtracted from all other intersect sets; it is likely garbage.
 Afterward, we add a flat value of 2 to every stop, representing the two of us we filtered out.
 
