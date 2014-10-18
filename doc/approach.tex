@@ -1,6 +1,10 @@
 \section{Approach}
 
-In order to facilitate simultaneous contributions from all four team members, we approached the problem in two manners: by directly collecting data about number of riders vs. stop time, and by measuring number of devices on the bus.
+In order to facilitate simultaneous contributions from all four team members, we approached the problem in two ways:
+\begin{itemize}
+  \item by directly collecting data about number of riders vs. stop time, and
+  \item by measuring number of devices on the bus.
+\end{itemize}
 Two students were assigned to work on each approach.
 Ultimately, we planned to combine results into a single prediction method.
 
@@ -26,12 +30,13 @@ In order to establish a correlation between stop length and bus occupancy, we fo
 }{lst:tcpdump}
 
 In this approach, we used the inherent correlation between the number of smartphones on the bus and the number of passengers; it is reasonable to assume that more devices means more passengers, since the devices travel with the passengers.
-Nonetheless, we would try to prove this correlation by comparing collected network information with logged bus occupancy.
+Nonetheless, we would try to verify this correlation by comparing collected network information with logged bus occupancy.
 
 Data collection was performed with a laptop running Linux, equipped with a typical 802.11n wireless card.
 The computer ran the wireless card in monitor mode.
 In normal operation, a wireless card will receive every packet in the vicinity, but discard those that are not specifically addressed to it; in monitor mode all received packets are transmitted to the operating system regardless of intended recipient. With this setup, we ran the following command:
 \mint{bash}|tcpdump -e|
 This command logs the headers of every packet that the wireless card sees, thus uniquely identifying every active device in the area ~\cite{tcpdump}.
+A sample output of tcpdump is shown in Listing~\ref{lst:tcpdump}.
 The strength of signals is also recorded, so we can choose to ignore packets below a certain decibel strength.
 We initially planned to add a GPS device to the computer, so as to automate the logging of position along with the network data, but we found it easier to manually record approximate physical locations; we rode a bus along its route, logging packets and stop times.
