@@ -41,21 +41,3 @@ The device will randomly generate a MAC address during each round of scanning, r
 This is to deter tracking by companies for the purpose of targeted advertisements and to provide higher security for consumers ~\cite{ios8_privacy}.
 Though we have no malicious intent, this privacy feature will still put an end to our tracking --- rather than seeing an iPhone moving along a bus route, we will instead see many fake devices, with no apparent correlation.
 Unfortunately for us, Apple iPhones make up over 40\% of the smartphones owned in the US, so this update would greatly reduce the effectiveness of our program ~\cite{iphone_ownership}.
-
-\subsection{Alternative Application}
-The methods we developed for the purpose of measuring bus occupancy can also be used for similar measurements in other settings.
-To prove this, we measured occupancy in a classroom (fig.~\ref{fig:probhmap}).
-Just as with the bus data, the points around \(y=x\) consist of transient devices.
-The points in the clump to the top right is probably due to a buildup of students outside the lecture hall awaiting the following class.
-The points in the clump to the top left represent the devices that were present for the duration of the capture.
-Other scattered points may be noise, but could also be sleeping devices which only report themselves occasionally.
-
-There were exactly 106 students in the lecture hall during this collection.
-While judging exact cutoffs for the measurement area is of a complexity outside the scope of this project, a rough estimate of the clump in the top left gives about 120 addresses.
-In order to judge how reliable this count is, we created a new type of plot, counting the packets including each of these long-present devices (fig~\ref{fig:probhist}).
-This plot shows that most devices measured transmitted or received a reasonable quantity of packets --- only a few are particularly low on packet count.
-This suggests that this approach does generate an accurate count of the lecture hall occupancy.
-
-We can also observe that some devices are involved in a significantly larger quantity of packets.
-This graph is generated with router filtering on, meaning it is unlikely that these are routers.
-% More observations here?
