@@ -9,6 +9,7 @@
 \usemintedstyle{tango}
 \usepackage{inconsolata}
 \usepackage{graphicx}
+\usepackage{booktabs}
 \usepackage[backend=biber,style=ieee]{biblatex}
 \addbibresource{report.bib}
 
@@ -96,8 +97,10 @@ The aim of this project is to develop a system for better predicting the demand 
 
 \begin{figure}[!t]
   \centering
-  \begin{tabular}{ r|l }
-    Label & Name of Stop\\ \hline
+  \begin{tabular}{ rl }
+    \toprule
+    Label & Name of Stop\\
+    \midrule
     1 & Buell Apartments\\
     2 & Werblin Recreation Center\\
     3 & Rutgers Student Center\\
@@ -111,6 +114,7 @@ The aim of this project is to develop a system for better predicting the demand 
     11 & Library of Science \& Medicine\\
     12 & Busch Suites\\
     13 & Busch Campus Center\\
+    \bottomrule
   \end{tabular}
   \caption{Bus stop key}
   \label{fig:stops}
