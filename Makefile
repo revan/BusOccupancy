@@ -31,4 +31,4 @@ packethist: data/class.json
 	 -s $(PROB_STR) -r True -m True
 
 report:
-	cd doc && lualatex -shell-escape report.tex
+	cd doc && lualatex -shell-escape report.tex && lualatex -shell-escape report.tex
