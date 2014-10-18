@@ -1,10 +1,126 @@
 \section{Results}
 
-\minipic{occupancy}{Bus Occupancy as a function of Stop Length: stop length has no correlation to occupancy.}{fig:occ}
-%TODO: Clarify whether this is for the following or preceding stop. I don't actually remember.
-\minipic{netdelta}{Net Delta Occupancy as a function of Stop Length: longer stop lengths signify either positive or negative changes.}{fig:netdelta}
-\minipic{absdelta}{Absolute Delta Occupancy as a function of Stop Length: strong correlation between magnitude of change and stop length. We can predict changes if we can show certain bus stops tend to positive or negative change.}{fig:absdelta}
-\minipic{onestopcrop}{Net Delta Occupancy as a function of Stop Length at a Single Stop: this supports the idea that we can characterize bus stops by either positive or negative change.}{fig:onestop}
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+        axis x line=bottom,
+        axis y line=left,
+        xlabel=Length of Stop ($s$),
+        ylabel=Bus Occupancy]
+      \addplot[only marks,mark=*,blue] plot coordinates {
+        (35,30)  % BCC
+        (18,37)  % Buell
+        (16,41)  % Werblin
+        (46,41)  % Scoot
+        (25,50)  % SAC
+        (19,52)  % Stadium
+        %(9,52)  % Werblin 2
+        (25,40)  % Hill
+        (19,30)  % ARC
+        (13,29)  % LSM
+        (10,33)  % Suites
+        (36,28)  % BCC
+      };
+   \end{axis}
+  \end{tikzpicture}
+  \caption{
+    Bus Occupancy as a function of stop length.
+    Occupancy is measured after each passenger transaction (e.g. a transaction taking 10s and adding 5 passengers to an existing pool of 20 would be charted as (10,25)).
+    Stop length has no apparent correlation to Occupancy.
+  }
+  \label{fig:occ}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+        axis x line=middle,
+        axis y line=left,
+        xlabel=Length of Stop ($s$),
+        ylabel=Net Occupancy Change]
+      \addplot[only marks,mark=*,blue] plot coordinates {
+        (35,10)  % BCC
+        (18,7)  % Buell
+        (16,4)  % Werblin
+        (46,-13)  % Scoot
+        (25,9)  % SAC
+        (19,2)  % Stadium
+        (9,0)  % Werblin 2
+        (25,-12)  % Hill
+        (19,-10)  % ARC
+        (13,-1)  % LSM
+        (10,4)  % Suites
+        (36,-5)  % BCC
+      };
+    \end{axis}
+  \end{tikzpicture}
+  \caption{
+    Net Delta Occupancy as a function of stop length.
+    No immediate relationship visible, however negative occupancy changes seem to be exclusive to larger stop lengths.
+  }
+  \label{fig:netdelta}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+        axis x line=bottom,
+        axis y line=left,
+        xlabel=Length of Stop ($s$),
+        ylabel=Net Occupancy Change\, Absolute]
+      \addplot[only marks,mark=*,blue] plot coordinates {
+        (35,10)  % BCC
+        (18,7)  % Buell
+        (16,4)  % Werblin
+        (46,13)  % Scoot
+        (25,9)  % SAC
+        (19,2)  % Stadium
+        (9,0)  % Werblin 2
+        (25,12)  % Hill
+        (19,10)  % ARC
+        (13,1)  % LSM
+        (10,4)  % Suites
+        (36,5)  % BCC
+      };
+    \end{axis}
+  \end{tikzpicture}
+  \caption{
+    Absolute Delta Occupancy as a function of stop length.
+    Strong correlation between magnitude of change and stop length.
+    We can predict changes if we can show certain bus stops tend to positive or negative change.
+  }
+  \label{fig:absdelta}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+        axis x line=middle,
+        axis y line=left,
+        xlabel=Length of Stop ($s$),
+        ylabel=Net Occupancy Change]
+      \addplot[only marks,mark=*,blue] plot coordinates {
+        (37,-20)
+        (51,-4)
+        (38,2)
+        (57,-5)
+        (148,-3)
+        (102,-5)
+      };
+    \end{axis}
+  \end{tikzpicture}
+  \caption{
+    Net Delta Occupancy as a function of Stop Length at a Single Stop.
+    This supports the idea that we can characterize individual bus stops as being prone to positive or negative change.
+  }
+  \label{fig:onestop}
+\end{figure}
+
+
 \subsection{Stop Length Inference}
 
 Based on the experimental procedure described in TODO, Figure~\ref{fig:occ} depicts a lack of significant correlation between stop length and occupancy.
@@ -20,16 +136,16 @@ Conversely, a stop which is associated mostly with disembarking, a long stop wou
 To test this, we waited at a single bus stop and counted the number of passengers entering and leaving each bus on a certain route, and the length of the stops (Fig.~\ref{fig:onestop}).
 Data for this experiment was slower to collect, as the buses were spaced out.
 This data suggests that this particular bus stop is predominantly a destination, rather than a starting point; longer stops here, then, would imply a net decrease in number of riders.
-    
+
 However, the data collected was insufficient to draw these conclusions; there can be significant variation depending on time and day of the week.
 This data collection would need to be repeated at every bus stop, on a variety of days and times, in order to provide the required basis of prediction.
 This clearly increases the time requirement to well beyond the scope of this study.
-	
+
 Thus, while the preliminary foray suggests that this approach could be successful, it is not feasible for this study.
 We move on to our next approach.
 
 \subsection{Promiscuous WiFi}
-    
+
 \subsubsection*{Packet Plot}
 \minifig{packets}{Packets detected per 3-second bin: there are visible differences between spots, and frequencies are higher on busier stops.}{fig:buspackets}
 
@@ -74,7 +190,7 @@ Due to the limitations of this method, we progressed to creating the vector plot
 \subsubsection*{Presence Vector Plot}
 \minifig{vectors}{Predicted number of passengers using the Vector approximation (blue) versus actual number of passengers (purple). Verctor approximation calculated by summing number of devices between first and last sightings.}{fig:vector}
 
-In an attempt to minimize noise from transient devices and to compensate for the lack of traffic in uninhabited areas, we constructed a plot (Fig.~\ref{fig:vector}) similar to the previous. 
+In an attempt to minimize noise from transient devices and to compensate for the lack of traffic in uninhabited areas, we constructed a plot (Fig.~\ref{fig:vector}) similar to the previous.
 For every address $i$ we encountered in the collection, we create a vector \(X^{(i)}= [ X_1 \cdots X_T ] \) such that
 \begin{equation*}
   X_t^{(i)} = \begin{cases}
