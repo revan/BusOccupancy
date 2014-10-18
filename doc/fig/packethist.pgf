@@ -2505,7 +2505,7 @@
 \pgftext[x=6.480942in,y=0.704072in,,top]{{\sffamily\fontsize{12.000000}{14.400000}\selectfont 120}}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=3.548202in,y=0.473332in,,top]{{\sffamily\fontsize{12.000000}{14.400000}\selectfont Unique MAC addresses present for the entire class period}}%
+\pgftext[x=3.548202in,y=0.473332in,,top]{{\sffamily\fontsize{12.000000}{14.400000}\selectfont Number of Unique MAC addresses}}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
