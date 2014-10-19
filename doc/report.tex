@@ -5,6 +5,7 @@
 \usepackage[section]{placeins}
 \usepackage{pgf}
 \usepackage{pgfplots}
+\pgfplotsset{compat=newest}
 \usepackage{minted}
 \usemintedstyle{tango}
 \usepackage{inconsolata}
@@ -12,6 +13,7 @@
 \usepackage{booktabs}
 \usepackage{xspace}
 \usepackage{url}
+\usepackage[margin=10pt]{subcaption}
 \usepackage[backend=biber,style=ieee]{biblatex}
 \addbibresource{report.bib}
 
@@ -93,10 +95,6 @@ The aim of this project is to develop a system for better predicting the demand 
 
 \section{Bus Route}
 
-\minipic{aroutebusch}{$A$ Route: Busch Classrooms. The bus route consists of two campuses, connected via bridge.} {fig:aroutebusch}
-\minipic{aroutecollegeave}{$A$ Route: College Ave}{fig:aroutecollegeave}
-\minipic{aroutestadium}{$A$ Route: Busch Stadium}{fig:aroutestadium}
-
 \begin{table}[!t]
   \centering
   \caption{Bus stop key}
@@ -129,10 +127,13 @@ The other of the two routes, the $H$ route, was not selected due to its somewhat
 The particular advantages of this route included its variety of locations: Busch and College Avenue offer a good contrast in terms of population, and thus device, density.
 Additionally, the regularity of short buses improved our ability to collect data --- some Rutgers buses are of double length, making them harder for a single person to identify the number of passengers and the quantity of traffic on and off the bus.
 
+\minipic{aroutebusch}{$A$ Route: Busch Classrooms. The bus route consists of two campuses, connected via bridge.} {fig:aroutebusch}
+\minipic{aroutecollegeave}{$A$ Route: College Ave}{fig:aroutecollegeave}
+\minipic{aroutestadium}{$A$ Route: Busch Stadium}{fig:aroutestadium}
+
 Figures~\ref{fig:aroutebusch}-\ref{fig:aroutestadium} are maps of the stops serviced by the $A$ bus route.
 We began riding the route on Busch Campus (Fig.~\ref{fig:aroutebusch}), at the Busch Campus Center.
 It was too early to begin data collection there, however, so the first stop recognized in our dataset is the Buell Apartment stop, also on Busch.
-
 
 \input{graphing}
 \input{results}

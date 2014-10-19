@@ -1,124 +1,132 @@
 \section{Results}
 
-\begin{figure}
+\newlength\figurewidth
+\setlength\figurewidth{0.45\textwidth}
+
+\begin{figure*}
   \centering
-  \begin{tikzpicture}
-    \begin{axis}[
-        axis x line=bottom,
-        axis y line=left,
-        xlabel=Length of Stop ($s$),
-        ylabel=Bus Occupancy]
-      \addplot[only marks,mark=*,blue] plot coordinates {
-        (35,30)  % BCC
-        (18,37)  % Buell
-        (16,41)  % Werblin
-        (46,41)  % Scoot
-        (25,50)  % SAC
-        (19,52)  % Stadium
-        %(9,52)  % Werblin 2
-        (25,40)  % Hill
-        (19,30)  % ARC
-        (13,29)  % LSM
-        (10,33)  % Suites
-        (36,28)  % BCC
-      };
-   \end{axis}
-  \end{tikzpicture}
-  \caption{
+  \subcaptionbox{
     Bus Occupancy as a function of stop length.
     Occupancy is measured after each passenger transaction (e.g. a transaction taking 10s and adding 5 passengers to an existing pool of 20 would be charted as (10,25)).
     Stop length has no apparent correlation to Occupancy.
+    \label{fig:occ}
+  }[0.48\linewidth]{
+    \begin{tikzpicture}
+      \begin{axis}[
+          axis x line=bottom,
+          axis y line=left,
+          width=\figurewidth,
+          height=5cm,
+          xlabel={\small Length of Stop ($s$)},
+          ylabel={\small Bus Occupancy}]
+        \addplot[only marks,mark=*,blue] plot coordinates {
+          (35,30)  % BCC
+          (18,37)  % Buell
+          (16,41)  % Werblin
+          (46,41)  % Scoot
+          (25,50)  % SAC
+          (19,52)  % Stadium
+          %(9,52)  % Werblin 2
+          (25,40)  % Hill
+          (19,30)  % ARC
+          (13,29)  % LSM
+          (10,33)  % Suites
+          (36,28)  % BCC
+        };
+      \end{axis}
+    \end{tikzpicture}
   }
-  \label{fig:occ}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \begin{tikzpicture}
-    \begin{axis}[
-        axis x line=middle,
-        axis y line=left,
-        xlabel=Length of Stop ($s$),
-        ylabel=Net Occupancy Change]
-      \addplot[only marks,mark=*,blue] plot coordinates {
-        (35,10)  % BCC
-        (18,7)  % Buell
-        (16,4)  % Werblin
-        (46,-13)  % Scoot
-        (25,9)  % SAC
-        (19,2)  % Stadium
-        (9,0)  % Werblin 2
-        (25,-12)  % Hill
-        (19,-10)  % ARC
-        (13,-1)  % LSM
-        (10,4)  % Suites
-        (36,-5)  % BCC
-      };
-    \end{axis}
-  \end{tikzpicture}
-  \caption{
+  \subcaptionbox{
     Net Delta Occupancy as a function of stop length.
     No immediate relationship visible, however negative occupancy changes seem to be exclusive to larger stop lengths.
-  }
-  \label{fig:netdelta}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \begin{tikzpicture}
-    \begin{axis}[
-        axis x line=bottom,
-        axis y line=left,
-        xlabel=Length of Stop ($s$),
-        ylabel=Net Occupancy Change\, Absolute]
-      \addplot[only marks,mark=*,blue] plot coordinates {
-        (35,10)  % BCC
-        (18,7)  % Buell
-        (16,4)  % Werblin
-        (46,13)  % Scoot
-        (25,9)  % SAC
-        (19,2)  % Stadium
-        (9,0)  % Werblin 2
-        (25,12)  % Hill
-        (19,10)  % ARC
-        (13,1)  % LSM
-        (10,4)  % Suites
-        (36,5)  % BCC
-      };
-    \end{axis}
-  \end{tikzpicture}
-  \caption{
-    Absolute Delta Occupancy as a function of stop length.
-    Strong correlation between magnitude of change and stop length.
-    We can predict changes if we can show certain bus stops tend to positive or negative change.
-  }
-  \label{fig:absdelta}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \begin{tikzpicture}
-    \begin{axis}[
-        axis x line=middle,
-        axis y line=left,
-        xlabel=Length of Stop ($s$),
-        ylabel=Net Occupancy Change]
-      \addplot[only marks,mark=*,blue] plot coordinates {
-        (37,-20)
-        (51,-4)
-        (38,2)
-        (57,-5)
-        (148,-3)
-        (102,-5)
-      };
-    \end{axis}
-  \end{tikzpicture}
-  \caption{
-    Net Delta Occupancy as a function of Stop Length at a Single Stop.
-    This supports the idea that we can characterize individual bus stops as being prone to positive or negative change.
-  }
-  \label{fig:onestop}
-\end{figure}
+    \label{fig:netdelta}
+  }[0.48\linewidth]{
+    \begin{tikzpicture}
+      \begin{axis}[
+          axis x line=middle,
+          axis y line=left,
+          width=\figurewidth,
+          height=5cm,
+          xlabel={\small Length of Stop ($s$)},
+          ylabel={\small Net Occupancy Change}]
+        \addplot[only marks,mark=*,blue] plot coordinates {
+          (35,10)  % BCC
+          (18,7)  % Buell
+          (16,4)  % Werblin
+          (46,-13)  % Scoot
+          (25,9)  % SAC
+          (19,2)  % Stadium
+          (9,0)  % Werblin 2
+          (25,-12)  % Hill
+          (19,-10)  % ARC
+          (13,-1)  % LSM
+          (10,4)  % Suites
+          (36,-5)  % BCC
+        };
+      \end{axis}
+    \end{tikzpicture}
+    }
+    \subcaptionbox{
+      Absolute Delta Occupancy as a function of stop length.
+      Strong correlation between magnitude of change and stop length.
+      We can predict changes if we can show certain bus stops tend to positive or negative change.
+      \label{fig:absdelta}
+    }[0.48\linewidth]{
+      \begin{tikzpicture}
+        \begin{axis}[
+            axis x line=bottom,
+            axis y line=left,
+            width=\figurewidth,
+            height=5cm,
+            xlabel={\small Length of Stop ($s$)},
+            ylabel={\small Net Occupancy Change{,} Absolute}]
+          \addplot[only marks,mark=*,blue] plot coordinates {
+            (35,10)  % BCC
+            (18,7)  % Buell
+            (16,4)  % Werblin
+            (46,13)  % Scoot
+            (25,9)  % SAC
+            (19,2)  % Stadium
+            (9,0)  % Werblin 2
+            (25,12)  % Hill
+            (19,10)  % ARC
+            (13,1)  % LSM
+            (10,4)  % Suites
+            (36,5)  % BCC
+          };
+        \end{axis}
+      \end{tikzpicture}
+    }
+    \subcaptionbox{
+      Net Delta Occupancy as a function of Stop Length at a Single Stop.
+      This supports the idea that we can characterize individual bus stops as being prone to positive or negative change.
+      \label{fig:onestop}
+    }[0.48\linewidth]{
+      \begin{tikzpicture}
+        \begin{axis}[
+            axis x line=middle,
+            axis y line=left,
+            width=\figurewidth,
+            height=5cm,
+            xlabel={\small Length of Stop ($s$)},
+            ylabel={\small Net Occupancy Change}]
+          \addplot[only marks,mark=*,blue] plot coordinates {
+            (37,-20)
+            (51,-4)
+            (38,2)
+            (57,-5)
+            (148,-3)
+            (102,-5)
+          };
+        \end{axis}
+      \end{tikzpicture}
+    }
+    \label{fig:busplots}
+    \caption{
+      Plots created with data from visual occupancy observation.
+      Aside from \subref{fig:onestop}, which was created from the data from the $H$ route single-stop observation, these plots use the data from observation of the $A$ route.
+    }
+\end{figure*}
 
 
 \subsection{Stop Length Inference}
@@ -128,7 +136,7 @@ This makes sense, because the number of sedentary or otherwise intransient rider
 Plotting the net occupancy change as a function of stop length (Fig.~\ref{fig:netdelta}), however, was also inconclusive, as the longer stops could signify either positive or negative changes.
 From stop timings alone, we would not be able to predict the direction of change.
 
-Plotting absolute change (fig.~\ref{fig:absdelta}), however, shows a much stronger correlation than either of the previous graphs.
+Plotting absolute change (Fig.~\ref{fig:absdelta}), however, shows a much stronger correlation than either of the previous graphs.
 Absolute change is not a useful metric on its own, but if it could be proven that certain bus stops tended to have a generally positive or negative net change, we could predict the sign of the change and thus the occupancy changes over time.
 In other words, if more people tend to get on at a given stop than get off, a longer stop here means a large positive change to the number of passengers.
 Conversely, a stop which is associated mostly with disembarking, a long stop would mean a large negative change.
