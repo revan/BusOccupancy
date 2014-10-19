@@ -121,17 +121,18 @@
         \end{axis}
       \end{tikzpicture}
     }
-    \label{fig:busplots}
     \caption{
       Plots created with data from visual occupancy observation.
       Aside from \subref{fig:onestop}, which was created from the data from the $H$ route single-stop observation, these plots use the data from observation of the $A$ route.
     }
+    \label{fig:busplots}
 \end{figure*}
 
 
 \subsection{Stop Length Inference}
 
-Based on the experimental procedure described in TODO, Figure~\ref{fig:occ} depicts a lack of significant correlation between stop length and occupancy.
+Based on the experimental procedure described in Section~\ref{sec:sl-approach}, we produced Figure~\ref{fig:busplots}.
+Figure~\ref{fig:occ} depicts a lack of significant correlation between stop length and occupancy.
 This makes sense, because the number of sedentary or otherwise intransient riders does not cause slowdowns; rather, the relevant metric is the net occupancy change; the number of people entering or exiting the bus at any given stop.
 Plotting the net occupancy change as a function of stop length (Fig.~\ref{fig:netdelta}), however, was also inconclusive, as the longer stops could signify either positive or negative changes.
 From stop timings alone, we would not be able to predict the direction of change.
@@ -213,4 +214,4 @@ It is scaled differently, as there is approximately a three time difference betw
 
 We see that there appears to be an excellent correlation here, with the exception of the 400-700 second segment. % uhh... what about 0-400? That's also pretty bad.
 This segment corresponds to the entrance to the College Avenue campus, a highly concentrated area that appears to have contributed considerable noise.
-We do see, however, that the two changes in occupancy in this region seem to correspond to peaks in the traffic --- this means that the traffic is probably higher than the actual by a constant value in that area, which we can account for in prediction. TODO: Roy's comment
+We do see, however, that the two changes in occupancy in this region seem to correspond to peaks in the traffic --- this means that the observed traffic is probably consistently higher than the actual over that area, which we can account for in prediction.
