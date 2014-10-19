@@ -11,7 +11,7 @@ Since each line of tcpdump raw output represents a packet, our log files are fir
 These Dicts hold the four potential addresses, the packet's strength, and what time it was sent at (in microseconds).
 All the other information was disregarded; ignoring information during preprocessing is the simplest way of removing it from the data.
 
-\biglst{json}{fancybus.json}{Example json output, abbreviated}{lst:json}
+\biglst{json}{fancybus.json}{Example json output, abbreviated: we construct this structured representation of the packet capture for plotting.}{lst:json}
 
 A few special considerations needed to be made during this step:
 \begin{itemize}
