@@ -12,10 +12,11 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{xspace}
-\usepackage{url}
+\usepackage[hyphens]{url}
+\usepackage{cite}
 \usepackage[margin=10pt]{subcaption}
-\usepackage[backend=biber,style=ieee]{biblatex}
-\addbibresource{report.bib}
+%\usepackage[backend=biber,style=ieee]{biblatex}
+%\addbibresource{report.bib}
 
 \graphicspath{ {img/} }
 \pgfrealjobname{report}
@@ -174,7 +175,8 @@ Overall, the Vector and Segment approximations are the best way to analyze the d
 
 \FloatBarrier
 
-\printbibliography
+\bibliography{report}{}
+\bibliographystyle{IEEEtran}
 
 \appendix[Team Member Contributions]
 \subsection*{Daniel Bordak}
